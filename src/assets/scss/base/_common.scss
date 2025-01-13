@@ -1,0 +1,12 @@
+@use 'variables';
+@use 'mixin';
+
+body {
+  color: variables.$color-dark;
+}
+
+/* Common */
+.page-container {
+  margin: 0 auto;
+  max-width: 988px;
+}

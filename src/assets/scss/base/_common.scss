@@ -10,3 +10,13 @@ body {
   margin: 0 auto;
   max-width: 988px;
 }
+
+.btn-primary-custom {
+  color: variables.$color-white;
+  background-color: variables.$color-primary;
+}
+
+.btn-default-custom {
+  color: variables.$color-dark;
+  background-color: variables.$color-white;
+}

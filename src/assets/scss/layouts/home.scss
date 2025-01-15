@@ -1,0 +1,36 @@
+@use '../base';
+
+.home-body {
+  height: calc(100vh - 70px);
+
+  .banner .img {
+    width: 493px;
+    height: 445px;
+  }
+
+  .block-text {
+    width: 45%;
+    text-align: center;
+
+    .title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 32px;
+    }
+
+    .btn-default-custom,
+    .btn-primary-custom {
+      display: flex;
+      min-width: 200px;
+      padding: 18px 8px;
+      border-radius: 8px;
+      margin: 8px auto;
+      font-weight: 600;
+    }
+
+    .btn-default-custom {
+      color: #1cb0f6;
+    }
+  }
+}

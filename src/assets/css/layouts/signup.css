@@ -1,10 +1,52 @@
-.nav-signup {
-  height: 70px;
-}
-
 .main-signup .title-lv1 {
   font-size: 3.2rem;
   line-height: 40px;
+}
+.main-signup .title-lv2 {
+  margin-top: 24px;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+.main-signup .list-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  justify-content: center;
+  margin: auto;
+  padding: 24px 0 36px;
+  margin-top: 50px;
+}
+.main-signup .card-item {
+  border-radius: 16px;
+  border-style: solid;
+  border-width: 2px 2px 4px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 12px;
+  max-width: 240px;
+  min-height: 217px;
+  min-width: 200px;
+  padding: 12px 12px 24px;
+  text-align: center;
+  background-color: #fff;
+  border-color: rgb(229, 229, 229);
+}
+.main-signup .card-item.active, .main-signup .card-item:hover {
+  filter: brightness(0.9);
+}
+
+.footer-signup {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #e5e5e5;
+}
+.footer-signup .footer-block {
+  height: 100px;
+}
+.footer-signup .btn-next {
+  font-size: 1.8rem;
+  padding: 18px;
 }
 
 /*# sourceMappingURL=signup.css.map */

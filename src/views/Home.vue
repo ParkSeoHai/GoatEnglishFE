@@ -1,5 +1,10 @@
 <script setup>
+import { onMounted } from "vue";
+import { useLayoutStore } from "@/stores/layout";
 import Button from "@/components/Button.vue";
+
+const layout = useLayoutStore();
+onMounted(() => layout.show());
 </script>
 <template>
   <div class="home-body page-container flex items-center">
@@ -11,11 +16,11 @@ import Button from "@/components/Button.vue";
         <h1 class="title">Nâng cao kỹ năng tiếng Anh của bạn với công nghệ tiên tiến!</h1>
         <Button
           :item="{ text: 'Bắt đầu ngay', href: '/signup' }"
-          class="btn-primary-custom"
+          class="btn-primary-custom uppercase"
         />
         <Button
           :item="{ text: 'Tôi đã có tài khoản', href: '/login' }"
-          class="btn-default-custom"
+          class="btn-default-custom uppercase"
         />
       </div>
     </div>

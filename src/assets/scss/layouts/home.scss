@@ -1,7 +1,7 @@
 @use '../base';
 
 .home-body {
-  height: calc(100vh - 70px);
+  height: 100vh;
 
   .banner .img {
     width: 493px;
@@ -22,10 +22,10 @@
     .btn-default-custom,
     .btn-primary-custom {
       display: flex;
-      min-width: 200px;
-      padding: 18px 8px;
+      min-width: 300px;
+      padding: 22px 8px;
       border-radius: 8px;
-      margin: 8px auto;
+      margin: 12px auto;
       font-weight: 600;
     }
 

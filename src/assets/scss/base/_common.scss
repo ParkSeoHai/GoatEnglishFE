@@ -8,7 +8,12 @@ body {
 /* Common */
 .page-container {
   margin: 0 auto;
-  max-width: 988px;
+  max-width: 1280px;
+}
+
+.btn-primary-custom,
+.btn-default-custom {
+  border-radius: 12px;
 }
 
 .btn-primary-custom {
@@ -19,4 +24,44 @@ body {
 .btn-default-custom {
   color: variables.$color-dark;
   background-color: variables.$color-white;
+}
+
+.btn-with-icon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.background-popup {
+  position: fixed;
+  inset: 0px;
+  z-index: 600;
+}
+
+.btn-action {
+  border: none;
+  min-height: 5rem;
+  padding: 0px 2rem;
+  border-radius: 1.6rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: #fff;
+  color: #333;
+  border: 1px solid #cacaca;
+  box-shadow: #cacaca 0px 0.25rem 0px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &.disabled {
+    background-color: #e5e5e5;
+    pointer-events: none;
+  }
 }

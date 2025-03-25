@@ -1,108 +1,361 @@
 <script setup>
-import { ref } from "vue";
+import Button from "@/components/Button.vue";
+import axios from "axios";
+import { onMounted, ref, watch } from "vue";
+import { useLayoutStore } from "@/stores/layout";
+import { toast } from "vue3-toastify";
+
+const layout = useLayoutStore();
+const loading = ref(false);
 
 const stepCurr = ref(1);
+const stepNumb = 8;
+const isNext = ref(false);
 const dataStep = ref({
-  language: "",
+  topic: "",
+  level: "",
+  age: "",
+  goal: "",
+  knowFrom: "",
+  email: "",
+  otp_code: "",
+  username: "",
+  password: "",
+  confirm_password: "",
 });
 
-const steps = ref([
-  {
-    text: "Register",
-  },
-  {
-    text: "Choose plan",
-  },
-  {
-    text: "Purchase",
-  },
-  {
-    text: "Receive Product",
-  },
-]);
+const topics = ref([]);
+const levels = ref([]);
+const ages = ref([]);
+const goals = ref([]);
+const knowFroms = ref([]);
 
-const languages = ref([
-  {
-    id: 1,
-    img:
-      "https://d35aaqx5ub95lt.cloudfront.net/vendor/bbe17e16aa4a106032d8e3521eaed13e.svg",
-    title: "Tiếng Anh",
-    desc: "12,6 Tr người học",
-    key: "en",
-  },
-]);
+watch(stepCurr, async (value) => {
+  if (value !== 2) {
+    isNext.value = false;
+  }
+});
+
+watch(
+  () => dataStep.value.email,
+  (value) => {
+    if (value !== "") {
+      isNext.value = true;
+    } else {
+      isNext.value = false;
+    }
+  }
+);
+
+const doGetAxios = async (url) => {
+  try {
+    const res = await axios.get(url);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const handleSelectAction = (value, key) => {
+  dataStep.value[key] = value;
+  isNext.value = true;
+};
+
+const init = async () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    location.href = "/dashboard";
+  }
+
+  levels.value = await doGetAxios("../src/data/levels.json");
+  ages.value = await doGetAxios("../src/data/ages.json");
+  goals.value = await doGetAxios("../src/data/goals.json");
+  knowFroms.value = await doGetAxios("../src/data/knowFroms.json");
+
+  await getTopics();
+};
+
+const handleNext = async () => {
+  loading.value = true;
+  // Gửi OTP email
+  if (stepCurr.value === 7) {
+    await sendOTP(dataStep.value.email);
+  } else {
+    stepCurr.value++;
+  }
+  loading.value = false;
+};
+
+const getTopics = async () => {
+  const data = await doGetAxios("http://localhost:3000/api/topic");
+  topics.value = data?.data;
+};
+
+const sendOTP = async (email) => {
+  try {
+    const res = await axios.post(`http://localhost:3000/api/auth/send-otp`, {
+      email,
+    });
+    const data = res.data;
+    console.log(data);
+    // send success
+    if (data?.status === 200) {
+      stepCurr.value++;
+      toast.success(data?.message);
+    } else {
+      toast.error(data?.message);
+    }
+  } catch (error) {
+    console.error(error);
+    error?.response?.data?.errors?.forEach((error) => {
+      toast.error(error?.message);
+    });
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleRegister = async () => {
+  try {
+    loading.value = true;
+    const res = await axios.post(`http://localhost:3000/api/auth/register`, {
+      otp_code: dataStep.value.otp_code.toString(),
+      username: dataStep.value.username,
+      email: dataStep.value.email,
+      password: dataStep.value.password,
+      confirm_password: dataStep.value.confirm_password,
+      topic: dataStep.value.topic,
+    });
+    const data = res.data;
+    console.log(data);
+    // send success
+    if (data?.status === 201) {
+      stepCurr.value++;
+      toast.success(data?.message);
+      // redirect sang trang đăng nhập
+      location.href = "/login";
+    } else {
+      toast.error(data?.message);
+    }
+  } catch (error) {
+    console.error(error);
+    error?.response?.data?.errors?.forEach((error) => {
+      toast.error(error?.message);
+    });
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(() => {
+  init();
+  layout.show();
+});
 </script>
 
 <template>
-  <header class="header-signup">
-    <nav class="nav-signup page-container flex items-center justify-between">
-      <div class="logo">
-        <img
-          src="https://d35aaqx5ub95lt.cloudfront.net/images/splash/f92d5f2f7d56636846861c458c0d0b6c.svg"
-        />
-      </div>
-      <div
-        class="language-page flex items-center text-[#afafaf] font-bold uppercase text-[15px] cursor-pointer"
-      >
-        <p class="text me-3">Ngôn ngữ hiển thị: Tiếng Việt</p>
-        <span class="icon"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-chevron-down"
-            viewBox="0 0 16 16"
+  <div class="signup-body page-container">
+    <div class="main-signup">
+      <ul class="steps-custom mb-10 w-full">
+        <li
+          v-for="step in stepNumb"
+          :key="step"
+          class="step"
+          :class="{ done: step <= stepCurr }"
+        ></li>
+      </ul>
+      <div v-if="stepCurr === 1" class="step-content">
+        <h1 class="title-lv1 text-center font-bold">Chọn chủ đề bạn muốn học...</h1>
+        <div class="list-card">
+          <div
+            class="card-item"
+            v-for="topic in topics"
+            :key="topic._id"
+            :class="{ active: topic._id === dataStep.topic }"
+            @click="handleSelectAction(topic._id, 'topic')"
           >
-            <path
-              fill-rule="evenodd"
-              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
-            /></svg
-        ></span>
-      </div>
-    </nav>
-  </header>
-  <main class="main-signup page-container p-[40px]">
-    <ul class="steps mb-10 w-full">
-      <li
-        v-for="(step, index) in steps"
-        :key="index"
-        class="step"
-        :class="{ 'step-primary': index < stepCurr }"
-      >
-        {{ step.text }}
-      </li>
-    </ul>
-    <div v-if="stepCurr === 1" class="mt-[50px]">
-      <h1 class="title-lv1 text-center font-bold">Tôi muốn học...</h1>
-      <div class="list-card">
-        <div
-          class="card-item"
-          v-for="language in languages"
-          :key="language.id"
-          :class="{ active: language.key === dataStep.language }"
-          @click="dataStep.language = language.key"
-        >
-          <div class="flex justify-center mt-16">
-            <img :src="language.img" />
+            <div class="flex justify-center w-[150px] h-[150px]">
+              <img class="w-full h-full rounded-xl object-cover" :src="topic.image" />
+            </div>
+            <h2 class="title-lv2">{{ topic.name }}</h2>
+            <p class="mt-4 font-bold text-[#777] line-clamp-3">
+              {{ topic.description }}
+            </p>
           </div>
-          <h2 class="title-lv2">{{ language.title }}</h2>
-          <p class="mt-4 font-bold text-[#777]">{{ language.desc }}</p>
+        </div>
+      </div>
+      <div v-else-if="stepCurr === 2" class="step-content">
+        <h1 class="title-lv1 text-center font-bold">Welcome to GoatEnglish</h1>
+        <div class="mt-12">
+          <img src="../assets/images/19467ffee68fe.png" class="img-step-2" />
+          <p class="text-center font-semibold mt-8">
+            Just a few questions so we can customize your experience. Are you ready?
+          </p>
+        </div>
+      </div>
+      <div v-if="stepCurr === 3" class="step-content">
+        <h1 class="title-lv1 text-center font-bold">Do you already know any English?</h1>
+        <div class="list-actions flex flex-col items-center">
+          <template v-for="level in levels" :key="level.id">
+            <Button
+              :item="{
+                text: level.text,
+                icon: level.icon,
+                class:
+                  'bg-white h-[80px] min-w-[300px] px-8 text-[20px] btn-action-signup',
+                style: 'border-radius: 6px;',
+              }"
+              :class="{ active: level.value === dataStep.level }"
+              @click="handleSelectAction(level.value, 'level')"
+            />
+          </template>
+        </div>
+      </div>
+      <div v-if="stepCurr === 4" class="step-content">
+        <h1 class="title-lv1 text-center font-bold">How old are you?</h1>
+        <div class="list-actions flex flex-col items-center">
+          <template v-for="age in ages" :key="age.id">
+            <Button
+              :item="{
+                text: age.text,
+                class:
+                  'bg-white h-[80px] min-w-[300px] px-8 text-[20px] btn-action-signup',
+                style: 'border-radius: 6px;',
+              }"
+              :class="{ active: age.value === dataStep.age }"
+              @click="handleSelectAction(age.value, 'age')"
+            />
+          </template>
+        </div>
+      </div>
+      <div v-if="stepCurr === 5" class="step-content">
+        <h1 class="title-lv1 text-center font-bold">Select a daily goal</h1>
+        <div class="list-actions flex flex-col items-center">
+          <template v-for="goal in goals" :key="goal.id">
+            <Button
+              :item="{
+                text: goal.text,
+                class:
+                  'bg-white h-[80px] min-w-[300px] px-8 text-[20px] btn-action-signup',
+                style: 'border-radius: 6px;',
+              }"
+              :class="{ active: goal.value === dataStep.goal }"
+              @click="handleSelectAction(goal.value, 'goal')"
+            />
+          </template>
+        </div>
+      </div>
+      <div v-if="stepCurr === 6" class="step-content">
+        <h1 class="title-lv1 text-center font-bold">How did you hear about us?</h1>
+        <div
+          class="list-actions flex items-center justify-center flex-wrap gap-[20px] w-3/4 mx-auto"
+        >
+          <template v-for="knowFrom in knowFroms" :key="knowFrom.id">
+            <Button
+              :item="{
+                text: knowFrom.text,
+                icon: knowFrom.icon,
+                class:
+                  'bg-white h-[80px] min-w-[300px] px-8 text-[20px] btn-action-signup',
+                style: 'border-radius: 6px;',
+              }"
+              :class="{ active: knowFrom.value === dataStep.knowFrom }"
+              @click="handleSelectAction(knowFrom.value, 'knowFrom')"
+            />
+          </template>
+        </div>
+      </div>
+      <div v-if="stepCurr === 7" class="step-content">
+        <h1 class="title-lv1 text-center font-bold mb-10">Nhập email của bạn</h1>
+        <div class="signup-input__with-icon">
+          <input
+            type="email"
+            class="signup-input"
+            placeholder="Your email"
+            v-model.trim="dataStep.email"
+          />
+          <img
+            src="../components/icons/close.svg"
+            @click="dataStep.email = ''"
+            class="signup-icon signup-icon__email"
+          />
+        </div>
+      </div>
+      <div v-if="stepCurr === 8" class="step-content">
+        <h1 class="title-lv1 text-center font-bold mb-10">Đăng ký tài khoản</h1>
+        <div class="signup-input__with-icon">
+          <input
+            type="number"
+            class="signup-input"
+            style="padding: 14px 20px"
+            placeholder="OTP Email"
+            v-model.trim="dataStep.otp_code"
+          />
+          <img
+            src="../components/icons/close.svg"
+            @click="dataStep.otp_code = ''"
+            class="signup-icon signup-icon__email"
+          />
+        </div>
+        <div class="signup-input__with-icon">
+          <input
+            type="text"
+            class="signup-input"
+            placeholder="Username"
+            v-model.trim="dataStep.username"
+          />
+          <img
+            src="../components/icons/close.svg"
+            @click="dataStep.username = ''"
+            class="signup-icon signup-icon__email"
+          />
+        </div>
+        <div class="signup-input__with-icon">
+          <input
+            type="password"
+            class="signup-input"
+            placeholder="Password"
+            v-model.trim="dataStep.password"
+          />
+          <img
+            src="../components/icons/close.svg"
+            @click="dataStep.password = ''"
+            class="signup-icon signup-icon__email"
+          />
+        </div>
+        <div class="signup-input__with-icon">
+          <input
+            type="password"
+            class="signup-input"
+            placeholder="Confirm Password"
+            v-model.trim="dataStep.confirm_password"
+          />
+          <img
+            src="../components/icons/close.svg"
+            @click="dataStep.confirm_password = ''"
+            class="signup-icon signup-icon__email"
+          />
+        </div>
+        <div class="signup-input__with-icon">
+          <Button
+            :item="{ text: 'Đăng ký', style: 'font-size: 1.8rem' }"
+            :loading="loading"
+            class="btn-next btn-primary-custom text-white w-full py-8 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
+            @click="handleRegister"
+          />
         </div>
       </div>
     </div>
-    <div v-else-if="stepCurr === 2">
-      <p>STEP 2</p>
+    <div v-if="stepCurr !== 8" class="footer-signup">
+      <div class="footer-block page-container flex items-center justify-end">
+        <Button
+          :item="{ text: 'Tiếp tục' }"
+          :loading="loading"
+          class="btn-next btn-primary-custom text-white rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
+          :disabled="isNext === false"
+          @click="handleNext()"
+        />
+      </div>
     </div>
-  </main>
-  <footer class="footer-signup">
-    <div class="footer-block page-container flex items-center justify-end">
-      <button
-        class="btn bg-[#55cd01] btn-next text-white rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
-        @click="stepCurr += 1"
-      >
-        Tiếp theo
-      </button>
-    </div>
-  </footer>
+  </div>
 </template>

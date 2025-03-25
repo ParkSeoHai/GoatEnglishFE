@@ -1,13 +1,71 @@
 <script setup>
 import { RouterView } from "vue-router";
+import { useLayoutStore } from "@/stores/layout";
+import { provide } from "vue";
+import { toast } from "vue3-toastify";
+import api from "@/utils";
+
+const URL_API = "http://localhost:3000";
+
+const handleErrorAPI = (error) => {
+  console.log(error);
+  if (error?.response?.data?.errors) {
+    error.response.data.errors?.forEach((error) => {
+      toast.error(error?.message);
+    });
+  } else {
+    toast.error(error?.response?.data?.message || error?.message);
+  }
+  if (error?.status === 401 || error?.status === 403) {
+    setTimeout(() => {
+      // delete token
+      localStorage.clear();
+      location.href = "/login";
+    }, 2000);
+  }
+  return null;
+};
+
+// get infor user
+const getInfoUser = async () => {
+  try {
+    const res = await api.get(`${URL_API}/api/user/get-info`);
+    // send success
+    if (res?.status !== 200) {
+      toast.error(res?.data?.message);
+      return;
+    }
+    const user = {
+      ...res?.data?.data?.user,
+      topic: res?.data?.data?.topic,
+      score: res?.data?.data?.score,
+    };
+    localStorage.setItem("user", JSON.stringify(user));
+    // nếu chưa học chủ đề nào
+    if (!user?.topic) {
+      toast.info("Vui lòng chọn một chủ đề để bắt đầu học");
+      setTimeout(() => {
+        location.href = "/topic";
+      }, 2000);
+    }
+    return user;
+  } catch (error) {
+    handleErrorAPI(error);
+  }
+};
+
+provide("URL_API", URL_API);
+provide("handleErrorAPI", handleErrorAPI);
+provide("getInfoUser", getInfoUser);
+const layout = useLayoutStore();
 </script>
 
 <template>
-  <header id="header">
+  <header id="header" v-if="layout.showHeader">
     <nav class="nav page-container flex items-center justify-between">
       <RouterLink to="/" class="logo flex items-center">
         <img src="./components/icons/logo.svg" class="img" />
-        <span class="text">GOAT ENGLISH</span>
+        <span class="text">GoatEnglish</span>
       </RouterLink>
       <div
         class="language-page flex items-center text-[#afafaf] font-bold uppercase text-[15px] cursor-pointer"
@@ -30,8 +88,8 @@ import { RouterView } from "vue-router";
       </div>
     </nav>
   </header>
-  <main id="main"><RouterView /></main>
-  <footer id="footer">
+  <div id="main"><RouterView /></div>
+  <footer id="footer" v-if="layout.showFooter">
     <div class="page-container flex justify-between">
       <div class="footer-col flex flex-col gap-6">
         <p class="footer-col-item">

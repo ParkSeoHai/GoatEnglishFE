@@ -40,7 +40,6 @@ export function fileToBase64(file, includeMime = false) {
 }
 
 export const updateQueryParams = (newParams) => {
-    console.log("router", router);
     const currentRoute = router.currentRoute.value;
     const updatedQuery = { ...currentRoute.query, ...newParams };
     // Loại bỏ các param có giá trị null hoặc rỗng
@@ -57,6 +56,26 @@ export const updateQueryParams = (newParams) => {
 export const playAudio = (audioUrl) => {
     const audio = new Audio(audioUrl);
     audio.play();
+}
+
+export async function textToSpeech(url_api, text, lang = "en") {
+    try {
+        const response = await fetch(`${url_api}/api/text-to-speech`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text, lang }),
+        });
+        if (!response.ok) throw new Error("Failed to fetch audio");
+        // Tạo URL từ Blob
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        // Phát âm thanh
+        const audio = new Audio(audioUrl);
+        audio.play();
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 export default api;

@@ -1,136 +1,138 @@
 <script setup>
-import Sidebar from '@/components/Sidebar.vue'
-import Header from '@/components/Header.vue'
-import { Swiper, SwiperSlide } from 'swiper/vue'
+import Sidebar from "@/components/Sidebar.vue";
+import Header from "@/components/Header.vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
 // import required modules
-import { Pagination, Navigation } from 'swiper/modules'
-import { inject, nextTick, onMounted, ref, watch } from 'vue'
-import { toast } from 'vue3-toastify'
-import api from '@/utils'
-import LessonOldMistake from './LessonOldMistake.vue'
+import { Pagination, Navigation } from "swiper/modules";
+import { inject, nextTick, onMounted, ref, watch } from "vue";
+import { toast } from "vue3-toastify";
+import api from "@/utils";
+import LessonOldMistake from "./LessonOldMistake.vue";
 
-const URL_API = inject('URL_API')
-const handleErrorAPI = inject('handleErrorAPI')
-const getInfoUser = inject('getInfoUser')
+const URL_API = inject("URL_API");
+const handleErrorAPI = inject("handleErrorAPI");
+const getInfoUser = inject("getInfoUser");
 
-const modules = ref([Pagination, Navigation])
-const tabSwiper = ref(null)
-const tabActive = ref(0)
+const modules = ref([Pagination, Navigation]);
+const tabSwiper = ref(null);
+const tabActive = ref(0);
 
-const user = ref()
-const dataProgress = ref()
-const dataOldMistake = ref()
-const showModalPickOldMistake = ref(false)
-const pickSelect = ref([])
-const pickSelectAll = ref(false)
-const isShowComponentMistake = ref(false)
-const loadingGetOldMistake = ref(true)
+const user = ref();
+const dataProgress = ref();
+const dataOldMistake = ref();
+const showModalPickOldMistake = ref(false);
+const pickSelect = ref([]);
+const pickSelectAll = ref(false);
+const isShowComponentMistake = ref(false);
+const loadingGetOldMistake = ref(true);
 
 watch(pickSelectAll, (value) => {
   if (value) {
-    pickSelect.value = dataOldMistake.value
+    pickSelect.value = dataOldMistake.value;
   } else {
-    pickSelect.value = []
+    pickSelect.value = [];
   }
-})
+});
 
 const onSwiper = (swiperInstance) => {
-  tabSwiper.value = swiperInstance
+  tabSwiper.value = swiperInstance;
   // sự kiện pagination
-  swiperInstance.on('slideChangeTransitionEnd', () => {
-    const newIndex = swiperInstance.realIndex
-    handleTabActive(newIndex)
-  })
-}
+  swiperInstance.on("slideChangeTransitionEnd", () => {
+    const newIndex = swiperInstance.realIndex;
+    handleTabActive(newIndex);
+  });
+};
 
 // Xử lý thay đổi tab active
 const handleTabActive = async (newIndex) => {
-  await nextTick() // Chờ Vue cập nhật DOM
-  tabActive.value = newIndex
+  await nextTick(); // Chờ Vue cập nhật DOM
+  tabActive.value = newIndex;
   if (tabSwiper.value) {
     // Kiểm tra nếu slide hiện tại không đúng mới gọi `slideTo()`
     if (tabSwiper.value.realIndex !== newIndex) {
-      tabSwiper.value.slideTo(newIndex)
+      tabSwiper.value.slideTo(newIndex);
     }
   }
-}
+};
 
 const init = async () => {
-  user.value = await getInfoUser()
-  console.log(user.value)
+  user.value = await getInfoUser();
+  console.log(user.value);
   // Lấy dữ liệu bài học hiện tại
-  await getLessonCurrent()
-}
+  await getLessonCurrent();
+};
 
 const getLessonCurrent = async () => {
   try {
-    const res = await api.get(`${URL_API}/api/user/get-lesson-current/${user.value?.topic_id}`)
+    const res = await api.get(
+      `${URL_API}/api/user/get-lesson-current/${user.value?.topic_id}`
+    );
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message)
-      return
+      toast.error(res?.data?.message);
+      return;
     }
-    dataProgress.value = res?.data?.data
+    dataProgress.value = res?.data?.data;
     // console.log(dataProgress.value);
   } catch (error) {
-    handleErrorAPI(error)
+    handleErrorAPI(error);
   }
-}
+};
 
 const handleGetOldMistake = async () => {
-  showModalPickOldMistake.value = true
-  loadingGetOldMistake.value = true
+  showModalPickOldMistake.value = true;
+  loadingGetOldMistake.value = true;
   if (dataOldMistake.value?.length > 0) {
-    loadingGetOldMistake.value = false
-    return
+    loadingGetOldMistake.value = false;
+    return;
   }
   try {
     const res = await api.get(
-      `${URL_API}/api/user/get-old-mistake/${user.value?._id}/${user.value?.topic_id}`,
-    )
+      `${URL_API}/api/user/get-old-mistake/${user.value?._id}/${user.value?.topic_id}`
+    );
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message)
-      return
+      toast.error(res?.data?.message);
+      return;
     }
-    dataOldMistake.value = res?.data?.data
-    console.log(dataOldMistake.value)
+    dataOldMistake.value = res?.data?.data;
+    console.log(dataOldMistake.value);
   } catch (error) {
-    handleErrorAPI(error)
+    handleErrorAPI(error);
   } finally {
-    loadingGetOldMistake.value = false
+    loadingGetOldMistake.value = false;
   }
-}
+};
 
 const handleSelect = (item) => {
-  const index = pickSelect.value.findIndex((i) => i?._id === item?._id)
+  const index = pickSelect.value.findIndex((i) => i?._id === item?._id);
   if (index === -1) {
-    pickSelect.value.push(item)
+    pickSelect.value.push(item);
   } else {
-    pickSelect.value.splice(index, 1)
+    pickSelect.value.splice(index, 1);
   }
-}
+};
 
 const isCheck = (item) => {
-  return pickSelect.value.findIndex((i) => i?._id === item?._id) !== -1
-}
+  return pickSelect.value.findIndex((i) => i?._id === item?._id) !== -1;
+};
 
 const handleRenderOldMistake = async () => {
-  isShowComponentMistake.value = true
-  showModalPickOldMistake.value = false
-}
+  isShowComponentMistake.value = true;
+  showModalPickOldMistake.value = false;
+};
 
 const handleSubmitOldMistake = async (data) => {
-  showModalPickOldMistake.value = false
-  isShowComponentMistake.value = false
-  dataOldMistake.value = []
-  pickSelect.value = []
-  console.log(data)
-}
+  showModalPickOldMistake.value = false;
+  isShowComponentMistake.value = false;
+  dataOldMistake.value = [];
+  pickSelect.value = [];
+  console.log(data);
+};
 
 onMounted(() => {
-  init()
-})
+  init();
+});
 </script>
 <template>
   <LessonOldMistake
@@ -235,7 +237,9 @@ onMounted(() => {
                     <p class="font-bold">Thực hiện bài học</p>
                     <p class="text-[#536175]">
                       <!-- Mô tả -->
-                      <span class="me-5">Chủ đề: {{ dataProgress?.lesson_id?.title }}</span>
+                      <span class="me-5"
+                        >Chủ đề: {{ dataProgress?.lesson_id?.title }}</span
+                      >
                       <span class="block mt-4">
                         Mô tả: {{ dataProgress?.lesson_id?.description }}
                       </span>
@@ -475,11 +479,15 @@ onMounted(() => {
                   </label>
                 </th>
                 <th>Câu hỏi</th>
-                <th>Đáp án trước</th>
+                <th>Câu trả lời trước</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in dataOldMistake" :key="index" @click="handleSelect(item)">
+              <tr
+                v-for="(item, index) in dataOldMistake"
+                :key="index"
+                @click="handleSelect(item)"
+              >
                 <th>
                   <label>
                     <input

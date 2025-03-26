@@ -1,4 +1,20 @@
-<script setup></script>
+<script setup>
+import { textToSpeech } from "@/utils";
+import { inject } from "vue";
+
+const URL_API = inject("URL_API");
+const handleErrorAPI = inject("handleErrorAPI");
+
+const handleTestTextToSpeech = async (text, lang) => {
+  try {
+    await textToSpeech(URL_API, text, lang);
+  } catch (error) {
+    handleErrorAPI(error);
+  }
+};
+
+// Sử dụng hàm
+</script>
 
 <template>
   <div class="cards">

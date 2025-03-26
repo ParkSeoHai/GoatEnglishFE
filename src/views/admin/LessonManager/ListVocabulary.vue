@@ -1,78 +1,84 @@
 <script setup>
-import { ref, onMounted, inject, watch } from 'vue'
-import api from '@/utils'
-import { toast } from 'vue3-toastify'
-import _ from 'lodash'
+import { ref, onMounted, inject, watch } from "vue";
+import api from "@/utils";
+import { toast } from "vue3-toastify";
+import _ from "lodash";
 
-const URL_API = inject('URL_API')
-const handleErrorAPI = inject('handleErrorAPI')
+const URL_API = inject("URL_API");
+const handleErrorAPI = inject("handleErrorAPI");
 
-const { vocabulariesLesson, topic_id } = defineProps(['vocabularies-lesson', 'topic_id'])
-const emit = defineEmits(['select-vocabulary', 'select-all-vocabulary'])
+const { vocabulariesLesson, topic_id } = defineProps(["vocabularies-lesson", "topic_id"]);
+const emit = defineEmits(["select-vocabulary", "select-all-vocabulary"]);
 
-const vocabularies = ref([])
-const pagination = ref({})
-const page = ref(1)
-const limit = ref(10)
-const search = ref('')
-const checkAll = ref(false)
+const vocabularies = ref([]);
+const pagination = ref({});
+const page = ref(1);
+const limit = ref(10);
+const search = ref("");
+const checkAll = ref(false);
 
 watch(
   () => topic_id,
   async () => {
-    await getAllByTopic()
+    page.value = 1;
+    checkAll.value = false;
+    search.value = "";
+    await getAllByTopic();
   },
-  { deep: true },
-)
+  { deep: true }
+);
 
 watch(page, async () => {
-  await getAllByTopic()
-})
+  checkAll.value = false;
+  await getAllByTopic();
+});
 
 const getAllByTopic = async () => {
   try {
     if (!topic_id) {
-      vocabularies.value = []
-      return null
+      vocabularies.value = [];
+      return null;
     } else {
       const res = await api.get(
-        `${URL_API}/api/vocabulary/topic/${topic_id}?page=${page.value}&limit=${limit.value}&search=${search.value}`,
-      )
+        `${URL_API}/api/vocabulary/topic/${topic_id}?page=${page.value}&limit=${limit.value}&search=${search.value}`
+      );
       if (res?.status !== 200) {
-        toast.error(res?.data?.message)
-        return null
+        toast.error(res?.data?.message);
+        return null;
       }
-      const data = res?.data?.data
-      vocabularies.value = data?.vocabularies || []
-      pagination.value = data?.pagination || {}
-      console.log('vocabularies', vocabularies.value)
-      console.log('vocabulariesLesson', vocabulariesLesson)
-      return data
+      const data = res?.data?.data;
+      vocabularies.value = data?.vocabularies || [];
+      pagination.value = data?.pagination || {};
+      console.log("vocabularies", vocabularies.value);
+      console.log("vocabulariesLesson", vocabulariesLesson);
+      return data;
     }
   } catch (error) {
-    handleErrorAPI(error)
+    handleErrorAPI(error);
   }
-}
+};
 
 const init = async () => {
-  await getAllByTopic()
-}
+  await getAllByTopic();
+};
 
 const isCheck = (vocabulary) => {
-  return vocabulariesLesson.some((item) => item?._id?.toString() == vocabulary?._id?.toString())
-}
+  return vocabulariesLesson.some(
+    (item) => item?._id?.toString() == vocabulary?._id?.toString()
+  );
+};
 
 const handleSelectAll = () => {
   if (checkAll.value) {
-    emit('select-all-vocabulary', vocabularies.value)
+    emit("select-all-vocabulary", vocabularies.value);
   } else {
-    emit('select-all-vocabulary', [])
+    emit("select-all-vocabulary", []);
   }
-}
+};
 
 onMounted(() => {
-  init()
-})
+  init();
+});
 </script>
 
 <template>
@@ -124,7 +130,10 @@ onMounted(() => {
             <td>{{ vocabulary?.vietnamese }}</td>
             <td>{{ vocabulary?.phonetic }}</td>
             <td>
-              <span v-for="type in vocabulary?.type" :key="type" class="badge bg-primary me-1"
+              <span
+                v-for="type in vocabulary?.type"
+                :key="type"
+                class="badge bg-primary me-1"
                 >{{ type }}
               </span>
             </td>
@@ -138,9 +147,15 @@ onMounted(() => {
     <!-- pagination -->
     <div class="flex justify-between items-center font-semibold bg-white py-2 px-4">
       <div class="join">
-        <button @click="page -= 1" :disabled="page == 1" class="join-item btn">«</button>
+        <button @click.prevent="page -= 1" :disabled="page == 1" class="join-item btn">
+          «
+        </button>
         <button @click.prevent="" class="join-item btn">Trang {{ page }}</button>
-        <button @click="page += 1" :disabled="page == pagination?.totalPages" class="join-item btn">
+        <button
+          @click.prevent="page += 1"
+          :disabled="page == pagination?.totalPages"
+          class="join-item btn"
+        >
           »
         </button>
       </div>

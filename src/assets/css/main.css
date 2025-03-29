@@ -717,6 +717,61 @@ body {
   cursor: pointer;
 }
 
+#setting {
+  min-height: 100vh;
+  padding-top: 65px;
+  background-color: #fcfaf2;
+}
+#setting .header-v2 {
+  left: 0;
+  color: #fff;
+  background-color: #2b3648;
+}
+#setting .header-v2 .dropdown-header {
+  color: #333;
+}
+#setting .header-v2 > div {
+  max-width: 100rem;
+  margin: 0 auto;
+}
+#setting .setting-container {
+  max-width: 100rem;
+  margin: 0 auto;
+}
+#setting .btn-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c3445;
+  background-color: #fff;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+#setting .btn-tab:hover {
+  background-color: #d4e3e9;
+  border-color: #d4e3e9;
+}
+#setting .btn-tab.active {
+  background-color: #b9d7e3;
+}
+#setting .body-content .input {
+  font-size: 2rem;
+  height: 35px;
+  width: 100%;
+  border-radius: 8px;
+}
+#setting .body-content .validator ~ .validator-hint {
+  display: none;
+}
+#setting .body-content .validator:has(:user-invalid) ~ .validator-hint {
+  display: block;
+}
+
 .loading {
   width: 100px;
   height: 100px;

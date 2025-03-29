@@ -1,7 +1,7 @@
 <script setup>
 import Header2 from "@/components/Header2.vue";
 import api from "@/utils";
-import { inject, onMounted, ref } from "vue";
+import { inject, onMounted, ref, computed } from "vue";
 import { toast } from "vue3-toastify";
 
 const URL_API = inject("URL_API");
@@ -13,6 +13,12 @@ const progresses = ref([]);
 
 const dataModal = ref();
 const showModal = ref(false);
+
+const lessonsBeforeCurrentLevel = computed(() => (currentOrder) => {
+  return progresses.value
+    .slice(0, currentOrder - 1) // Lấy các cấp trước đó
+    .reduce((total, p) => total + p.lessons.length, 0); // Tính tổng số bài
+});
 
 const getAllProgressByTopic = async (topic_id) => {
   try {
@@ -89,15 +95,15 @@ onMounted(() => {
                 @click="
                   openModal({
                     name: progress.name,
-                    stt: progress.lessons.length * (progress?.order - 1) + lesson?.order,
+                    stt: lessonsBeforeCurrentLevel(progress.order) + (index + 1),
                     ...lesson,
                   })
                 "
               >
-                {{ progress.lessons.length * (progress?.order - 1) + lesson?.order }}
+                {{ lessonsBeforeCurrentLevel(progress.order) + (index + 1) }}
               </button>
               <span
-                v-if="index < 4"
+                v-if="index < progress.lessons.length - 1"
                 class="dot-icon"
                 :class="{ active: lesson.min_score <= user.score }"
               >

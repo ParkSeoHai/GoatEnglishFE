@@ -60,7 +60,11 @@ const handleClickBgPopup = () => {
             </div>
             <div class="dropdown-block">
               <ul>
-                <li class="mb-5"><a href="#" class="dropdown-link">Cài đặt hồ sơ</a></li>
+                <li class="mb-5">
+                  <router-link to="settings" class="dropdown-link"
+                    >Cài đặt hồ sơ</router-link
+                  >
+                </li>
                 <li><a href="#" class="dropdown-link">Cài đặt chế độ Học tập</a></li>
               </ul>
             </div>

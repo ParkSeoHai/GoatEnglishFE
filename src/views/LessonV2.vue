@@ -54,8 +54,6 @@ const getDataLesson = async (lesson_id) => {
 const nextExercise = async (result) => {
   userAnswer.value.push(result);
   indexExercise.value += 1;
-  console.log(lesson.value);
-  console.log(user.value);
   if (indexExercise.value >= lessonsLength.value) {
     // submit lesson
     try {
@@ -82,6 +80,13 @@ const nextExercise = async (result) => {
       handleErrorAPI(error);
     }
     return;
+  }
+};
+
+const handleCloseLesson = () => {
+  const confirmClose = confirm("Bạn có chắc chắn muốn thoát bài học không?");
+  if (confirmClose) {
+    location.href = "/dashboard";
   }
 };
 
@@ -115,7 +120,7 @@ onMounted(() => {
           </p>
         </div>
         <div>
-          <span>
+          <span class="cursor-pointer" @click.prevent="handleCloseLesson">
             <svg
               viewBox="0 0 24 24"
               fill="none"

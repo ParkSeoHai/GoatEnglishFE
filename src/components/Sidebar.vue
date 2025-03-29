@@ -1,11 +1,14 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 </script>
 
 <template>
   <div class="sidebar bg-white">
     <div class="relative h-full">
-      <RouterLink to="/dashboard" class="logo">
+      <router-link to="/dashboard" class="logo">
         <!-- <svg viewBox="0 0 100 91" xmlns="http://www.w3.org/2000/svg">
           <g fill="#FFC001" fill-rule="evenodd">
             <path
@@ -15,9 +18,9 @@ import { RouterLink } from "vue-router";
         </svg> -->
 
         <p class="font-bold text-[#333] bg-[#ffbb00] p-5 rounded-3xl">GOAT ENGLISH</p>
-      </RouterLink>
-      <div class="tab-item active">
-        <RouterLink to="/dashboard" class="tab-item__link">
+      </router-link>
+      <div class="tab-item" :class="{ active: route.name === 'Dashboard' }">
+        <router-link to="/dashboard" class="tab-item__link">
           <span class="tab-item__icon">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -29,10 +32,10 @@ import { RouterLink } from "vue-router";
             </svg>
           </span>
           <span>Trang chủ</span>
-        </RouterLink>
+        </router-link>
       </div>
-      <div class="tab-item">
-        <a href="#" class="tab-item__link">
+      <div class="tab-item" :class="{ active: route.name === 'Vocabulary' }">
+        <router-link to="/vocabulary" class="tab-item__link">
           <span class="tab-item__icon">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -51,8 +54,8 @@ import { RouterLink } from "vue-router";
               ></path>
             </svg>
           </span>
-          <span>Tình huống</span>
-        </a>
+          <span>Tra cứu từ vựng</span>
+        </router-link>
       </div>
       <button class="sidebar-collapse" title="Thu gọn">
         <span class="icon">

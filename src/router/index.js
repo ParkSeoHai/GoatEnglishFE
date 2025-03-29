@@ -25,6 +25,11 @@ const router = createRouter({
       component: () => import("../views/Dashboard.vue")
     },
     {
+      path: '/vocabulary',
+      name: 'Vocabulary',
+      component: () => import("../views/Vocabulary.vue")
+    },
+    {
       path: '/topic',
       name: 'Topic',
       component: () => import("../views/Topic.vue")

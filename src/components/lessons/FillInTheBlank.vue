@@ -1,32 +1,32 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from "vue";
 
 const props = defineProps({
   exercise: { type: Object, required: true },
-})
+});
 
 const dataResult = ref({
   ma_dap_an: null,
-  noi_dung: '',
-})
-const showResult = ref(false)
+  noi_dung: "",
+});
+const showResult = ref(false);
 
-const emit = defineEmits(['nextExercise'])
+const emit = defineEmits(["nextExercise"]);
 
 watch(
   () => props.exercise,
   () => {
-    resetDataResult()
-  },
-)
+    resetDataResult();
+  }
+);
 
 const resetDataResult = () => {
   dataResult.value = {
     ma_dap_an: null,
-    noi_dung: '',
-  }
-  showResult.value = false
-}
+    noi_dung: "",
+  };
+  showResult.value = false;
+};
 
 const handleNextExercise = () => {
   if (showResult.value) {
@@ -36,19 +36,20 @@ const handleNextExercise = () => {
       correct_answer: props.exercise.correct_answer,
       user_answer: dataResult.value?.noi_dung,
       correct:
-        dataResult.value?.noi_dung?.toLowerCase() === props.exercise.correct_answer?.toLowerCase(),
-    }
-    emit('nextExercise', userAnswer)
-    return
+        dataResult.value?.noi_dung?.toLowerCase() ===
+        props.exercise.correct_answer?.toLowerCase(),
+    };
+    emit("nextExercise", userAnswer);
+    return;
   }
-  showResult.value = true
-}
+  showResult.value = true;
+};
 
 onMounted(() => {
   // console.log('dataResult.value', dataResult.value)
   // console.log('showResult.value', showResult.value)
-  console.log('props.exercise', props.exercise)
-})
+  console.log("props.exercise", props.exercise);
+});
 </script>
 
 <template>
@@ -99,8 +100,8 @@ onMounted(() => {
               option?.noi_dung === props.exercise?.correct_answer
                 ? '#84e41a'
                 : dataResult?.ma_dap_an === option.ma_dap_an
-                  ? '#b13039'
-                  : '',
+                ? '#b13039'
+                : '',
           }"
         >
           <p class="text">{{ option?.noi_dung }}</p>
@@ -112,12 +113,13 @@ onMounted(() => {
       <input
         v-if="showResult"
         type="text"
-        v-model="dataResult.noi_dung"
+        v-model.trim="dataResult.noi_dung"
         class="w-full h-[6rem] p-[1.6rem] border border-[#d9dee8] rounded-[4px] text-[2.4rem]"
         placeholder="Nhập câu trả lời"
         :style="{
           backgroundColor:
-            dataResult?.noi_dung?.toLowerCase() === props.exercise?.correct_answer?.toLowerCase()
+            dataResult?.noi_dung?.toLowerCase() ===
+            props.exercise?.correct_answer?.toLowerCase()
               ? '#84e41a'
               : '#b13039',
         }"
@@ -126,7 +128,7 @@ onMounted(() => {
       <input
         v-else
         type="text"
-        v-model="dataResult.noi_dung"
+        v-model.trim="dataResult.noi_dung"
         class="w-full h-[6rem] p-[1.6rem] border border-[#d9dee8] rounded-[4px] text-[2.4rem]"
         placeholder="Nhập câu trả lời"
       />
@@ -137,7 +139,7 @@ onMounted(() => {
       <button
         class="btn btn-primary-custom w-full min-h-[4.4rem] text-[1.6rem]"
         style="color: #012"
-        :class="{ 'btn-disabled': !dataResult }"
+        :class="{ 'btn-disabled': !dataResult.noi_dung }"
         :disabled="!dataResult"
         @click="handleNextExercise"
       >

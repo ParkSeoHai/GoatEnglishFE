@@ -1,14 +1,31 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const { user } = defineProps(["user"]);
 
 const userDropdown = ref(false);
 const backgroundPopup = ref(false);
 
+const showStreakModal = ref(false);
+const isStreakToday = computed(() => {
+  const today = new Date().toISOString().split("T")[0];
+  const lastStreakDate = user?.streak_start || null;
+  if (lastStreakDate) {
+    const lastDate = new Date(lastStreakDate).toISOString().split("T")[0];
+    return today === lastDate;
+  }
+  return false;
+});
+
 const handleClickBgPopup = () => {
   backgroundPopup.value = false;
   userDropdown.value = false;
+};
+
+const handleLogout = () => {
+  localStorage.clear();
+  sessionStorage.clear();
+  location.href = "/login";
 };
 </script>
 
@@ -29,19 +46,20 @@ const handleClickBgPopup = () => {
             </svg>
           </span>
         </div>
-        <div class="action-item">
+        <!-- streak -->
+        <div class="action-item" @click="showStreakModal = true">
           <div class="flex items-center">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M12.252 3c-2.315 2.863-4.56 5.96-4.533 8.748-.78-.232-1.06-1.62-1.118-2.913-2.717 3.638-1.674 7.907.877 10.402 2.552 2.494 6.473 2.266 8.855-.204 1.384-1.436 3.205-6.792.669-10.065-.073 1.333-.223 2.745-.913 3.26-.311-3.25-2.592-5.53-3.837-9.228Z"
-                fill="#CCD2DE"
+                :fill="[isStreakToday ? '#FF976A' : '#CCD2DE']"
               ></path>
               <path
                 d="M11.465 10.926c-1.124 1.63-1.945 3.442-1.652 5.302-.495-.149-1.04-.97-1.214-1.373-.812 2.04-.266 3.549.464 4.483.56.712 2.12 1.948 4.513.732 1.886-.958 1.764-3.211 1.145-4.626-.062.8-.482 1.496-.917 1.688.389-2.216-1.394-4.22-2.339-6.206Z"
                 fill="#F6F6F6"
               ></path>
             </svg>
-            <span class="text font-bold ms-3">0</span>
+            <span class="text font-bold ms-3">{{ user?.streak || 0 }}</span>
           </div>
         </div>
         <div class="action-item relative">
@@ -75,7 +93,14 @@ const handleClickBgPopup = () => {
             </div>
             <div class="dropdown-block">
               <ul>
-                <li><a href="#" class="dropdown-link text-[#dc362e]">Đăng xuất</a></li>
+                <li>
+                  <router-link
+                    to="/logout"
+                    @click.prevent="handleLogout"
+                    class="dropdown-link text-[#dc362e]"
+                    >Đăng xuất</router-link
+                  >
+                </li>
               </ul>
             </div>
           </div>
@@ -88,4 +113,92 @@ const handleClickBgPopup = () => {
       </div>
     </div>
   </header>
+
+  <div
+    v-if="showStreakModal"
+    class="modal-bg modal-old__mistake fixed flex justify-center items-center inset-0 h-[100vh] w-[100vw] z-[999]"
+    style="background: rgba(41, 55, 73, 0.8)"
+    @click="showStreakModal = false"
+  >
+    <div
+      class="modal-container w-[40%] py-8 px-10 bg-white rounded-3xl overflow-auto"
+      @click.stop=""
+    >
+      <div class="flex flex-col gap-8">
+        <div class="flex items-center justify-end gap-3">
+          <span class="icon cursor-pointer" @click="showStreakModal = false">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="currentColor"
+              class="bi bi-x"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
+              />
+            </svg>
+          </span>
+        </div>
+        <div class="overflow-x-auto">
+          <div class="bg-[#fff8e5] p-5 rounded-lg">
+            <div class="header flex items-center gap-4">
+              <span>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="32"
+                  height="32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.252 3c-2.315 2.863-4.56 5.96-4.533 8.748-.78-.232-1.06-1.62-1.118-2.913-2.717 3.638-1.674 7.907.877 10.402 2.552 2.494 6.473 2.266 8.855-.204 1.384-1.436 3.205-6.792.669-10.065-.073 1.333-.223 2.745-.913 3.26-.311-3.25-2.592-5.53-3.837-9.228Z"
+                    fill="#FF976A"
+                  ></path>
+                  <path
+                    d="M11.465 10.926c-1.124 1.63-1.945 3.442-1.652 5.302-.495-.149-1.04-.97-1.214-1.373-.812 2.04-.266 3.549.464 4.483.56.712 2.12 1.948 4.513.732 1.886-.958 1.764-3.212 1.145-4.626-.062.8-.482 1.496-.917 1.688.389-2.216-1.394-4.22-2.339-6.206Z"
+                    fill="#FFD666"
+                  ></path>
+                </svg>
+              </span>
+              <h3 class="text-[#001122] font-bold text-[1.6rem]">Kỷ lục học của bạn</h3>
+            </div>
+            <div class="flex flex-col p-5 bg-white mt-5 rounded-2xl">
+              <div class="pb-7 mb-7" style="border-bottom: 1px solid #e5e5e5">
+                <p class="text-[#001122] font-bold text-[1.6rem]">Hiện tại</p>
+                <div class="flex items-center mt-5">
+                  <span class="block text-nowrap text-[#536175] font-bold me-6"
+                    >{{ user?.streak || 0 }} ngày</span
+                  >
+                  <progress
+                    class="progress progress-accent w-[80%] ms-auto"
+                    :value="(user?.streak / user?.streak_max) * 100"
+                    max="100"
+                  ></progress>
+                </div>
+              </div>
+              <div>
+                <p class="text-[#001122] font-bold text-[1.6rem]">Dài nhất</p>
+                <div class="flex items-center mt-5">
+                  <span class="block text-nowrap text-[#536175] font-bold me-6"
+                    >{{ user?.streak_max || 0 }} ngày</span
+                  >
+                  <progress
+                    class="progress progress-accent w-[80%] ms-auto"
+                    value="100"
+                    max="100"
+                  ></progress>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="mt-8 text-center leading-8">
+            Mỗi ngày bạn hãy xem một video, luyện tập đối thoại, học hoặc ôn tập từ để giữ
+            kỷ lục học nhé.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

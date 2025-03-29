@@ -53,10 +53,45 @@ export const updateQueryParams = (newParams) => {
     // router.replace({ path: currentRoute.path, query: updatedQuery });
 };
 
-export const playAudio = (audioUrl) => {
+export const playAudio = async (url_api, audioUrl, text, lang = "en") => {
+    if (!audioUrl) {
+        console.error("Audio URL is required");
+        await textToSpeech(url_api, text, lang).then((audioUrl) => {
+            const audio = new Audio(audioUrl);
+            audio.play()
+                .then(() => {
+                    console.log("Audio is playing:", audioUrl);
+                })
+                .catch((error) => {
+                    console.error("Error playing audio:", error);
+                });
+        });
+        return;
+    }
     const audio = new Audio(audioUrl);
-    audio.play();
-}
+    audio.play()
+        .then(() => {
+            console.log("Audio is playing:", audioUrl);
+        })
+        .catch(async (error) => {
+            console.error("Error playing audio:", error);
+            await textToSpeech(url_api, text, lang).then((audioUrl) => {
+                const audio = new Audio(audioUrl);
+                audio.play()
+                    .then(() => {
+                        console.log("Audio is playing:", audioUrl);
+                    })
+                    .catch((error) => {
+                        console.error("Error playing audio:", error);
+                    });
+            });
+        });
+    // Tùy chọn: Lắng nghe sự kiện kết thúc
+    audio.onended = () => {
+        console.log("Audio playback finished.");
+    };
+};
+
 
 export async function textToSpeech(url_api, text, lang = "en") {
     try {

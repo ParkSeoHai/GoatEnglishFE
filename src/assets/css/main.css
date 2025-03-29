@@ -469,6 +469,7 @@ body {
   width: 100%;
   background-color: #fff;
   padding: 8px 24px;
+  z-index: 999;
 }
 .header-v3 .logo {
   margin-right: 24px;
@@ -770,6 +771,70 @@ body {
 }
 #setting .body-content .validator:has(:user-invalid) ~ .validator-hint {
   display: block;
+}
+
+.vocabulary-main {
+  overflow: auto;
+  width: 100%;
+  background-color: rgb(255, 252, 243);
+}
+
+.vocabulary-content {
+  width: 60%;
+  padding: 8px 32px 48px;
+  margin-top: 65px;
+  min-height: 100vh;
+}
+
+.vocabulary-content__body .btn-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 2rem;
+  border: none;
+  box-shadow: none;
+  font-weight: 700;
+  color: #afafaf;
+  background-color: transparent;
+}
+.vocabulary-content__body .dropdown-content__filter {
+  top: 120%;
+  padding: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 2px solid #e5e5e5;
+  overflow: hidden;
+}
+.vocabulary-content__body .dropdown-content__filter li {
+  padding: 12px 4px;
+  border-bottom: 1px solid #eaeaea;
+}
+.vocabulary-content__body .dropdown-content__filter li:last-child {
+  border: none;
+}
+.vocabulary-content__body .dropdown-content__filter li:hover {
+  background-color: #f5f5f5;
+}
+.vocabulary-content__body .dropdown-content__filter li a:hover {
+  background-color: #f5f5f5;
+}
+.vocabulary-content__body .dropdown-content__filter li.active {
+  color: #ffbb00;
+  background-color: #fffcf3;
+}
+.vocabulary-content__body .list-vocabulary .item {
+  border: 2px solid #e5e5e5;
+  border-bottom: none;
+}
+.vocabulary-content__body .list-vocabulary .item:first-child {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+.vocabulary-content__body .list-vocabulary .item:last-child {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-bottom: 2px solid #e5e5e5;
 }
 
 .loading {

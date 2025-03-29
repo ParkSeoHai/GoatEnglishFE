@@ -55,11 +55,36 @@ const handleTabActive = async (newIndex) => {
   }
 };
 
+// Kiểm tra reset streak
+const checkStreak = async () => {
+  try {
+    const res = await api.post(`${URL_API}/api/user/check-streak`);
+    if (res?.status !== 200) {
+      toast.error(res?.data?.message);
+      return;
+    }
+    if (res?.data?.status == 200 && res?.data?.reset_streak) {
+      toast.info(res?.data?.message);
+      return;
+    }
+  } catch (error) {
+    handleErrorAPI(error);
+  }
+};
+
 const init = async () => {
   user.value = await getInfoUser();
-  console.log(user.value);
   // Lấy dữ liệu bài học hiện tại
   await getLessonCurrent();
+  if (user.value) {
+    if (user.value?.streak_start) {
+      const date = new Date(user.value?.streak_start);
+      const currentDate = new Date();
+      if (date.getDate() !== currentDate.getDate()) {
+        await checkStreak();
+      }
+    }
+  }
 };
 
 const getLessonCurrent = async () => {
@@ -463,7 +488,7 @@ onMounted(() => {
           ></span>
           <h2 class="text-[24px] font-bold">Danh sách lỗi sai cũ</h2>
         </div>
-        <div v-if="!loadingGetOldMistake" class="overflow-x-auto">
+        <div v-if="!loadingGetOldMistake" class="overflow-x-auto max-h-[400px]">
           <table v-if="dataOldMistake?.length > 0" class="table text-[1.6rem]">
             <!-- head -->
             <thead class="text-[1.6rem]">

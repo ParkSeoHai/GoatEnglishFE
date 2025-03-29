@@ -4,6 +4,7 @@
   width: 100%;
   background-color: #fff;
   padding: 8px 24px;
+  z-index: 999;
 }
 .header-v3 .logo {
   margin-right: 24px;

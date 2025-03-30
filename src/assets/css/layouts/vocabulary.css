@@ -211,4 +211,14 @@ body {
   border-bottom: 2px solid #e5e5e5;
 }
 
+.vocabulary-content__search .input {
+  width: 100%;
+  height: auto;
+  padding: 8px 12px;
+  font-size: 1.8rem;
+  border-radius: 12px;
+  outline: none;
+  gap: 8px;
+}
+
 /*# sourceMappingURL=vocabulary.css.map */

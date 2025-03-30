@@ -1,27 +1,39 @@
 <script setup>
-import { textToSpeech } from "@/utils";
-import { inject } from "vue";
+import api from "@/utils";
+import { inject, onMounted, ref } from "vue";
+import { toast } from "vue3-toastify";
 
 const URL_API = inject("URL_API");
 const handleErrorAPI = inject("handleErrorAPI");
 
-const handleTestTextToSpeech = async (text, lang) => {
+const dataDashboard = ref();
+
+const getData = async () => {
   try {
-    await textToSpeech(URL_API, text, lang);
+    const res = await api.get(`${URL_API}/api/admin/dashboard`);
+    // send success
+    if (res?.status !== 200) {
+      toast.error(res?.data?.message);
+      return;
+    }
+    return res?.data?.data;
   } catch (error) {
     handleErrorAPI(error);
   }
 };
 
-// Sử dụng hàm
+onMounted(async () => {
+  dataDashboard.value = await getData();
+  console.log(dataDashboard.value);
+});
 </script>
 
 <template>
   <div class="cards">
     <div class="card-single">
       <div>
-        <h1>100</h1>
-        <span>Người dùng mới</span>
+        <h1>{{ dataDashboard?.countUser }}</h1>
+        <span>Người dùng</span>
       </div>
       <div>
         <span><i class="bi bi-people"></i></span>
@@ -29,29 +41,29 @@ const handleTestTextToSpeech = async (text, lang) => {
     </div>
     <div class="card-single">
       <div>
-        <h1>200</h1>
+        <h1>{{ dataDashboard?.countVocabulary }}</h1>
+        <span>Từ vựng</span>
+      </div>
+      <div>
+        <span><i class="bi bi-type"></i></span>
+      </div>
+    </div>
+    <div class="card-single">
+      <div>
+        <h1>{{ dataDashboard?.countTopic }}</h1>
+        <span>Chủ đề</span>
+      </div>
+      <div>
+        <span><i class="bi bi-stack"></i></span>
+      </div>
+    </div>
+    <div class="card-single">
+      <div>
+        <h1>{{ dataDashboard?.countLesson }}</h1>
         <span>Bài học</span>
       </div>
       <div>
-        <span><i class="bi bi-book-half"></i></span>
-      </div>
-    </div>
-    <div class="card-single">
-      <div>
-        <h1>555</h1>
-        <span>Tài khoản</span>
-      </div>
-      <div>
-        <span><i class="bi bi-person-add"></i></span>
-      </div>
-    </div>
-    <div class="card-single">
-      <div>
-        <h1>999</h1>
-        <span>Lượt mượn sách</span>
-      </div>
-      <div>
-        <span><i class="bi bi-cart-plus"></i></span>
+        <span><i class="bi bi-book"></i></span>
       </div>
     </div>
   </div>
@@ -61,9 +73,9 @@ const handleTestTextToSpeech = async (text, lang) => {
         <div class="card-header">
           <h3 class="lv3">Bài học mới</h3>
           <button>
-            <a href="quanlysach/index.html">
-              See all<span class="las la-arrow-right"></span>
-            </a>
+            <router-link to="/admin/lesson" title="Xem tất cả bài học">
+              Xem tất cả<span class="las la-arrow-right"></span>
+            </router-link>
           </button>
         </div>
         <div class="card-body">
@@ -71,12 +83,18 @@ const handleTestTextToSpeech = async (text, lang) => {
             <table width="100%">
               <thead>
                 <tr>
-                  <td>Tên sách</td>
-                  <td>Tác giả</td>
-                  <td>Thể loại</td>
+                  <td>Tiêu đề</td>
+                  <td>Chủ đề</td>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <tr v-for="lesson in dataDashboard?.lessons" :key="lesson._id">
+                  <td>
+                    <span>{{ lesson?.title }}</span>
+                  </td>
+                  <td>{{ lesson?.progress_id?.topic_id?.name }}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -87,30 +105,48 @@ const handleTestTextToSpeech = async (text, lang) => {
         <div class="card-header">
           <h3 class="lv3">Người dùng mới</h3>
           <button>
-            <a href="/quan-ly-nguoi-dung/doc-gia">
-              See all<span class="las la-arrow-right"></span>
-            </a>
+            <router-link to="/admin/user" title="Xem tất cả người dùng">
+              Xem tất cả<span class="las la-arrow-right"></span>
+            </router-link>
           </button>
         </div>
         <div class="card-body">
-          <div class="customer">
+          <div class="customer" v-for="user in dataDashboard?.users" :key="user._id">
             <div class="info">
               <img
-                src="https://avatars.githubusercontent.com/u/105920262?v=4"
+                v-if="user?.avatar"
+                :src="user?.avatar"
                 class="logo"
                 width="40px"
                 height="40px"
               />
+              <div v-else class="avatar avatar-placeholder">
+                <div
+                  class="bg-neutral text-neutral-content w-24 rounded-full"
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: #e5e7eb;
+                    margin-right: 12px;
+                  "
+                >
+                  <span class="text-3xl">{{ user?.username?.slice(0, 1) }}</span>
+                </div>
+              </div>
               <div>
-                <h4 class="lv4">usahhdhwuhu@gmail.com</h4>
-                <small>dhuwak</small>
+                <h4 class="lv4">{{ user?.email }}</h4>
+                <small>{{ user?.username }}</small>
               </div>
             </div>
-            <div class="contact">
+            <!-- <div class="contact">
               <span><i class="bi bi-person-circle"></i></span>
               <span><i class="bi bi-chat-square-text"></i></span>
               <span><i class="bi bi-telephone"></i></span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

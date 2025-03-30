@@ -3,7 +3,7 @@ import Sidebar from "@/components/Sidebar.vue";
 import Header from "@/components/Header.vue";
 import { playAudio } from "../utils/index";
 // import required modules
-import { inject, onMounted, ref } from "vue";
+import { computed, inject, onMounted, ref } from "vue";
 import { toast } from "vue3-toastify";
 import api from "@/utils";
 import LessonOldMistake from "./LessonOldMistake.vue";
@@ -20,6 +20,14 @@ const limit = ref(10);
 const search = ref("");
 const vocabularyDetail = ref({});
 const showDetail = ref(false);
+const sort = ref("createdAt:desc");
+const debounce = ref(null);
+
+const sortLabel = computed(() => {
+  if (sort.value === "createdAt:desc") return "Mới thêm gần đây";
+  if (sort.value === "word:asc") return "Theo bảng chữ cái";
+  return "";
+});
 
 const init = async () => {
   user.value = await getInfoUser();
@@ -47,7 +55,7 @@ const getVocabularies = async () => {
       return null;
     } else {
       const res = await api.get(
-        `${URL_API}/api/vocabulary/topic/${user.value?.topic_id}?page=${page.value}&limit=${limit.value}&search=${search.value}`
+        `${URL_API}/api/vocabulary/topic/${user.value?.topic_id}?page=${page.value}&limit=${limit.value}&search=${search.value}&sort=${sort.value}`
       );
       if (res?.status !== 200) {
         toast.error(res?.data?.message);
@@ -61,6 +69,23 @@ const getVocabularies = async () => {
   } catch (error) {
     handleErrorAPI(error);
   }
+};
+
+const handleFilter = async (sortInput) => {
+  sort.value = sortInput;
+  vocabularies.value = [];
+  page.value = 1;
+  await getVocabularies();
+};
+
+const handleSearch = async (e) => {
+  clearTimeout(debounce.value);
+  debounce.value = setTimeout(async () => {
+    search.value = e.target.value;
+    vocabularies.value = [];
+    page.value = 1;
+    await getVocabularies();
+  }, 1000);
 };
 
 onMounted(() => {
@@ -87,12 +112,38 @@ onMounted(() => {
           </div>
           <h3 class="text-[2.5rem] font-bold">Danh sách từ vựng</h3>
         </div>
-        <div class="vocabulary-content__body mt-10">
+        <div class="vocabulary-content__search mt-10">
+          <label class="input">
+            <svg
+              class="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input
+              type="Tìm kiếm từ vựng theo từ khóa"
+              class="grow"
+              @input="handleSearch"
+              placeholder="Tìm kiếm từ vựng theo từ khóa"
+            />
+          </label>
+        </div>
+        <div class="vocabulary-content__body mt-6">
           <div class="flex items-center justify-between font-bold">
             <p class="text-[20px] text-[#3c3c3c]">{{ pagination?.totalRecords }} từ</p>
             <div class="dropdown dropdown-bottom dropdown-end">
               <div tabindex="0" role="button" class="btn btn-filter m-1">
-                <span>Mới thêm gần đây</span>
+                <span>{{ sortLabel }}</span>
                 <span class="mt-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -113,8 +164,12 @@ onMounted(() => {
                 tabindex="0"
                 class="dropdown-content dropdown-content__filter menu bg-base-100 rounded-box z-1 shadow-sm"
               >
-                <li class="active"><a>Mới thêm gần đây</a></li>
-                <li><a>Theo bảng chữ cái</a></li>
+                <li :class="{ active: sort === 'createdAt:desc' }">
+                  <a @click.prevent="handleFilter('createdAt:desc')">Mới thêm gần đây</a>
+                </li>
+                <li :class="{ active: sort === 'word:asc' }">
+                  <a @click.prevent="handleFilter('word:asc')">Theo bảng chữ cái</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -231,11 +286,11 @@ onMounted(() => {
           <div class="grid grid-cols-2 gap-5">
             <div class="flex items-center gap-5 mt-5 text-[1.8rem]">
               <span class="font-bold text-nowrap">Từ vựng:</span>
-              <span>{{ vocabularyDetail?.word }}</span>
+              <span style="line-height: 22px">{{ vocabularyDetail?.word }}</span>
             </div>
             <div class="flex items-center gap-5 mt-5 text-[1.8rem]">
               <span class="font-bold text-nowrap">Phiên âm:</span>
-              <span>{{ vocabularyDetail?.phonetic }}</span>
+              <span style="line-height: 22px">{{ vocabularyDetail?.phonetic }}</span>
               <button
                 class="flex items-center justify-center rounded-2xl w-[34px] h-[34px] bg-[#f6f6f6] hover:scale-110"
                 @click.prevent="
@@ -259,15 +314,23 @@ onMounted(() => {
             </div>
             <div class="flex items-center gap-5 mt-5 text-[1.8rem]">
               <span class="font-bold text-nowrap">Tiếng Việt:</span>
-              <span>{{ vocabularyDetail?.vietnamese }}</span>
+              <span style="line-height: 22px">{{ vocabularyDetail?.vietnamese }}</span>
             </div>
             <div class="flex items-center gap-5 mt-5 text-[1.8rem]">
               <span class="font-bold text-nowrap">Loại từ:</span>
-              <span>{{ vocabularyDetail?.type?.join(", ") }}</span>
+              <span style="line-height: 22px">{{
+                vocabularyDetail?.type?.join(", ")
+              }}</span>
+            </div>
+            <div class="flex items-center col-span-2 gap-5 mt-5 text-[1.8rem]">
+              <span class="font-bold text-nowrap">Định nghĩa:</span>
+              <span style="line-height: 22px">{{ vocabularyDetail?.meaning }}</span>
             </div>
             <div class="flex items-center gap-5 mt-5 text-[1.8rem]">
               <span class="font-bold text-nowrap">Chủ đề:</span>
-              <span>{{ vocabularyDetail?.topic_id?.name }}</span>
+              <span style="line-height: 22px">{{
+                vocabularyDetail?.topic_id?.name
+              }}</span>
             </div>
             <div></div>
             <!-- ví dụ -->

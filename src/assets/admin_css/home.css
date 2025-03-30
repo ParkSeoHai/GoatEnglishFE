@@ -102,6 +102,7 @@ h4.lv4 {
   background: var(--main-color);
   z-index: 100;
   transition: width 300ms;
+  overflow-x: auto;
 }
 
 .sidebar-brand {
@@ -613,14 +614,20 @@ tr td:last-child {
   }
 }
 
+@media only screen and (max-width: 1200px) {
+  .recent-grid {
+    grid-template-columns: 100%;
+  }
+}
+
 @media only screen and (max-width: 960px) {
   .cards {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .recent-grid {
+  /* .recent-grid {
     grid-template-columns: 60% 40%;
-  }
+  } */
 }
 
 @media only screen and (max-width: 768px) {

@@ -213,7 +213,7 @@ onMounted(() => {
             <span
               v-for="example in vocabulary?.examples"
               :key="example"
-              class="badge bg-secondary h-full mt-1"
+              class="badge bg-secondary h-full mt-1 text-wrap"
               style="text-align: left; display: flex"
             >
               {{ example?.sentence }}

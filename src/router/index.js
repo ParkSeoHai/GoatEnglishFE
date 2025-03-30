@@ -90,6 +90,11 @@ const router = createRouter({
           path: "vocabulary",
           name: "VocabularyAdmin",
           component: () => import("../views/admin/VocabularyManager/Index.vue"),
+        },
+        {
+          path: "report",
+          name: "ReportAdmin",
+          component: () => import("../views/admin/Report.vue"),
         }
       ],
     }

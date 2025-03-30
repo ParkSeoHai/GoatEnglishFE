@@ -54,44 +54,38 @@ export const updateQueryParams = (newParams) => {
 };
 
 export const playAudio = async (url_api, audioUrl, text, lang = "en") => {
-    if (!audioUrl) {
-        console.error("Audio URL is required");
-        await textToSpeech(url_api, text, lang).then((audioUrl) => {
-            const audio = new Audio(audioUrl);
+    const playAudioFromUrl = (url) => {
+        return new Promise((resolve, reject) => {
+            const audio = new Audio(url);
             audio.play()
                 .then(() => {
-                    console.log("Audio is playing:", audioUrl);
+                    console.log("Audio is playing:", url);
+                    resolve();
                 })
                 .catch((error) => {
                     console.error("Error playing audio:", error);
+                    reject(error);
                 });
+            // Tùy chọn: Lắng nghe sự kiện kết thúc
+            audio.onended = () => {
+                console.log("Audio playback finished.");
+            };
         });
-        return;
-    }
-    const audio = new Audio(audioUrl);
-    audio.play()
-        .then(() => {
-            console.log("Audio is playing:", audioUrl);
-        })
-        .catch(async (error) => {
-            console.error("Error playing audio:", error);
-            await textToSpeech(url_api, text, lang).then((audioUrl) => {
-                const audio = new Audio(audioUrl);
-                audio.play()
-                    .then(() => {
-                        console.log("Audio is playing:", audioUrl);
-                    })
-                    .catch((error) => {
-                        console.error("Error playing audio:", error);
-                    });
-            });
-        });
-    // Tùy chọn: Lắng nghe sự kiện kết thúc
-    audio.onended = () => {
-        console.log("Audio playback finished.");
     };
+    try {
+        if (audioUrl) {
+            await playAudioFromUrl(audioUrl);
+        } else {
+            console.warn("Audio URL is missing, generating new audio...");
+            const generatedUrl = await textToSpeech(url_api, text, lang);
+            await playAudioFromUrl(generatedUrl);
+        }
+    } catch (error) {
+        console.error("Retrying with generated audio...", error);
+        const generatedUrl = await textToSpeech(url_api, text, lang);
+        await playAudioFromUrl(generatedUrl);
+    }
 };
-
 
 export async function textToSpeech(url_api, text, lang = "en") {
     try {

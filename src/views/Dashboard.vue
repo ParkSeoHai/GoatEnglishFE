@@ -77,7 +77,7 @@ const init = async () => {
   // Lấy dữ liệu bài học hiện tại
   await getLessonCurrent();
   if (user.value) {
-    if (user.value?.streak_start) {
+    if (user.value?.streak_start && user.value?.streak > 0) {
       const date = new Date(user.value?.streak_start);
       const currentDate = new Date();
       if (date.getDate() !== currentDate.getDate()) {

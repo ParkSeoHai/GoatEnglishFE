@@ -1,14 +1,17 @@
 <script setup>
 import "@/assets/admin_css/index.css";
-import { provide, ref } from "vue";
+import { inject, onMounted, provide, ref } from "vue";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { RouterLink } from "vue-router";
 import { useRoute } from "vue-router";
+import api from "@/utils";
+
+const URL_API = inject("URL_API");
+const handleErrorAPI = inject("handleErrorAPI");
 
 const route = useRoute();
-console.log(route);
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -24,6 +27,40 @@ const setNotLogin = (value) => {
 
 provide("setNotLogin", setNotLogin);
 provide("formattedLocalTime", formattedLocalTime);
+
+const getInfoUser = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) handleLogout();
+  const user = localStorage.getItem("user");
+  if (user) {
+    const userData = JSON.parse(user);
+    try {
+      const response = await api.get(`${URL_API}/api/user/${userData._id}`);
+      if (response.status === 200) {
+        if (response.data?.data?.role === "admin") {
+          isNotLogin.value = true;
+        } else {
+          isNotLogin.value = false;
+          localStorage.clear();
+          location.href = "/login";
+        }
+      } else {
+        handleErrorAPI(response);
+      }
+    } catch (error) {
+      handleErrorAPI(error);
+    }
+  }
+};
+
+const handleLogout = () => {
+  localStorage.clear();
+  location.href = "/login";
+};
+
+onMounted(async () => {
+  await getInfoUser();
+});
 </script>
 
 <template>
@@ -75,7 +112,7 @@ provide("formattedLocalTime", formattedLocalTime);
               :class="{ active: route.name === 'TopicAdmin' }"
             >
               <span>
-                <i class="bi bi-bookmark"></i>
+                <i class="bi bi-stack"></i>
               </span>
               <span>Quản lý chủ đề</span>
             </router-link>
@@ -88,7 +125,7 @@ provide("formattedLocalTime", formattedLocalTime);
               :class="{ active: route.name === 'ProgressAdmin' }"
             >
               <span>
-                <i class="bi bi-bookmark"></i>
+                <i class="bi bi-graph-up-arrow"></i>
               </span>
               <span>Quản lý lộ trình</span>
             </router-link>
@@ -114,7 +151,7 @@ provide("formattedLocalTime", formattedLocalTime);
               :class="{ active: route.name === 'VocabularyAdmin' }"
             >
               <span>
-                <i class="bi bi-book"></i>
+                <i class="bi bi-type"></i>
               </span>
               <span>Quản lý từ vựng</span>
             </router-link>
@@ -145,7 +182,12 @@ provide("formattedLocalTime", formattedLocalTime);
             </ul>
           </li> -->
           <li>
-            <router-link to="/admin/report" title="Báo cáo thống kê" class="sidebar-link">
+            <router-link
+              to="/admin/report"
+              title="Báo cáo thống kê"
+              class="sidebar-link"
+              :class="{ active: route.name === 'ReportAdmin' }"
+            >
               <span>
                 <i class="bi bi-bar-chart-line"></i>
               </span>
@@ -153,7 +195,7 @@ provide("formattedLocalTime", formattedLocalTime);
             </router-link>
           </li>
           <li>
-            <a href="/admin/logout" title="Thoát">
+            <a href="/admin/logout" title="Thoát" @click.prevent="handleLogout">
               <span>
                 <i class="bi bi-box-arrow-left"></i>
               </span>
@@ -179,7 +221,7 @@ provide("formattedLocalTime", formattedLocalTime);
           <input type="search" placeholder="Search here" />
         </div>
 
-        <div class="user-wrapper">
+        <div class="user-wrapper d-none">
           <img
             src="https://avatars.githubusercontent.com/u/105920262?v=4"
             alt=""

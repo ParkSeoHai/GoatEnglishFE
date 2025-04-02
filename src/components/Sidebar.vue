@@ -17,7 +17,9 @@ const route = useRoute();
           </g>
         </svg> -->
 
-        <p class="font-bold text-[#333] bg-[#ffbb00] p-5 rounded-3xl">GOAT ENGLISH</p>
+        <p class="font-bold text-logo text-[#fff] bg-[#2c3e50] p-5 rounded-3xl">
+          GOAT ENGLISH
+        </p>
       </router-link>
       <div class="tab-item" :class="{ active: route.name === 'Dashboard' }">
         <router-link to="/dashboard" class="tab-item__link">

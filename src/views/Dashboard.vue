@@ -277,7 +277,7 @@ onMounted(() => {
                     </p> -->
                   </div>
                 </div>
-                <span class="font-bold">{{ user?.score }} đ</span>
+                <span class="font-bold text-nowrap">{{ user?.score }} đ</span>
               </div>
             </div>
             <div

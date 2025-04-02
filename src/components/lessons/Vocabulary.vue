@@ -106,7 +106,7 @@ onMounted(() => {
         Tiếp tục
       </button>
       <button
-        class="btn btn-default-custom w-full min-h-[4.4rem] text-[1.6rem]"
+        class="hidden btn btn-default-custom w-full min-h-[4.4rem] text-[1.6rem]"
         style="color: #012"
       >
         <span>

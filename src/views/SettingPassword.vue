@@ -154,7 +154,7 @@ onMounted(() => {
       <Button
         :item="{
           text: 'Lưu thay đổi',
-          style: 'font-size: 1.8rem; color: #2c3445;',
+          style: 'font-size: 1.8rem; color: #fff',
         }"
         :loading="loading"
         class="btn-next btn-primary-custom text-white w-full py-8 mt-20 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"

@@ -71,7 +71,9 @@ onMounted(async () => {
         <a asp-controller="Home" asp-action="Index">
           <h2 class="lv2">
             <img src="" class="logo" />
-            <span>Goat English</span>
+            <a href="/admin/dashboard" class="text-logo" style="font-size: 2rem"
+              >Goat English</a
+            >
           </h2>
         </a>
       </div>

@@ -71,7 +71,7 @@ const layout = useLayoutStore();
         class="language-page flex items-center text-[#afafaf] font-bold uppercase text-[15px] cursor-pointer"
       >
         <p class="text me-3">Ngôn ngữ hiển thị: Tiếng Việt</p>
-        <span class="icon"
+        <span class="icon hidden"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -141,12 +141,12 @@ const layout = useLayoutStore();
         </p>
       </div>
       <div class="footer-col flex flex-col gap-6">
-        <p class="footer-col-item font-bold">Về chúng tôi</p>
+        <!-- <p class="footer-col-item font-bold">Về chúng tôi</p>
         <p class="footer-col-desc">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita illum sed
           ducimus aspernatur, accusantium consequuntur vero facere laudantium veritatis
           ullam!
-        </p>
+        </p> -->
         <ul class="flex items-center gap-6">
           <li>
             <a href="#">

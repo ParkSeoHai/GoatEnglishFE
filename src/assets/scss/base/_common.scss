@@ -18,7 +18,8 @@ body {
 
 .btn-primary-custom {
   color: variables.$color-white;
-  background-color: variables.$color-primary;
+  // background-color: variables.$color-primary;
+  background-color: #ffbb00;
 }
 
 .btn-default-custom {
@@ -64,4 +65,25 @@ body {
     background-color: #e5e5e5;
     pointer-events: none;
   }
+}
+
+@font-face {
+  font-family: 'Rocher';
+  src: url('https://assets.codepen.io/9632/RocherColorGX.woff2');
+}
+
+$primary-color: #6a0dad;
+$secondary-color: #ffcc00;
+$text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+
+.text-logo {
+  font-family: 'Rocher', sans-serif;
+  font-size: 3.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: $text-shadow;
+  background: linear-gradient(45deg, $primary-color, $secondary-color);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }

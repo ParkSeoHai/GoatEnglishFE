@@ -1,78 +1,78 @@
 <script setup>
-import Sidebar from '@/components/Sidebar.vue'
-import Header from '@/components/Header.vue'
-import { inject, onMounted, ref } from 'vue'
-import api from '@/utils'
-import { toast } from 'vue3-toastify'
-import _ from 'lodash'
+import Sidebar from "@/components/Sidebar.vue";
+import Header from "@/components/Header.vue";
+import { inject, onMounted, ref } from "vue";
+import api from "@/utils";
+import { toast } from "vue3-toastify";
+import _ from "lodash";
 
-const URL_API = inject('URL_API')
-const handleErrorAPI = inject('handleErrorAPI')
+const URL_API = inject("URL_API");
+const handleErrorAPI = inject("handleErrorAPI");
 
-const user = ref()
-const topics = ref([])
-const topicsLearned = ref([])
+const user = ref();
+const topics = ref([]);
+const topicsLearned = ref([]);
 
 const init = async () => {
-  const userLocal = localStorage.getItem('user')
+  const userLocal = localStorage.getItem("user");
   if (userLocal) {
-    user.value = JSON.parse(userLocal)
+    user.value = JSON.parse(userLocal);
   }
-  await getTopics()
-  await getTopicsLearned()
+  await getTopics();
+  await getTopicsLearned();
   // console.log(_.findIndex(topicsLearned.value, { topic_id: "67b2da41f25a4c444d4ed5f0" }));
-}
+};
 
 const getTopics = async () => {
   try {
-    const res = await api.get(`${URL_API}/api/topic`)
+    const res = await api.get(`${URL_API}/api/topic`);
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message)
-      return
+      toast.error(res?.data?.message);
+      return;
     }
-    topics.value = res?.data?.data
+    topics.value = res?.data?.data;
   } catch (error) {
-    handleErrorAPI(error)
+    handleErrorAPI(error);
   }
-}
+};
 
 // Hàm xử lý lấy dữ liệu các chủ đề đã học
 const getTopicsLearned = async () => {
   try {
-    const res = await api.get(`${URL_API}/api/user/get-topics-learned`)
+    const res = await api.get(`${URL_API}/api/user/get-topics-learned`);
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message)
-      return
+      toast.error(res?.data?.message);
+      return;
     }
-    topicsLearned.value = res?.data?.data
-    console.log(topicsLearned.value)
+    topicsLearned.value = res?.data?.data;
+    console.log(topicsLearned.value);
   } catch (error) {
-    handleErrorAPI(error)
+    handleErrorAPI(error);
   }
-}
+};
 
 const changeUserTopic = async (topic, type) => {
   try {
     const res = await api.post(`http://localhost:3000/api/user/change-topic`, {
       topic_id: topic._id,
       type,
-    })
+    });
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message)
-      return
+      toast.error(res?.data?.message);
+      return;
     }
-    location.href = '/dashboard'
+    location.href = "/dashboard";
   } catch (error) {
-    handleErrorAPI(error)
+    handleErrorAPI(error);
   }
-}
+};
 
 onMounted(() => {
-  init()
-})
+  init();
+});
 </script>
 <template>
   <div id="topic" class="flex">
@@ -89,7 +89,7 @@ onMounted(() => {
                 <p class="text-[20px] font-bold">{{ user?.topic?.name }}</p>
                 <p class="line-clamp-2 leading-8">{{ user?.topic?.description }}</p>
                 <div class="flex justify-between items-center">
-                  <span class="icon cursor-pointer">
+                  <span class="hidden icon cursor-pointer">
                     <svg
                       viewBox="0 0 24 25"
                       width="32px"
@@ -103,7 +103,7 @@ onMounted(() => {
                       ></path>
                     </svg>
                   </span>
-                  <RouterLink to="/dashboard" class="btn-topic font-bold">
+                  <RouterLink to="/dashboard" class="ms-auto btn-topic font-bold">
                     Tiếp tục học ›
                   </RouterLink>
                 </div>
@@ -118,7 +118,11 @@ onMounted(() => {
           <p class="title">Chủ đề</p>
           <div v-if="topics.length > 0" class="list-topic">
             <template v-for="topic in topics">
-              <div v-if="topic._id !== user?.topic_id" :key="topic._id" class="topic-item flex">
+              <div
+                v-if="topic._id !== user?.topic_id"
+                :key="topic._id"
+                class="topic-item flex"
+              >
                 <img class="topic-item__img object-cover" :src="topic.image" />
                 <div class="px-5 py-8 flex flex-col flex-1 gap-4">
                   <p class="text-[20px] font-bold">{{ topic.name }}</p>

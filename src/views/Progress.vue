@@ -58,7 +58,7 @@ onMounted(() => {
       <div class="mt-4 flex justify-between">
         <div class="flex flex-col gap-3">
           <p class="text-[24px] font-bold">Hành trình học của tôi</p>
-          <p class="font-bold">Đã bắt đầu học 3 thg 2, 2025</p>
+          <!-- <p class="font-bold">Đã bắt đầu học 3 thg 2, 2025</p> -->
           <p class="mt-2 progress-desc">
             Theo dõi tiến độ của bạn theo cấp độ và giai đoạn - giành điểm cho mỗi từ bạn
             học, mỗi video bạn xem và mỗi cuộc trò chuyện cùng MemBot để tiếp tục lên cấp!

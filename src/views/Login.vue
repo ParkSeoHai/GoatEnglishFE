@@ -1,11 +1,14 @@
 <script setup>
 import { useLayoutStore } from "@/stores/layout";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, inject } from "vue";
 import Button from "../components/Button.vue";
 import { toast } from "vue3-toastify";
 import axios from "axios";
 
 const layout = useLayoutStore();
+
+const URL_API = inject("URL_API");
+const handleErrorAPI = inject("handleErrorAPI");
 
 const loading = ref(false);
 const showPassword = ref(false);
@@ -25,7 +28,7 @@ const init = async () => {
 const handleLogin = async () => {
   try {
     loading.value = true;
-    const res = await axios.post(`http://localhost:3000/api/auth/login`, {
+    const res = await axios.post(`${URL_API}/api/auth/login`, {
       username: data.username,
       password: data.password,
     });
@@ -41,10 +44,11 @@ const handleLogin = async () => {
       toast.error(dataRes?.message);
     }
   } catch (error) {
-    console.error(error);
-    error?.response?.data?.errors?.forEach((error) => {
-      toast.error(error?.message);
-    });
+    handleErrorAPI(error);
+    // console.error(error);
+    // error?.response?.data?.errors?.forEach((error) => {
+    //   toast.error(error?.message);
+    // });
   } finally {
     loading.value = false;
   }
@@ -129,6 +133,27 @@ onMounted(() => {
           :loading="loading"
           class="btn-next btn-primary-custom text-white w-full py-8 mt-8 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
           @click="handleLogin"
+        />
+      </div>
+      <div class="signin-input__with-icon text-center">
+        <router-link
+          to="/forgot-password"
+          class="hover:decoration-slate-950 hover:underline"
+        >
+          Quên mật khẩu?
+        </router-link>
+      </div>
+      <div
+        class="signin-input__with-icon pt-3 text-center"
+        style="border-top: 1px solid #ccc"
+      >
+        <Button
+          :item="{
+            text: 'Tạo tài khoản mới',
+            style: 'font-size: 1.8rem; background-color: rgb(66, 183, 42); width: 70%',
+            href: '/signup',
+          }"
+          class="btn-next btn-primary-custom text-white py-8 mt-8 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
         />
       </div>
     </div>

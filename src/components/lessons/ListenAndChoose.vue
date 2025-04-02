@@ -139,7 +139,7 @@ onMounted(() => {
         Tiếp tục
       </button>
       <button
-        class="btn btn-default-custom flex-col w-full h-full text-[1.6rem] mt-4"
+        class="btn btn-default-custom flex-col w-full h-full text-[1.6rem] mt-4 hidden"
         style="padding: 8px; background-color: #d9dee8"
       >
         <span

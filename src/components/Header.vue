@@ -36,7 +36,7 @@ const handleLogout = () => {
         <RouterLink to="/topic"> Chủ đề: {{ user?.topic?.name }} </RouterLink>
       </p>
       <div class="actions-right ms-auto">
-        <div class="action-item">
+        <div class="action-item hidden">
           <span>
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -83,10 +83,12 @@ const handleLogout = () => {
                     >Cài đặt hồ sơ</router-link
                   >
                 </li>
-                <li><a href="#" class="dropdown-link">Cài đặt chế độ Học tập</a></li>
+                <li>
+                  <a href="#" class="dropdown-link hidden">Cài đặt chế độ Học tập</a>
+                </li>
               </ul>
             </div>
-            <div class="dropdown-block">
+            <div class="dropdown-block hidden">
               <ul>
                 <li><a href="#" class="dropdown-link">Trợ giúp</a></li>
               </ul>

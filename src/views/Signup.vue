@@ -1,12 +1,15 @@
 <script setup>
 import Button from "@/components/Button.vue";
 import axios from "axios";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, inject } from "vue";
 import { useLayoutStore } from "@/stores/layout";
 import { toast } from "vue3-toastify";
 
 const layout = useLayoutStore();
 const loading = ref(false);
+
+const URL_API = inject("URL_API");
+const handleErrorAPI = inject("handleErrorAPI");
 
 const stepCurr = ref(1);
 const stepNumb = 8;
@@ -87,13 +90,13 @@ const handleNext = async () => {
 };
 
 const getTopics = async () => {
-  const data = await doGetAxios("http://localhost:3000/api/topic");
+  const data = await doGetAxios(`${URL_API}/api/topic`);
   topics.value = data?.data;
 };
 
 const sendOTP = async (email) => {
   try {
-    const res = await axios.post(`http://localhost:3000/api/auth/send-otp`, {
+    const res = await axios.post(`${URL_API}/api/auth/send-otp`, {
       email,
     });
     const data = res.data;
@@ -106,10 +109,11 @@ const sendOTP = async (email) => {
       toast.error(data?.message);
     }
   } catch (error) {
-    console.error(error);
-    error?.response?.data?.errors?.forEach((error) => {
-      toast.error(error?.message);
-    });
+    handleErrorAPI(error);
+    // console.error(error);
+    // error?.response?.data?.errors?.forEach((error) => {
+    //   toast.error(error?.message);
+    // });
   } finally {
     loading.value = false;
   }
@@ -118,7 +122,7 @@ const sendOTP = async (email) => {
 const handleRegister = async () => {
   try {
     loading.value = true;
-    const res = await axios.post(`http://localhost:3000/api/auth/register`, {
+    const res = await axios.post(`${URL_API}/api/auth/register`, {
       otp_code: dataStep.value.otp_code.toString(),
       username: dataStep.value.username,
       email: dataStep.value.email,

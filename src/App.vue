@@ -5,7 +5,7 @@ import { provide } from "vue";
 import { toast } from "vue3-toastify";
 import api from "@/utils";
 
-const URL_API = "http://localhost:3000";
+const URL_API = "https://goat-english-api.vercel.app";
 
 const handleErrorAPI = (error) => {
   console.log(error);
@@ -41,6 +41,9 @@ const getInfoUser = async () => {
       score: res?.data?.data?.score,
     };
     localStorage.setItem("user", JSON.stringify(user));
+    if (user?.role === "admin") {
+      location.href = "/admin/dashboard";
+    }
     // nếu chưa học chủ đề nào
     if (!user?.topic) {
       toast.info("Vui lòng chọn một chủ đề để bắt đầu học");

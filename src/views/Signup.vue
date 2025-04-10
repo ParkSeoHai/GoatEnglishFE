@@ -12,7 +12,7 @@ const URL_API = inject("URL_API");
 const handleErrorAPI = inject("handleErrorAPI");
 
 const stepCurr = ref(1);
-const stepNumb = 8;
+const stepNumb = 3;
 const isNext = ref(false);
 const dataStep = ref({
   topic: "",
@@ -81,7 +81,7 @@ const init = async () => {
 const handleNext = async () => {
   loading.value = true;
   // Gửi OTP email
-  if (stepCurr.value === 7) {
+  if (stepCurr.value === 2) {
     await sendOTP(dataStep.value.email);
   } else {
     stepCurr.value++;
@@ -188,7 +188,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div v-else-if="stepCurr === 2" class="step-content">
+      <!-- <div v-else-if="stepCurr === 2" class="step-content">
         <h1 class="title-lv1 text-center font-bold">Welcome to GoatEnglish</h1>
         <div class="mt-12">
           <img src="../assets/images/19467ffee68fe.png" class="img-step-2" />
@@ -268,8 +268,8 @@ onMounted(() => {
             />
           </template>
         </div>
-      </div>
-      <div v-if="stepCurr === 7" class="step-content">
+      </div> -->
+      <div v-if="stepCurr === 2" class="step-content">
         <h1 class="title-lv1 text-center font-bold mb-10">Nhập email của bạn</h1>
         <div class="signup-input__with-icon">
           <input
@@ -285,7 +285,7 @@ onMounted(() => {
           />
         </div>
       </div>
-      <div v-if="stepCurr === 8" class="step-content">
+      <div v-if="stepCurr === 3" class="step-content">
         <h1 class="title-lv1 text-center font-bold mb-10">Đăng ký tài khoản</h1>
         <div class="signup-input__with-icon">
           <input
@@ -350,7 +350,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div v-if="stepCurr !== 8" class="footer-signup">
+    <div v-if="stepCurr !== 3" class="footer-signup">
       <div class="footer-block page-container flex items-center justify-end">
         <Button
           :item="{ text: 'Tiếp tục' }"

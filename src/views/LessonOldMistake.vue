@@ -1,5 +1,5 @@
 <script setup>
-import ListenAndChoose from '@/components/lessons/ListenAndChoose.vue'
+import ListenAndChoose from '@/components/lessons/ListenAndSentences.vue'
 import Vocabulary from '@/components/lessons/Vocabulary.vue'
 import ChooseAnswer from '@/components/lessons/ChooseAnswer.vue'
 import FillInTheBlank from '@/components/lessons/FillInTheBlank.vue'

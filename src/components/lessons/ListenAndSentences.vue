@@ -9,23 +9,43 @@ const URL_API = inject("URL_API");
 
 const emit = defineEmits(["nextExercise"]);
 const options = ref([]);
+const userAnswer = ref([]);
 const showResult = ref(false);
 const result = ref(false);
-const dataResult = ref(null);
 
 const handleNextExercise = () => {
+  const userAnswerString = userAnswer.value.map((item) => item.answer).join(" ");
+  const correctAnswer = props.exercise?.correct_answer;
+  result.value = userAnswerString === correctAnswer;
   if (showResult.value) {
-    const userAnswer = {
+    const userAnswerData = {
       exercise_id: props.exercise._id,
-      question: props.exercise.question,
-      correct_answer: props.exercise.correct_answer,
-      user_answer: dataResult.value?.noi_dung,
-      correct: dataResult.value?.noi_dung === props.exercise.correct_answer,
+      question: correctAnswer,
+      correct_answer: correctAnswer,
+      user_answer: userAnswerString,
+      correct: result.value,
     };
-    emit("nextExercise", userAnswer);
+    emit("nextExercise", userAnswerData);
     return;
   }
   showResult.value = true;
+};
+
+const handleInsertAnswer = (answer, index) => {
+  const item = userAnswer.value.find((item) => item.index === index);
+  if (item) {
+    userAnswer.value = userAnswer.value.filter((item) => item.index !== index);
+    return;
+  }
+  userAnswer.value.push({
+    answer,
+    index,
+  });
+};
+
+const checkSelected = (option, index) => {
+  const item = userAnswer.value.find((item) => item.index === index);
+  return item ? true : false;
 };
 
 const handlePlayAudio = ({ audio, correct_answer }) => {
@@ -74,9 +94,21 @@ onMounted(() => {
       </div>
       <div class="flex-1">
         <div class="min-h-[64px]">
+          <div class="flex items-center flex-wrap gap-4">
+            <button
+              v-for="(option, index) in userAnswer"
+              :key="index"
+              class="btn btn-default-custom min-h-[5rem] text-[2.4rem]"
+              @click="handleInsertAnswer(option.answer, option.index)"
+            >
+              {{ option.answer }}
+            </button>
+          </div>
           <div v-if="showResult" class="text-[20px] mt-8 leading-10">
-            <p>
-              <span class="font-semibold">Giải thích</span>:
+            <p v-if="result" class="font-semibold text-[#6ba72a]">Chính xác</p>
+            <p v-else>
+              <span class="block font-semibold text-[#b13039] mb-4">Chưa chính xác</span>
+              <span class="font-semibold">Đáp án</span>:
               {{ props.exercise?.explain_answer }}
             </p>
             <p class="mt-4">
@@ -88,36 +120,18 @@ onMounted(() => {
         <span class="block w-full h-[0.2rem] bg-[#d9dee8] mt-[1.6rem]"></span>
         <!-- options 01 -->
         <div class="btn-options flex flex-wrap gap-6 mt-[3rem] px-[1.6rem]">
-          <template v-if="!showResult">
-            <button
-              v-for="option in props.exercise?.options"
-              :key="option"
-              class="btn btn-default-custom min-h-[6rem] text-[2.4rem]"
-              :class="{ active: dataResult?.ma_dap_an === option.ma_dap_an }"
-              @click="dataResult = option"
-            >
-              <span>{{ option?.ma_dap_an }}</span>
-              <p class="text">{{ option?.noi_dung }}</p>
-            </button>
-          </template>
-          <template v-else>
-            <button
-              v-for="option in props.exercise?.options"
-              :key="option"
-              class="btn btn-default-custom min-h-[6rem] text-[2.4rem]"
-              :style="{
-                backgroundColor:
-                  option?.noi_dung === props.exercise?.correct_answer
-                    ? '#84e41a'
-                    : dataResult?.ma_dap_an === option.ma_dap_an
-                    ? '#b13039'
-                    : '',
-              }"
-            >
-              <span>{{ option?.ma_dap_an }}</span>
-              <p class="text">{{ option?.noi_dung }}</p>
-            </button>
-          </template>
+          <button
+            v-for="(option, index) in options"
+            :key="index"
+            class="btn btn-default-custom min-h-[5rem] text-[2.4rem]"
+            :style="{
+              backgroundColor: checkSelected(option, index) ? '#bcc2cf' : '#fff',
+            }"
+            style="padding: 0 32px"
+            @click="handleInsertAnswer(option, index)"
+          >
+            {{ option }}
+          </button>
         </div>
       </div>
     </div>
@@ -126,7 +140,7 @@ onMounted(() => {
     <div>
       <button
         class="btn btn-primary-custom w-full min-h-[4.4rem] text-[1.6rem]"
-        :disabled="!dataResult"
+        :disabled="userAnswer.length === 0"
         style="color: #012"
         @click="handleNextExercise"
       >

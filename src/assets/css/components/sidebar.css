@@ -171,6 +171,32 @@ body {
   border-right: 1px solid #ccc;
   z-index: 100;
 }
+.sidebar .text-logo__collapsed {
+  display: none;
+}
+.sidebar .text-logo__expanded {
+  display: block;
+}
+.sidebar.collapsed {
+  width: 90px;
+  padding: 0px 0px 0px 8px;
+  border-right: none;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+.sidebar.collapsed .text-logo__collapsed {
+  display: block;
+}
+.sidebar.collapsed .text-logo__expanded {
+  display: none;
+}
+.sidebar.collapsed .tab-item__link .tab-item__link--text {
+  display: none;
+}
+.sidebar.collapsed .sidebar-collapse svg {
+  transform: rotate(180deg);
+}
 .sidebar .logo {
   width: 100%;
   display: flex;

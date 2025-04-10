@@ -1,9 +1,10 @@
 <script setup>
-import ListenAndChoose from "@/components/lessons/ListenAndChoose.vue";
+import ListenAndSentences from "@/components/lessons/ListenAndSentences.vue";
 import Vocabulary from "@/components/lessons/Vocabulary.vue";
 import ChooseAnswer from "@/components/lessons/ChooseAnswer.vue";
 import FillInTheBlank from "@/components/lessons/FillInTheBlank.vue";
 import CompleteSentences from "@/components/lessons/CompleteSentences.vue";
+import ListenAndChoose from "@/components/lessons/ListenAndChoose.vue";
 import { computed, inject, onMounted, ref } from "vue";
 import _ from "lodash";
 import api from "@/utils";
@@ -20,7 +21,7 @@ const lesson = ref();
 const exercises = ref([]);
 const vocabularies = ref([]);
 const lessonsLength = ref(0);
-const indexExercise = ref(0);
+const indexExercise = ref(2);
 const userAnswer = ref([]);
 const progressLesson = computed(() => {
   return (indexExercise.value / lessonsLength.value) * 100;
@@ -42,10 +43,11 @@ const getDataLesson = async (lesson_id) => {
     }
     lesson.value = res?.data?.data;
     vocabularies.value = lesson.value?.vocabularies;
-    exercises.value = _.shuffle(lesson.value?.exercises);
+    // exercises.value = _.shuffle(lesson.value?.exercises);
+    exercises.value = lesson.value?.exercises;
     exercises.value = vocabularies.value.concat(exercises.value);
-    // exercises.value = vocabularies.value.concat(exercises.value);
     lessonsLength.value = exercises.value ? exercises.value?.length : 0;
+    console.log("lesson.value", lesson.value);
   } catch (error) {
     handleErrorAPI(error);
   }
@@ -164,13 +166,18 @@ onMounted(() => {
             :exercise="exercises?.[indexExercise]"
             @next-exercise="nextExercise"
           />
-          <ListenAndChoose
+          <ListenAndSentences
             v-else-if="exercises?.[indexExercise].type?.ma_muc == '03'"
             :exercise="exercises?.[indexExercise]"
             @next-exercise="nextExercise"
           />
           <CompleteSentences
             v-else-if="exercises?.[indexExercise].type?.ma_muc == '07'"
+            :exercise="exercises?.[indexExercise]"
+            @next-exercise="nextExercise"
+          />
+          <ListenAndChoose
+            v-else-if="exercises?.[indexExercise].type?.ma_muc == '08'"
             :exercise="exercises?.[indexExercise]"
             @next-exercise="nextExercise"
           />

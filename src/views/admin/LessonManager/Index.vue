@@ -1,124 +1,150 @@
 <script setup>
-import { inject, onMounted, reactive, ref, watch } from 'vue'
-import { toast } from 'vue3-toastify'
-import CreateOrUpdate from './CreateOrUpdate.vue'
-import api, { updateQueryParams } from '@/utils'
-import { useRoute } from 'vue-router'
+import { inject, onMounted, reactive, ref, watch } from "vue";
+import { toast } from "vue3-toastify";
+import CreateOrUpdate from "./CreateOrUpdate.vue";
+import api, { updateQueryParams } from "@/utils";
+import { useRoute } from "vue-router";
 
-const route = useRoute()
+const route = useRoute();
 
-const URL_API = inject('URL_API')
-const handleErrorAPI = inject('handleErrorAPI')
+const URL_API = inject("URL_API");
+const handleErrorAPI = inject("handleErrorAPI");
 
-const lessons = ref([])
-const page = ref(Number(route.query?.page) || 1)
-const pagination = ref()
-const search = ref(route.query?.search || '')
-const limit = 10
+const lessons = ref([]);
+const page = ref(Number(route.query?.page) || 1);
+const pagination = ref();
+const search = ref(route.query?.search || "");
+const limit = 10;
 const filter = reactive({
-  topic_id: route.query?.topic_id || '',
-})
+  topic_id: route.query?.topic_id || "",
+});
 
-const topics = ref([])
+const topics = ref([]);
 
 const init = async () => {
   // get topics
-  topics.value = await getTopics()
+  topics.value = await getTopics();
   if (!route.query?._id) {
     if (filter.topic_id) {
-      await handleFilterByTopic()
+      await handleFilterByTopic();
     } else {
-      await getLessons(page.value, search.value)
+      await getLessons(page.value, search.value);
     }
   }
-}
+};
 
 watch(page, async (value) => {
-  updateQueryParams({ page: value })
-  await getLessons(value)
-})
+  updateQueryParams({ page: value });
+  await getLessons(value);
+});
 
 watch(
   () => route.query._id,
   async () => {
-    await init()
+    await init();
   },
-  { deep: true },
-)
+  { deep: true }
+);
 
-const getLessons = async (page, search = '') => {
+const getLessons = async (page, search = "") => {
   try {
-    const res = await api.get(`${URL_API}/api/lesson?page=${page}&search=${search}&limit=${limit}`)
+    const res = await api.get(
+      `${URL_API}/api/lesson?page=${page}&search=${search}&limit=${limit}`
+    );
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message)
-      return
+      toast.error(res?.data?.message);
+      return;
     }
-    pagination.value = res?.data?.data?.pagination
-    lessons.value = res?.data?.data?.lessons
+    pagination.value = res?.data?.data?.pagination;
+    lessons.value = res?.data?.data?.lessons;
   } catch (error) {
-    handleErrorAPI(error)
+    handleErrorAPI(error);
   }
-}
+};
 
 const handleDelete = async (lesson_id) => {
-  const result = confirm('Xác nhận xóa bài học')
+  const result = confirm("Xác nhận xóa bài học");
   if (result) {
     try {
-      const res = await api.delete(`${URL_API}/api/lesson/${lesson_id}`)
-      console.log(res)
+      const res = await api.delete(`${URL_API}/api/lesson/${lesson_id}`);
+      console.log(res);
       // send success
       if (res?.status !== 200 || (res?.data?.status && !res?.data?.status !== 200)) {
-        toast.error(res?.data?.message)
-        return
+        toast.error(res?.data?.message);
+        return;
       }
-      toast.success(res?.data?.message || 'Thành công!')
-      await init()
+      toast.success(res?.data?.message || "Thành công!");
+      await init();
     } catch (error) {
-      handleErrorAPI(error)
+      handleErrorAPI(error);
     }
   }
-}
+};
 
 const handleFilterByTopic = async () => {
   try {
-    updateQueryParams({ topic_id: filter.topic_id })
-    if (!filter.topic_id) return
-    const res = await api.get(`${URL_API}/api/progress/topic/${filter.topic_id}`)
+    updateQueryParams({ topic_id: filter.topic_id });
+    if (!filter.topic_id) return;
+    const res = await api.get(`${URL_API}/api/progress/topic/${filter.topic_id}`);
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message)
-      return
+      toast.error(res?.data?.message);
+      return;
     }
-    lessons.value = res?.data?.data
+    lessons.value = res?.data?.data;
   } catch (error) {
-    handleErrorAPI(error)
+    handleErrorAPI(error);
   }
-}
+};
 
 const searchData = async () => {
-  page.value = 1
-  updateQueryParams({ search: search.value })
-  await getLessons(page.value, search.value)
-}
+  page.value = 1;
+  updateQueryParams({ search: search.value });
+  await getLessons(page.value, search.value);
+};
 
 const getTopics = async () => {
   try {
-    const res = await api.get(`${URL_API}/api/topic`)
+    const res = await api.get(`${URL_API}/api/topic`);
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message)
-      return
+      toast.error(res?.data?.message);
+      return;
     }
-    return res?.data?.data
+    return res?.data?.data;
   } catch (error) {
-    handleErrorAPI(error)
+    handleErrorAPI(error);
   }
-}
+};
+
+const handleImportLesson = async (e) => {
+  try {
+    const file = e.target.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await api.post(`${URL_API}/api/lesson/import`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(res);
+    // send success
+    if (res?.status !== 200 || (res?.data?.status && !res?.data?.status !== 200)) {
+      toast.error(res?.data?.message);
+      return;
+    }
+    toast.success(res?.data?.message || "Thành công!");
+    await init();
+  } catch (error) {
+    handleErrorAPI(error);
+  }
+};
 
 onMounted(() => {
-  init()
-})
+  init();
+});
 </script>
 
 <template>
@@ -133,19 +159,31 @@ onMounted(() => {
       <RouterLink to="?_id=null" class="btn btn-outline-primary">
         <i class="bi bi-plus-circle"></i>&nbsp; Tạo mới
       </RouterLink>
-      <div class="search-block w-25">
-        <div class="input-group">
-          <span class="input-group-text search-icon" @click="searchData">
-            <i class="bi bi-search"></i>
-          </span>
-          <input
-            type="text"
-            v-model.trim="search"
-            class="form-control search-user"
-            placeholder="Search"
-            @keyup.enter="searchData"
-          />
+      <div class="flex items-center gap-2">
+        <div class="search-block">
+          <div class="input-group">
+            <span class="input-group-text search-icon" @click="searchData">
+              <i class="bi bi-search"></i>
+            </span>
+            <input
+              type="text"
+              v-model.trim="search"
+              class="form-control search-user"
+              placeholder="Search"
+              @keyup.enter="searchData"
+            />
+          </div>
         </div>
+        <button>
+          <label class="btn btn-primary" for="importFile">Import</label>
+          <input
+            type="file"
+            id="importFile"
+            class="hidden"
+            @input="handleImportLesson"
+            accept=".xlsx, .xls, .csv"
+          />
+        </button>
       </div>
     </div>
     <table class="table table-hover">
@@ -163,7 +201,11 @@ onMounted(() => {
           <td>{{ lesson?.title }}</td>
           <td>{{ lesson?.description }}</td>
           <td class="flex items-center gap-2">
-            <RouterLink :to="`?_id=${lesson._id}`" class="btn btn-outline-primary" title="Sửa">
+            <RouterLink
+              :to="`?_id=${lesson._id}`"
+              class="btn btn-outline-primary"
+              title="Sửa"
+            >
               <i class="bi bi-gear"></i>
             </RouterLink>
             <button
@@ -182,7 +224,11 @@ onMounted(() => {
       <div class="join">
         <button @click="page -= 1" :disabled="page == 1" class="join-item btn">«</button>
         <button @click.prevent="" class="join-item btn">Trang {{ page }}</button>
-        <button @click="page += 1" :disabled="page == pagination?.totalPages" class="join-item btn">
+        <button
+          @click="page += 1"
+          :disabled="page == pagination?.totalPages"
+          class="join-item btn"
+        >
           »
         </button>
       </div>

@@ -297,6 +297,17 @@ onMounted(async () => {
               </option>
             </select>
           </div>
+          <template v-if="typeActive?.ma_muc == '08'">
+            <div class="form-group col-span-12">
+              <label class="form-label">Audio</label>
+              <input
+                v-model.trim="exerciseObj.audio"
+                type="text"
+                class="form-control"
+                placeholder="Link audio"
+              />
+            </div>
+          </template>
           <template
             v-if="
               typeActive?.ma_muc == '03' ||

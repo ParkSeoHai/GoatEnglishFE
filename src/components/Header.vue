@@ -1,5 +1,8 @@
 <script setup>
 import { ref, computed } from "vue";
+import { useLayoutStore } from "@/stores/layout";
+
+const layout = useLayoutStore();
 
 const { user } = defineProps(["user"]);
 
@@ -30,7 +33,7 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <header class="header-v2">
+  <header class="header-v2" :class="{ 'sidebar-collapsed': layout.isCollapsed }">
     <div class="flex justify-between items-center">
       <p v-if="user?.topic" class="topic-text">
         <RouterLink to="/topic"> Chủ đề: {{ user?.topic?.name }} </RouterLink>

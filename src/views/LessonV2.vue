@@ -21,7 +21,7 @@ const lesson = ref();
 const exercises = ref([]);
 const vocabularies = ref([]);
 const lessonsLength = ref(0);
-const indexExercise = ref(2);
+const indexExercise = ref(8);
 const userAnswer = ref([]);
 const progressLesson = computed(() => {
   return (indexExercise.value / lessonsLength.value) * 100;
@@ -100,9 +100,11 @@ onMounted(() => {
 <template>
   <div id="lesson-v2">
     <header class="p-5 bg-[#5de7c0]">
-      <div class="flex items-center justify-between h-[72px] max-w-[100rem] mx-auto">
+      <div
+        class="flex items-center justify-between gap-3 sm:h-[72px] max-w-[100rem] mx-auto"
+      >
         <div class="flex items-center gap-3">
-          <span>
+          <span class="hidden sm:block">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -117,7 +119,9 @@ onMounted(() => {
               ></path>
             </svg>
           </span>
-          <p class="text-[2.4rem] font-bold text-[#313033]">
+          <p
+            class="text-[1.6rem] sm:text-[2.4rem] leading-10 font-semibold text-[#313033] line-clamp-2"
+          >
             English - {{ lesson?.title }}
           </p>
         </div>
@@ -139,10 +143,12 @@ onMounted(() => {
       </div>
     </header>
     <!-- body -->
-    <div class="lesson-body max-w-[85rem] mx-auto p-[32px]">
+    <div
+      class="lesson-body max-w-[85rem] mx-auto px-[1.2rem] py-[2.4rem] sm:px-[3.2rem] sm:py-[3.2rem]"
+    >
       <div class="pb-[2rem]">
         <progress
-          class="progress h-[20px] text-[#fb0] bg-[#e7eaf0]"
+          class="progress h-[1rem] sm:h-[2rem] text-[#fb0] bg-[#e7eaf0]"
           :value="progressLesson"
           max="100"
         ></progress>

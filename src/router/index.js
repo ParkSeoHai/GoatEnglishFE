@@ -104,6 +104,13 @@ const router = createRouter({
       ],
     }
   ],
+  scrollBehavior() {
+    // return desired position
+    return {
+      top: 0,
+      behavior: "instant"
+    }
+  }
 });
 
 export default router;

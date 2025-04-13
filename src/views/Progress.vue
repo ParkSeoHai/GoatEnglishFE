@@ -7,6 +7,7 @@ import { toast } from "vue3-toastify";
 const URL_API = inject("URL_API");
 const handleErrorAPI = inject("handleErrorAPI");
 const getInfoUser = inject("getInfoUser");
+const toggleClamp = inject("toggleClamp");
 
 const user = ref();
 const progresses = ref([]);
@@ -55,16 +56,16 @@ onMounted(() => {
   <div id="progress">
     <Header2 :user="user" />
     <div class="progress-content page-container">
-      <div class="mt-4 flex justify-between">
+      <div class="mt-4 flex justify-between gap-5 progress-content__header">
         <div class="flex flex-col gap-3">
-          <p class="text-[24px] font-bold">Hành trình học của tôi</p>
+          <p class="text-[2rem] md:text-[2.4rem] font-bold">Hành trình học của tôi</p>
           <!-- <p class="font-bold">Đã bắt đầu học 3 thg 2, 2025</p> -->
           <p class="mt-2 progress-desc">
             Theo dõi tiến độ của bạn theo cấp độ và giai đoạn - giành điểm cho mỗi từ bạn
             học, mỗi video bạn xem và mỗi cuộc trò chuyện cùng MemBot để tiếp tục lên cấp!
           </p>
         </div>
-        <RouterLink to="/topic" class="text-center font-bold"
+        <RouterLink to="/topic" class="text-center font-bold underline md:no-underline"
           >Chủ đề: {{ user?.topic?.name }}</RouterLink
         >
       </div>
@@ -87,39 +88,46 @@ onMounted(() => {
             </span>
             <p class="font-bold text-[18px]">{{ progress.name }}</p>
           </div>
-          <div class="progress-number-list flex justify-between items-center">
+          <div class="progress-number-list">
             <template v-for="(lesson, index) in progress.lessons" :key="lesson._id">
-              <button
-                class="progress-btn"
-                :class="{ active: lesson.min_score <= user.score }"
-                @click="
-                  openModal({
-                    name: progress.name,
-                    stt: lessonsBeforeCurrentLevel(progress.order) + (index + 1),
-                    ...lesson,
-                  })
-                "
-              >
-                {{ lessonsBeforeCurrentLevel(progress.order) + (index + 1) }}
-              </button>
-              <span
-                v-if="index < progress.lessons.length - 1"
-                class="dot-icon"
-                :class="{ active: lesson.min_score <= user.score }"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="16"
-                  height="16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+              <div class="flex items-center justify-between">
+                <button
+                  class="progress-btn"
+                  :class="{ active: lesson.min_score <= user.score }"
+                  @click="
+                    openModal({
+                      name: progress.name,
+                      stt: lessonsBeforeCurrentLevel(progress.order) + (index + 1),
+                      ...lesson,
+                    })
+                  "
                 >
-                  <circle cx="12" cy="12" r="9" fill="currentColor"></circle>
-                </svg>
-              </span>
+                  {{ lessonsBeforeCurrentLevel(progress.order) + (index + 1) }}
+                </button>
+                <span
+                  v-if="index < progress.lessons.length - 1"
+                  class="dot-icon"
+                  :class="{ active: lesson.min_score <= user.score }"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle cx="12" cy="12" r="9" fill="currentColor"></circle>
+                  </svg>
+                </span>
+              </div>
             </template>
           </div>
-          <p class="mt-2 progress-desc">{{ progress.description }}</p>
+          <p
+            class="mt-2 progress-desc line-clamp-3"
+            @click="toggleClamp($event, 'line-clamp-3')"
+          >
+            {{ progress.description }}
+          </p>
         </div>
       </div>
     </div>
@@ -130,7 +138,7 @@ onMounted(() => {
       @click="showModal = false"
     >
       <div
-        class="modal-container w-[560px] min-h-[350px] py-8 px-10 bg-white rounded-3xl overflow-auto"
+        class="modal-container w-[95%] md:w-[560px] min-h-[350px] py-8 px-10 bg-white rounded-3xl overflow-auto"
         @click.stop=""
       >
         <div class="flex flex-col gap-8">
@@ -149,7 +157,9 @@ onMounted(() => {
                 ></path>
               </svg>
             </span>
-            <h2 class="text-[24px] font-bold">{{ dataModal?.name }}</h2>
+            <h2 class="text-[2rem] leading-10 md:text-[2.4rem] font-bold">
+              {{ dataModal?.name }}
+            </h2>
           </div>
           <div class="flex justify-center">
             <button
@@ -169,20 +179,20 @@ onMounted(() => {
           <div class="text-center">
             <h3
               v-if="user?.score > dataModal?.min_score"
-              class="text-[20px] text-[#536175] font-bold mb-4"
+              class="text-[2rem] text-[#536175] font-bold mb-4"
             >
               Bạn đã hoàn thành cấp độ {{ dataModal?.stt }}
             </h3>
             <h3
               v-else-if="user?.score == dataModal?.min_score"
-              class="text-[20px] text-[#536175] font-bold mb-4"
+              class="text-[2rem] text-[#536175] font-bold mb-4"
             >
               Bạn đang ở cấp độ {{ dataModal?.stt }}
             </h3>
-            <h3 v-else class="text-[20px] text-[#536175] font-bold mb-4">
+            <h3 v-else class="text-[2rem] text-[#536175] font-bold mb-4">
               Đạt cấp độ {{ dataModal?.stt }} tại {{ dataModal?.min_score }}đ
             </h3>
-            <p class="text-[14px] text-[#293749] leading-6 px-5">
+            <p class="text-[1.6rem] md:text-[1.4rem] text-[#293749] leading-8 px-5">
               Mỗi từ bạn học, mỗi video đã xem và mỗi đối thoại đã luyện tập với Membots
               sẽ mang điểm tới cho bạn
             </p>

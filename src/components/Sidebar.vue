@@ -33,7 +33,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="sidebar bg-white" :class="{ collapsed: isSidebarCollapsed }">
+  <div
+    class="sidebar bg-white"
+    :class="[isSidebarCollapsed ? 'collapsed' : '', layout.showSidebar ? 'show' : '']"
+  >
     <div class="relative h-full">
       <router-link to="/dashboard" class="logo">
         <p
@@ -60,6 +63,48 @@ onMounted(() => {
             </svg>
           </span>
           <span class="tab-item__link--text">Trang chủ</span>
+        </router-link>
+      </div>
+      <div class="tab-item" :class="{ active: route.name === 'Topic' }">
+        <router-link to="/topic" class="tab-item__link">
+          <span class="tab-item__icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-stack"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.6.6 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.6.6 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.6.6 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535z"
+              />
+              <path
+                d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.6.6 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0z"
+              />
+            </svg>
+          </span>
+          <span class="tab-item__link--text">Chủ đề</span>
+        </router-link>
+      </div>
+      <div class="tab-item" :class="{ active: route.name === 'Progress' }">
+        <router-link to="/progress" class="tab-item__link">
+          <span class="tab-item__icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-graph-up-arrow"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5"
+              />
+            </svg>
+          </span>
+          <span class="tab-item__link--text">Tiến độ học tập</span>
         </router-link>
       </div>
       <div class="tab-item" :class="{ active: route.name === 'Vocabulary' }">

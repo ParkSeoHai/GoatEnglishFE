@@ -1,3 +1,5 @@
+@use '../base';
+
 #lesson {
   margin: 0 auto;
   max-width: 1080px;
@@ -140,15 +142,76 @@
 }
 
 #lesson-v2 {
+  .lesson-body {
+    margin-bottom: 70px;
+  }
+
   .btn-primary-custom {
-    // background-color: #ffbb00;
+    @include base.breakpoint(md) {
+      margin: auto 0;
+      width: 50%;
+    }
+    @include base.breakpoint(sm) {
+      width: 100%;
+    }
+  }
+
+  .left {
+    @include base.breakpoint(md) {
+      width: 100%;
+    }
+
+    .text-type {
+      @include base.breakpoint(sm) {
+        font-size: 1.8rem;
+      }
+    }
+
+    .text-question {
+      line-height: 4rem;
+      @include base.breakpoint(sm) {
+        font-size: 2.2rem;
+        padding: 0;
+        line-height: 2.8rem;
+      }
+    }
+
+    .input-answer {
+      @include base.breakpoint(sm) {
+        font-size: 1.8rem;
+        padding: 1rem;
+        height: auto;
+      }
+    }
+  }
+
+  .right {
+    background-color: #fff;
+    @include base.breakpoint(md) {
+      position: fixed;
+      width: auto;
+      height: 70px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0 1.2rem;
+    }
   }
 
   .btn-options {
+    @include base.breakpoint(sm) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
     .btn {
       position: relative;
       border: 2px solid #bcc2cf;
       box-shadow: #bcc2cf 0px 4px 0px;
+      @include base.breakpoint(sm) {
+        font-size: 1.6rem;
+        min-height: 4rem;
+      }
 
       &:hover {
         top: -3px;

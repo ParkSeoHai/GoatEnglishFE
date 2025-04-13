@@ -17,6 +17,9 @@
       position: relative;
       width: 350px;
       margin: 12px auto;
+      @include base.breakpoint(sm) {
+        width: 100%;
+      }
     }
 
     .signin-input {

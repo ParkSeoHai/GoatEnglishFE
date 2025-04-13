@@ -8,7 +8,7 @@ onMounted(() => layout.show());
 </script>
 <template>
   <div class="home-body page-container flex items-center">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between gap-4 flex-col md:flex-row">
       <div class="banner">
         <img class="img" src="../assets/images/19467ffee68fe.png" />
       </div>

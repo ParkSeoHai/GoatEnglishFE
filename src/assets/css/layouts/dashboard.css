@@ -61,6 +61,7 @@ body {
 /* Common */
 .page-container {
   margin: 0 auto;
+  padding: 0 1rem;
   max-width: 1280px;
 }
 
@@ -132,6 +133,11 @@ body {
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
+@media (max-width: 767.98px) {
+  .text-logo {
+    font-size: 2.8rem;
+  }
+}
 
 html {
   font-size: 62.5%;
@@ -178,10 +184,22 @@ body {
   margin-top: 65px;
   min-height: 100vh;
 }
+@media (max-width: 575.98px) {
+  .dashboard-content {
+    padding-bottom: 20px;
+    margin-bottom: 150px;
+    padding: 8px 12px 48px;
+  }
+}
 .dashboard-content .header-content .title {
   font-size: 3rem;
   font-weight: 700;
   gap: 1.2rem;
+}
+@media (max-width: 575.98px) {
+  .dashboard-content .header-content .title {
+    font-size: 2rem;
+  }
 }
 .dashboard-content .header-content .title-number {
   background-color: rgb(255, 187, 0);
@@ -209,13 +227,28 @@ body {
   font-weight: 700;
   font-size: 2.4rem;
 }
+@media (max-width: 575.98px) {
+  .dashboard-content .body-content .title {
+    font-size: 1.8rem;
+  }
+}
 .dashboard-content .body-content .list-card {
   padding: 24px 16px 32px;
+}
+@media (max-width: 767.98px) {
+  .dashboard-content .body-content .list-card {
+    flex-direction: column;
+  }
 }
 .dashboard-content .body-content .card-item {
   padding: 1.6rem 2.4rem;
   border-radius: 8px;
   cursor: pointer;
+}
+@media (max-width: 575.98px) {
+  .dashboard-content .body-content .card-item {
+    padding: 1rem 1.2rem;
+  }
 }
 .dashboard-content .body-content .card-item .text-hide {
   display: none;
@@ -238,9 +271,19 @@ body {
   left: 255px;
   right: 0;
 }
+@media (max-width: 991.98px) {
+  .dashboard-content .bottom-content {
+    left: 0;
+  }
+}
 .dashboard-content .bottom-content .content {
   width: 720px;
   margin: 0 auto;
+}
+@media (max-width: 767.98px) {
+  .dashboard-content .bottom-content .content {
+    width: 90%;
+  }
 }
 .dashboard-content .bottom-content .content .swiper-slide {
   position: relative;
@@ -291,6 +334,19 @@ body {
   align-items: center;
   justify-content: space-between;
   text-align: center;
+  width: fit-content;
+}
+@media (max-width: 767.98px) {
+  .dashboard-content .bottom-content .content .btn {
+    margin-left: auto;
+  }
+}
+@media (max-width: 575.98px) {
+  .dashboard-content .bottom-content .content .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 3.5rem;
+  }
 }
 .dashboard-content .bottom-content .content .btn:hover {
   opacity: 0.9;

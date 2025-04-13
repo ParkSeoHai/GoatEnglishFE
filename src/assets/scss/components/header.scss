@@ -37,9 +37,36 @@
   background-color: #fff;
   border-bottom: 0.125rem solid rgb(204, 210, 222);
   z-index: 999;
+  @include base.breakpoint(lg) {
+    left: 0;
+  }
+
+  .btn-menu {
+    display: none;
+    @include base.breakpoint(lg) {
+      display: block;
+    }
+  }
 
   &.sidebar-collapsed {
     left: 90px;
+    @include base.breakpoint(lg) {
+      left: 0;
+    }
+  }
+
+  &.sidebar-open {
+    left: 255px;
+    .actions-right {
+      display: none;
+    }
+  }
+
+  &.sidebar-open.sidebar-collapsed {
+    left: 90px;
+    .actions-right {
+      display: flex;
+    }
   }
 
   .topic-text {
@@ -47,6 +74,9 @@
     font-weight: 600;
     cursor: pointer;
     text-decoration: underline;
+    @include base.breakpoint(sm) {
+      display: none;
+    }
   }
 
   .actions-right {

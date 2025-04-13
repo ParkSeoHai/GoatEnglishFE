@@ -4,6 +4,9 @@
   .topic-content {
     padding: 8px 32px 48px;
     margin-top: 65px;
+    @include base.breakpoint(sm) {
+      padding: 8px 16px 24px;
+    }
 
     .title {
       font-size: 3rem;
@@ -20,6 +23,9 @@
     grid-template-columns: repeat(2, 1fr);
     margin-top: 20px;
     gap: 20px;
+    @include base.breakpoint(md) {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 
   .topic-item {
@@ -28,6 +34,9 @@
     border: 2px solid rgb(231, 234, 240);
     width: 100%;
     position: relative;
+    @include base.breakpoint(sm) {
+      flex-direction: column;
+    }
 
     .btn-topic:hover {
       opacity: 0.8;
@@ -45,5 +54,8 @@
     width: 170px;
     height: 160px;
     border-radius: 16px;
+    @include base.breakpoint(sm) {
+      margin: 12px auto;
+    }
   }
 }

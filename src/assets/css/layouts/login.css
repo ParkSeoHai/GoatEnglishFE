@@ -61,6 +61,7 @@ body {
 /* Common */
 .page-container {
   margin: 0 auto;
+  padding: 0 1rem;
   max-width: 1280px;
 }
 
@@ -132,6 +133,11 @@ body {
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
+@media (max-width: 767.98px) {
+  .text-logo {
+    font-size: 2.8rem;
+  }
+}
 
 html {
   font-size: 62.5%;
@@ -179,6 +185,11 @@ body {
   position: relative;
   width: 350px;
   margin: 12px auto;
+}
+@media (max-width: 575.98px) {
+  #login .login-content .signin-input__with-icon {
+    width: 100%;
+  }
 }
 #login .login-content .signin-input {
   display: block;

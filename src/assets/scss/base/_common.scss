@@ -8,6 +8,7 @@ body {
 /* Common */
 .page-container {
   margin: 0 auto;
+  padding: 0 1rem;
   max-width: 1280px;
 }
 
@@ -86,4 +87,7 @@ $text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
+  @include mixin.breakpoint(md) {
+    font-size: 2.8rem;
+  }
 }

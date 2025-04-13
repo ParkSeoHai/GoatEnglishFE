@@ -43,10 +43,12 @@ onMounted(() => {
 <template>
   <!-- Nghe và chọn đáp án -->
   <div class="left w-[85%]">
-    <p class="text-[#001122] text-[3rem]">{{ props.exercise?.type?.ten_muc }}</p>
-    <div class="flex justify-between gap-8 mt-12">
+    <p class="text-[#001122] text-[3rem] text-type">
+      {{ props.exercise?.type?.ten_muc }}
+    </p>
+    <div class="flex justify-between flex-col sm:flex-row gap-8 mt-12">
       <div
-        class="rounded-2xl w-[150px] h-[150px] overflow-hidden"
+        class="rounded-2xl w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] overflow-hidden"
         style="
           background: url(https://app.memrise.com/_next/static/images/328708f7d63a9419a8b2163a1f4c4015.png)
             center center / contain no-repeat;
@@ -73,8 +75,8 @@ onMounted(() => {
         </button>
       </div>
       <div class="flex-1">
-        <div class="min-h-[64px]">
-          <div v-if="showResult" class="text-[20px] mt-8 leading-10">
+        <div>
+          <div v-if="showResult" class="text-[1.6rem] sm:text-[2rem] mt-8 leading-10">
             <p>
               <span class="font-semibold">Giải thích</span>:
               {{ props.exercise?.explain_answer }}
@@ -123,7 +125,7 @@ onMounted(() => {
     </div>
   </div>
   <div class="right w-[15%]">
-    <div>
+    <div class="flex flex-col gap-8 h-full items-center justify-center sm:justify-start">
       <button
         class="btn btn-primary-custom w-full min-h-[4.4rem] text-[1.6rem]"
         :disabled="!dataResult"

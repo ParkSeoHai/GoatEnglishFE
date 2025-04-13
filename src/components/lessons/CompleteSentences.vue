@@ -74,25 +74,27 @@ const resetAnswer = () => {
 <template>
   <!-- Chọn câu trả phù hợp -->
   <div class="left w-[85%]">
-    <p class="text-[#001122] text-[3rem]">{{ props.exercise?.type?.ten_muc }}</p>
+    <p class="text-[#001122] text-[3rem] text-type">
+      {{ props.exercise?.type?.ten_muc }}
+    </p>
     <div class="my-20">
-      <p class="text-center text-[3.6rem] font-bold px-10">
+      <p class="text-center text-[3.6rem] font-bold px-10 text-question">
         {{ props.exercise?.question }}
       </p>
     </div>
     <div class="flex-1">
       <div>
-        <div class="flex items-center flex-wrap gap-4">
+        <div class="flex items-center flex-wrap gap-2 sm:gap-4">
           <button
             v-for="(option, index) in userAnswer"
             :key="index"
-            class="btn btn-default-custom min-h-[5rem] text-[2.4rem]"
+            class="btn btn-default-custom min-h-[3rem] sm:min-h-[5rem] text-[1.6rem] py-3 sm:text-[2.4rem]"
             @click="handleInsertAnswer(option.answer, option.index)"
           >
             {{ option.answer }}
           </button>
         </div>
-        <div v-if="showResult" class="text-[20px] mt-8 leading-10">
+        <div v-if="showResult" class="text-[1.6rem] sm:text-[2rem] mt-8 leading-10">
           <p v-if="result" class="font-semibold text-[#6ba72a]">Chính xác</p>
           <p v-else>
             <span class="block font-semibold text-[#b13039] mb-4">Chưa chính xác</span>
@@ -111,11 +113,10 @@ const resetAnswer = () => {
         <button
           v-for="(option, index) in options"
           :key="index"
-          class="btn btn-default-custom min-h-[5rem] text-[2.4rem]"
+          class="btn btn-default-custom min-h-[3rem] sm:min-h-[5rem] py-3 text-[2.4rem]"
           :style="{
             backgroundColor: checkSelected(option, index) ? '#bcc2cf' : '#fff',
           }"
-          style="padding: 0 32px"
           @click="handleInsertAnswer(option, index)"
         >
           {{ option }}
@@ -124,7 +125,7 @@ const resetAnswer = () => {
     </div>
   </div>
   <div class="right w-[15%]">
-    <div>
+    <div class="flex flex-col gap-8 h-full items-center justify-center sm:justify-start">
       <button
         class="btn btn-primary-custom w-full min-h-[4.4rem] text-[1.6rem]"
         :disabled="userAnswer.length === 0"

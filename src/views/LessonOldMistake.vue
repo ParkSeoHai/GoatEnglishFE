@@ -1,57 +1,59 @@
 <script setup>
-import ListenAndChoose from '@/components/lessons/ListenAndSentences.vue'
-import Vocabulary from '@/components/lessons/Vocabulary.vue'
-import ChooseAnswer from '@/components/lessons/ChooseAnswer.vue'
-import FillInTheBlank from '@/components/lessons/FillInTheBlank.vue'
-import CompleteSentences from '@/components/lessons/CompleteSentences.vue'
-import { computed, inject, onMounted, ref } from 'vue'
-import _ from 'lodash'
-import api from '@/utils'
-import { toast } from 'vue3-toastify'
-import { toRefs } from 'vue'
+import ListenAndChoose from "@/components/lessons/ListenAndSentences.vue";
+import Vocabulary from "@/components/lessons/Vocabulary.vue";
+import ChooseAnswer from "@/components/lessons/ChooseAnswer.vue";
+import FillInTheBlank from "@/components/lessons/FillInTheBlank.vue";
+import CompleteSentences from "@/components/lessons/CompleteSentences.vue";
+import { computed, inject, onMounted, ref } from "vue";
+import _ from "lodash";
+import api from "@/utils";
+import { toast } from "vue3-toastify";
+import { toRefs } from "vue";
 
-const URL_API = inject('URL_API')
-const handleErrorAPI = inject('handleErrorAPI')
-const getInfoUser = inject('getInfoUser')
+const URL_API = inject("URL_API");
+const handleErrorAPI = inject("handleErrorAPI");
+const getInfoUser = inject("getInfoUser");
 
-const props = defineProps(['exercises'])
-const emit = defineEmits(['close'])
+const props = defineProps(["exercises"]);
+const emit = defineEmits(["close"]);
 
-const { exercises } = toRefs(props)
-const indexExercise = ref(0)
-const userAnswer = ref([])
+const { exercises } = toRefs(props);
+const indexExercise = ref(0);
+const userAnswer = ref([]);
 
-const user = ref()
+const user = ref();
 const progressLesson = computed(() => {
-  return (indexExercise.value / exercises.value?.length) * 100
-})
+  return (indexExercise.value / exercises.value?.length) * 100;
+});
 
 const init = async () => {
-  user.value = await getInfoUser()
-  exercises.value = _.shuffle(exercises.value)
-}
+  user.value = await getInfoUser();
+  exercises.value = _.shuffle(exercises.value);
+};
 
 const nextExercise = async (result) => {
-  userAnswer.value.push(result)
-  indexExercise.value += 1
+  userAnswer.value.push(result);
+  indexExercise.value += 1;
   if (indexExercise.value >= exercises.value?.length) {
-    emit('close', userAnswer.value)
+    emit("close", userAnswer.value);
   }
-}
+};
 
 const close = () => {
-  emit('close', userAnswer.value)
-}
+  emit("close", userAnswer.value);
+};
 
 onMounted(() => {
-  init()
-})
+  init();
+});
 </script>
 
 <template>
   <div id="lesson-v2">
     <header class="p-5 bg-[#5de7c0]">
-      <div class="flex items-center justify-between h-[72px] max-w-[100rem] mx-auto">
+      <div
+        class="flex items-center justify-between gap-3 sm:h-[72px] max-w-[100rem] mx-auto"
+      >
         <div class="flex items-center gap-3">
           <span>
             <svg
@@ -68,7 +70,11 @@ onMounted(() => {
               ></path>
             </svg>
           </span>
-          <p class="text-[2.4rem] font-bold text-[#313033]">English - Ôn tập lỗi sai</p>
+          <p
+            class="text-[1.6rem] sm:text-[2.4rem] leading-10 font-semibold text-[#313033] line-clamp-2"
+          >
+            English - Ôn tập lỗi sai
+          </p>
         </div>
         <div>
           <span @click="close" class="cursor-pointer">

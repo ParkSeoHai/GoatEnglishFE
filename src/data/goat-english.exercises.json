@@ -1,0 +1,1135 @@
+[{
+  "_id": {
+    "$oid": "67f6287d24fc0a278020452f"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc0f5413b7b57caee97"
+  },
+  "question": "The Internet is a global ______ that connects computers.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "network",
+  "audio": "",
+  "explain_answer": "The correct word is 'network'.",
+  "explain_answer_vn": "Từ đúng là 'network' (mạng lưới).",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.339Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:36:35.536Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a2780204531"
+  },
+  "type": {
+    "$oid": "67b73d0ef5413b7b57caee8b"
+  },
+  "level": {
+    "$oid": "67b73dc0f5413b7b57caee97"
+  },
+  "question": "Which of the following is used to access the Internet?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Router"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Television"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Washing machine"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Microwave"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Router",
+  "audio": "",
+  "explain_answer": "A router helps you connect to the Internet.",
+  "explain_answer_vn": "Router giúp bạn kết nối với Internet.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.355Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:36:35.602Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a2780204533"
+  },
+  "type": {
+    "$oid": "67f649d432f7eea330079621"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Bạn nghe được gì?",
+  "options": [
+    {
+      "_id": "0",
+      "ma_dap_an": "A",
+      "noi_dung": "living"
+    },
+    {
+      "_id": "1",
+      "ma_dap_an": "B",
+      "noi_dung": "loving"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "living",
+  "audio": "",
+  "explain_answer": "living.",
+  "explain_answer_vn": "living...",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.384Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:36:35.549Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a2780204535"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73db3f5413b7b57caee95"
+  },
+  "question": "I use the Internet to ______ with my friends.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "chat",
+  "audio": "",
+  "explain_answer": "The correct word is 'chat'.",
+  "explain_answer_vn": "Từ đúng là 'chat' (trò chuyện).",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.389Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:36:35.577Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a2780204537"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc0f5413b7b57caee97"
+  },
+  "question": "We can ______ videos on the Internet.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "watch",
+  "audio": "",
+  "explain_answer": "We watch videos online.",
+  "explain_answer_vn": "Chúng ta xem video trên Internet.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.406Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:36:35.567Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a2780204539"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "The ______ is used to type commands and code.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "keyboard",
+  "audio": "",
+  "explain_answer": "The keyboard is an input device used to enter data or code.",
+  "explain_answer_vn": "Bàn phím là thiết bị nhập dùng để gõ lệnh hoặc viết mã.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.518Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:26:52.469Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a278020453b"
+  },
+  "type": {
+    "$oid": "67b73d0ef5413b7b57caee8b"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Which one is NOT a web browser?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Firefox"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Chrome"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Safari"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Photoshop"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Photoshop",
+  "audio": "",
+  "explain_answer": "Photoshop is for editing images, not browsing the web.",
+  "explain_answer_vn": "Photoshop là phần mềm chỉnh sửa ảnh, không phải trình duyệt web.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.534Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:26:52.477Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a278020453d"
+  },
+  "type": {
+    "$oid": "67b73d0ef5413b7b57caee8b"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "What does CPU stand for?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Central Power Unit"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Central Processing Unit"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Computer Processing Unit"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Central Program Utility"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Central Processing Unit",
+  "audio": "",
+  "explain_answer": "CPU is the brain of the computer.",
+  "explain_answer_vn": "CPU là bộ não của máy tính.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.555Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:26:52.504Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a278020453f"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Which one is NOT used with the Internet?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Laptop"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Smartphone"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Microwave"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Tablet"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Microwave",
+  "audio": "",
+  "explain_answer": "Microwave is not an Internet device.",
+  "explain_answer_vn": "Lò vi sóng không phải thiết bị dùng với Internet.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.635Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:36:35.592Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a2780204547"
+  },
+  "type": {
+    "$oid": "67b73d18f5413b7b57caee8d"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "What is said in the audio?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Apps are accessed through a browser"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Websites require installation"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Apps must be downloaded from app stores"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Websites cannot be used on phones"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Apps must be downloaded from app stores.",
+  "audio": "",
+  "explain_answer": "The audio mentions apps must be downloaded.",
+  "explain_answer_vn": "Âm thanh nói rằng ứng dụng cần được tải từ kho ứng dụng.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.771Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:49.771Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a2780204549"
+  },
+  "type": {
+    "$oid": "67b73d85f5413b7b57caee95"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Arrange the words to form a correct sentence:",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "Apps must be installed",
+  "audio": "",
+  "explain_answer": "The sentence structure is Subject + Modal + Verb + Verb (past participle).",
+  "explain_answer_vn": "Cấu trúc câu chuẩn là Chủ ngữ + Động từ khiếm khuyết + Động từ nguyên thể.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.790Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:49.790Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a278020454b"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Which app helps you browse the Internet?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Chrome"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Calculator"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Camera"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Clock"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Chrome",
+  "audio": "",
+  "explain_answer": "Chrome is a web browser.",
+  "explain_answer_vn": "Chrome là trình duyệt web.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.818Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:36:35.582Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a278020454d"
+  },
+  "type": {
+    "$oid": "67b73d85f5413b7b57caee95"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Match the sentence",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "You can send emails on the Internet.",
+  "audio": "",
+  "explain_answer": "The sentence is: You can send emails on the Internet.",
+  "explain_answer_vn": "Câu đúng là: Bạn có thể gửi email trên Internet.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.839Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:36:35.598Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a278020454f"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "A website can be accessed through a ____, while an app must be ____ and installed.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "browser, downloaded",
+  "audio": "",
+  "explain_answer": "You access websites using a browser. Apps must be downloaded first.",
+  "explain_answer_vn": "Bạn sử dụng trình duyệt để truy cập website. Ứng dụng thì cần tải về và cài đặt.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.905Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:49.905Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287e24fc0a2780204551"
+  },
+  "type": {
+    "$oid": "67b73d0ef5413b7b57caee8b"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Which is more accessible without installation?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Mobile app"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Desktop app"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Website"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Game app"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Website",
+  "audio": "",
+  "explain_answer": "Websites are accessible instantly via browser.",
+  "explain_answer_vn": "Website có thể truy cập ngay qua trình duyệt mà không cần cài đặt.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:50.007Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:50.007Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a2780204527"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "We use a ______ to view web pages.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "browser",
+  "audio": "",
+  "explain_answer": "A browser (like Chrome or Firefox) helps us view websites.",
+  "explain_answer_vn": "Trình duyệt (như Chrome hoặc Firefox) giúp ta xem trang web.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.268Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:26:52.490Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6287d24fc0a2780204529"
+  },
+  "type": {
+    "$oid": "67b73d85f5413b7b57caee95"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Complete the sentence",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "HTML  is used to create the structure of web pages.",
+  "audio": "",
+  "explain_answer": "HTML (HyperText Markup Language) is used to create the structure of web pages.",
+  "explain_answer_vn": "HTML dùng để tạo cấu trúc cho các trang web.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:49.288Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:26:52.495Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a278020461e"
+  },
+  "type": {
+    "$oid": "67b73d0ef5413b7b57caee8b"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "What does CPU stand for?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Central Power Unit"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Central Processing Unit"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Computer Processing Unit"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Central Program Utility"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Central Processing Unit",
+  "audio": "",
+  "explain_answer": "CPU is the brain of the computer.",
+  "explain_answer_vn": "CPU là bộ não của máy tính.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.155Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:15:20.600Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204624"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc0f5413b7b57caee97"
+  },
+  "question": "The Internet is a global ______ that connects computers.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "network",
+  "audio": "",
+  "explain_answer": "The correct word is 'network'.",
+  "explain_answer_vn": "Từ đúng là 'network' (mạng lưới).",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.205Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.205Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204626"
+  },
+  "type": {
+    "$oid": "67b73d0ef5413b7b57caee8b"
+  },
+  "level": {
+    "$oid": "67b73dc0f5413b7b57caee97"
+  },
+  "question": "Which of the following is used to access the Internet?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Router"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Television"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Washing machine"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Microwave"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Router",
+  "audio": "",
+  "explain_answer": "A router helps you connect to the Internet.",
+  "explain_answer_vn": "Router giúp bạn kết nối với Internet.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.236Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.236Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204628"
+  },
+  "type": {
+    "$oid": "67b73d85f5413b7b57caee95"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Match the words to form a correct sentence",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "I use the Internet to learn English.",
+  "audio": "",
+  "explain_answer": "The sentence is: I use the Internet to learn English.",
+  "explain_answer_vn": "Câu đúng là: Tôi sử dụng Internet để học tiếng Anh.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.255Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.255Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a278020462a"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73db3f5413b7b57caee95"
+  },
+  "question": "I use the Internet to ______ with my friends.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "chat",
+  "audio": "",
+  "explain_answer": "The correct word is 'chat'.",
+  "explain_answer_vn": "Từ đúng là 'chat' (trò chuyện).",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.270Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.270Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a278020462c"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc0f5413b7b57caee97"
+  },
+  "question": "We can ______ videos on the Internet.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "watch",
+  "audio": "",
+  "explain_answer": "We watch videos online.",
+  "explain_answer_vn": "Chúng ta xem video trên Internet.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.283Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.283Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a278020462e"
+  },
+  "type": {
+    "$oid": "67b73d18f5413b7b57caee8d"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "The ______ is used to type commands and code.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "keyboard",
+  "audio": "",
+  "explain_answer": "The keyboard is an input device used to enter data or code.",
+  "explain_answer_vn": "Bàn phím là thiết bị nhập dùng để gõ lệnh hoặc viết mã.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.369Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:15:20.581Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204630"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "We use a ______ to view web pages.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "browser",
+  "audio": "",
+  "explain_answer": "A browser (like Chrome or Firefox) helps us view websites.",
+  "explain_answer_vn": "Trình duyệt (như Chrome hoặc Firefox) giúp ta xem trang web.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.403Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:15:20.553Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204632"
+  },
+  "type": {
+    "$oid": "67b73d0ef5413b7b57caee8b"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Which one is NOT a web browser?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Firefox"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Chrome"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Safari"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Photoshop"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Photoshop",
+  "audio": "",
+  "explain_answer": "Photoshop is for editing images, not browsing the web.",
+  "explain_answer_vn": "Photoshop là phần mềm chỉnh sửa ảnh, không phải trình duyệt web.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.422Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:15:20.589Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204634"
+  },
+  "type": {
+    "$oid": "67b73d85f5413b7b57caee95"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Complete the sentence",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "HTML  is used to create the structure of web pages.",
+  "audio": "",
+  "explain_answer": "HTML (HyperText Markup Language) is used to create the structure of web pages.",
+  "explain_answer_vn": "HTML dùng để tạo cấu trúc cho các trang web.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.437Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:15:20.613Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204636"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Which one is NOT used with the Internet?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Laptop"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Smartphone"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Microwave"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Tablet"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Microwave",
+  "audio": "",
+  "explain_answer": "Microwave is not an Internet device.",
+  "explain_answer_vn": "Lò vi sóng không phải thiết bị dùng với Internet.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.453Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.453Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204638"
+  },
+  "type": {
+    "$oid": "67b73d85f5413b7b57caee95"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Match the sentence",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "You can send emails on the Internet.",
+  "audio": "",
+  "explain_answer": "The sentence is: You can send emails on the Internet.",
+  "explain_answer_vn": "Câu đúng là: Bạn có thể gửi email trên Internet.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.470Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.470Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a278020463a"
+  },
+  "type": {
+    "$oid": "67b73d18f5413b7b57caee8d"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "What is said in the audio?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Apps are accessed through a browser"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Websites require installation"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Apps must be downloaded from app stores"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Websites cannot be used on phones"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Apps must be downloaded from app stores.",
+  "audio": "",
+  "explain_answer": "The audio mentions apps must be downloaded.",
+  "explain_answer_vn": "Âm thanh nói rằng ứng dụng cần được tải từ kho ứng dụng.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.485Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.485Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a278020463c"
+  },
+  "type": {
+    "$oid": "67b73d85f5413b7b57caee95"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Arrange the words to form a correct sentence:",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "Apps must be installed",
+  "audio": "",
+  "explain_answer": "The sentence structure is Subject + Modal + Verb + Verb (past participle).",
+  "explain_answer_vn": "Cấu trúc câu chuẩn là Chủ ngữ + Động từ khiếm khuyết + Động từ nguyên thể.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.502Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.502Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a278020463e"
+  },
+  "type": {
+    "$oid": "67b73d0ef5413b7b57caee8b"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Which is more accessible without installation?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Mobile app"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Desktop app"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Website"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Game app"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Website",
+  "audio": "",
+  "explain_answer": "Websites are accessible instantly via browser.",
+  "explain_answer_vn": "Website có thể truy cập ngay qua trình duyệt mà không cần cài đặt.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.516Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.516Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204640"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "Which app helps you browse the Internet?",
+  "options": [
+    {
+      "ma_dap_an": "A",
+      "noi_dung": "Chrome"
+    },
+    {
+      "ma_dap_an": "B",
+      "noi_dung": "Calculator"
+    },
+    {
+      "ma_dap_an": "C",
+      "noi_dung": "Camera"
+    },
+    {
+      "ma_dap_an": "D",
+      "noi_dung": "Clock"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "Chrome",
+  "audio": "",
+  "explain_answer": "Chrome is a web browser.",
+  "explain_answer_vn": "Chrome là trình duyệt web.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.554Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.554Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6288524fc0a2780204642"
+  },
+  "type": {
+    "$oid": "67b73cfff5413b7b57caee89"
+  },
+  "level": {
+    "$oid": "67b73dc9f5413b7b57caee99"
+  },
+  "question": "A website can be accessed through a ____, while an app must be ____ and installed.",
+  "options": [],
+  "multiple_correct": false,
+  "correct_answer": "browser, downloaded",
+  "audio": "",
+  "explain_answer": "You access websites using a browser. Apps must be downloaded first.",
+  "explain_answer_vn": "Bạn sử dụng trình duyệt để truy cập website. Ứng dụng thì cần tải về và cài đặt.",
+  "createdAt": {
+    "$date": "2025-04-09T07:57:57.579Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T07:57:57.579Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f64a1e81fa162dff256b10"
+  },
+  "type": {
+    "$oid": "67b73d18f5413b7b57caee8d"
+  },
+  "level": {
+    "$oid": "67b73dc0f5413b7b57caee97"
+  },
+  "question": "Bạn nghe được gì?",
+  "options": [
+    {
+      "_id": "0",
+      "ma_dap_an": "A",
+      "noi_dung": "living"
+    },
+    {
+      "_id": "1",
+      "ma_dap_an": "B",
+      "noi_dung": "loving"
+    }
+  ],
+  "multiple_correct": false,
+  "correct_answer": "how old are you?",
+  "audio": "",
+  "explain_answer": "how old are you?",
+  "explain_answer_vn": "how old are you?",
+  "createdAt": {
+    "$date": "2025-04-09T10:21:18.525Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T10:26:52.509Z"
+  },
+  "__v": 0
+}]

@@ -63,10 +63,12 @@ onMounted(() => {
 <template>
   <!-- Nghe và chọn đáp án -->
   <div class="left w-[85%]">
-    <p class="text-[#001122] text-[3rem]">{{ props.exercise?.type?.ten_muc }}</p>
-    <div class="flex justify-between gap-8 mt-12">
+    <p class="text-[#001122] text-[3rem] text-type">
+      {{ props.exercise?.type?.ten_muc }}
+    </p>
+    <div class="flex justify-between gap-8 mt-12 flex-col sm:flex-row">
       <div
-        class="rounded-2xl w-[150px] h-[150px] overflow-hidden"
+        class="rounded-2xl w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] overflow-hidden"
         style="
           background: url(https://app.memrise.com/_next/static/images/328708f7d63a9419a8b2163a1f4c4015.png)
             center center / contain no-repeat;
@@ -93,18 +95,18 @@ onMounted(() => {
         </button>
       </div>
       <div class="flex-1">
-        <div class="min-h-[64px]">
-          <div class="flex items-center flex-wrap gap-4">
+        <div class="min-h-[20px]">
+          <div class="flex items-center flex-wrap gap-2 sm:gap-4">
             <button
               v-for="(option, index) in userAnswer"
               :key="index"
-              class="btn btn-default-custom min-h-[5rem] text-[2.4rem]"
+              class="btn btn-default-custom min-h-[3rem] sm:min-h-[5rem] text-[1.6rem] py-3 sm:text-[2.4rem]"
               @click="handleInsertAnswer(option.answer, option.index)"
             >
               {{ option.answer }}
             </button>
           </div>
-          <div v-if="showResult" class="text-[20px] mt-8 leading-10">
+          <div v-if="showResult" class="text-[1.6rem] sm:text-[2rem] mt-8 leading-10">
             <p v-if="result" class="font-semibold text-[#6ba72a]">Chính xác</p>
             <p v-else>
               <span class="block font-semibold text-[#b13039] mb-4">Chưa chính xác</span>

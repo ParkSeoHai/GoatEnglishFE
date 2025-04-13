@@ -32,12 +32,16 @@ onMounted(() => {
   <div class="left w-[70%]">
     <div>
       <p class="uppercase text-[1.4rem] my-[0.8rem]">Tiếng Anh</p>
-      <span class="font-bold text-[3.6rem]">{{ props.vocabulary?.word }}</span>
+      <span class="block font-bold text-[2rem] sm:text-[3.6rem] leading-10">{{
+        props.vocabulary?.word
+      }}</span>
       <span class="block mt-3">{{ props.vocabulary?.phonetic }}</span>
     </div>
     <div class="mt-8">
       <p class="uppercase text-[1.4rem] my-[0.8rem]">Vietnamese</p>
-      <span class="font-bold text-[2.8rem]">{{ props.vocabulary?.vietnamese }}</span>
+      <span class="block font-bold text-[2rem] sm:text-[2.8rem] leading-10">{{
+        props.vocabulary?.vietnamese
+      }}</span>
     </div>
     <!-- examples -->
     <div class="mt-8">
@@ -97,7 +101,7 @@ onMounted(() => {
     </div>
   </div>
   <div class="right w-[30%]">
-    <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-8 h-full items-center justify-center sm:justify-start">
       <button
         class="btn btn-primary-custom w-full min-h-[4.4rem] text-[1.6rem]"
         style="color: #012"

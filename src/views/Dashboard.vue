@@ -12,6 +12,8 @@ import LessonOldMistake from "./LessonOldMistake.vue";
 const URL_API = inject("URL_API");
 const handleErrorAPI = inject("handleErrorAPI");
 const getInfoUser = inject("getInfoUser");
+const toggleClamp = inject("toggleClamp");
+const sleep = inject("sleep");
 
 const modules = ref([Pagination, Navigation]);
 const tabSwiper = ref(null);
@@ -112,6 +114,7 @@ const handleGetOldMistake = async () => {
     return;
   }
   try {
+    await sleep(1000);
     const res = await api.get(
       `${URL_API}/api/user/get-old-mistake/${user.value?._id}/${user.value?.topic_id}`
     );
@@ -260,15 +263,18 @@ onMounted(() => {
                   </span>
                   <div class="flex flex-col gap-4 ms-5">
                     <p class="font-bold">Thực hiện bài học</p>
-                    <p class="text-[#536175]">
+                    <div class="text-[#536175]">
                       <!-- Mô tả -->
-                      <span class="me-5"
+                      <span class="me-5 leading-8"
                         >Chủ đề: {{ dataProgress?.lesson_id?.title }}</span
                       >
-                      <span class="block mt-4">
+                      <p
+                        class="mt-4 leading-8 line-clamp-3"
+                        @click="toggleClamp($event, 'line-clamp-3')"
+                      >
                         Mô tả: {{ dataProgress?.lesson_id?.description }}
-                      </span>
-                    </p>
+                      </p>
+                    </div>
                     <!-- <p class="text-[#536175]">
                       <span class="me-5">0</span> Các từ đã thành thạo
                     </p>
@@ -366,9 +372,11 @@ onMounted(() => {
               @swiper="onSwiper"
             >
               <swiper-slide class="flex c00a778">
-                <div class="text-box w-full flex justify-between">
+                <div
+                  class="text-box w-full flex flex-col gap-4 sm:flex-row justify-between"
+                >
                   <div class="flex">
-                    <span class="icon text-[#00a778]">
+                    <span class="icon text-[#00a778] hidden sm:block">
                       <svg
                         viewBox="0 0 24 24"
                         width="24"
@@ -384,12 +392,19 @@ onMounted(() => {
                         ></path>
                       </svg>
                     </span>
-                    <div class="ms-4">
-                      <p class="text-[20px] font-bold">Thực hiện bài học</p>
-                      <p class="text-[14px] mt-4">
-                        Chủ đề: <span>{{ dataProgress?.lesson_id?.title }}</span>
+                    <div class="ms-0 sm:ms-4">
+                      <p class="text-[1.8rem] sm:text-[2rem] font-bold">
+                        Thực hiện bài học
                       </p>
-                      <p class="text-[14px] text-[#a8aeba] mt-4">
+                      <p class="text-[16px] mt-4 leading-8">
+                        <span class="hidden sm:block"
+                          >Chủ đề: <span>{{ dataProgress?.lesson_id?.title }}</span></span
+                        >
+                      </p>
+                      <p
+                        class="text-[15px] text-[#a8aeba] mt-4 line-clamp-2 leading-8 hidden sm:block"
+                        @click="toggleClamp($event, 'line-clamp-2')"
+                      >
                         Mô tả: {{ dataProgress?.lesson_id?.description }}
                       </p>
                     </div>
@@ -400,13 +415,15 @@ onMounted(() => {
                 </div>
               </swiper-slide>
               <swiper-slide class="flex ce46962">
-                <div class="text-box w-full flex justify-between">
+                <div
+                  class="text-box w-full flex flex-col gap-4 sm:flex-row justify-between"
+                >
                   <div class="flex">
-                    <span class="icon text-[#e46962]">
+                    <span class="icon text-[#e46962] hidden sm:block">
                       <svg
                         viewBox="0 0 24 24"
-                        width="20"
-                        height="20"
+                        width="24"
+                        height="24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -416,11 +433,11 @@ onMounted(() => {
                         ></path>
                       </svg>
                     </span>
-                    <div class="ms-4">
-                      <p class="text-[20px] font-bold">Ôn tập lỗi sai cũ</p>
-                      <!-- <p class="text-[14px] text-[#a8aeba] mt-4">
-                        Tình huống: <span>Chào hỏi</span>
-                      </p> -->
+                    <div class="ms-0 sm:ms-4">
+                      <p class="text-[1.8rem] sm:text-[2rem] font-bold">
+                        Ôn tập lỗi sai cũ
+                      </p>
+                      <p class="text-[14px] text-[#a8aeba] mt-4"></p>
                     </div>
                   </div>
                   <button class="btn" @click="handleGetOldMistake">Bắt đầu</button>
@@ -463,12 +480,12 @@ onMounted(() => {
   </div>
   <div
     v-if="showModalPickOldMistake"
-    class="modal-bg modal-old__mistake fixed flex justify-center items-center inset-0 h-[100vh] w-[100vw] z-[999]"
+    class="modal-bg modal-old__mistake fixed flex justify-center items-center inset-0 h-[100vh] w-[100vw] z-[9999]"
     style="background: rgba(41, 55, 73, 0.8)"
     @click="showModalPickOldMistake = false"
   >
     <div
-      class="modal-container w-[80%] min-h-[350px] py-8 px-10 bg-white rounded-3xl overflow-auto"
+      class="modal-container w-[80%] min-h-[200px] py-8 px-10 bg-white rounded-3xl overflow-auto"
       @click.stop=""
     >
       <div class="flex flex-col gap-8">
@@ -488,52 +505,60 @@ onMounted(() => {
           ></span>
           <h2 class="text-[24px] font-bold">Danh sách lỗi sai cũ</h2>
         </div>
-        <div v-if="!loadingGetOldMistake" class="overflow-x-auto max-h-[400px]">
-          <table v-if="dataOldMistake?.length > 0" class="table text-[1.6rem]">
-            <!-- head -->
-            <thead class="text-[1.6rem]">
-              <tr>
-                <th>
-                  <label>
-                    <input
-                      type="checkbox"
-                      class="checkbox"
-                      style="width: 22px; height: 22px"
-                      v-model="pickSelectAll"
-                    />
-                  </label>
-                </th>
-                <th>Câu hỏi</th>
-                <th>Câu trả lời trước</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(item, index) in dataOldMistake"
-                :key="index"
-                @click="handleSelect(item)"
-              >
-                <th>
-                  <label>
-                    <input
-                      type="checkbox"
-                      class="checkbox"
-                      style="width: 22px; height: 22px"
-                      :checked="isCheck(item)"
-                    />
-                  </label>
-                </th>
-                <td>{{ item?.question }}</td>
-                <td>{{ item?.user_answer }}</td>
-              </tr>
-            </tbody>
-          </table>
-          <span
-            class="h-[250px] text-[1.8rem] flex items-center justify-center font-semibold"
-            v-else
-          >
-            Hiện tại chưa có lỗi sai nào
-          </span>
+        <div class="overflow-x-auto max-h-[400px]">
+          <div v-if="loadingGetOldMistake" class="flex justify-center">
+            <span
+              class="loading loading-dots loading-sm"
+              style="animation: none; width: 40px"
+            ></span>
+          </div>
+          <template v-else>
+            <table v-if="dataOldMistake?.length > 0" class="table text-[1.6rem]">
+              <!-- head -->
+              <thead class="text-[1.6rem]">
+                <tr>
+                  <th>
+                    <label>
+                      <input
+                        type="checkbox"
+                        class="checkbox"
+                        style="width: 22px; height: 22px"
+                        v-model="pickSelectAll"
+                      />
+                    </label>
+                  </th>
+                  <th>Câu hỏi</th>
+                  <th>Câu trả lời trước</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(item, index) in dataOldMistake"
+                  :key="index"
+                  @click="handleSelect(item)"
+                >
+                  <th>
+                    <label>
+                      <input
+                        type="checkbox"
+                        class="checkbox"
+                        style="width: 22px; height: 22px"
+                        :checked="isCheck(item)"
+                      />
+                    </label>
+                  </th>
+                  <td>{{ item?.question }}</td>
+                  <td>{{ item?.user_answer }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <span
+              class="h-[250px] text-[1.8rem] flex items-center justify-center font-semibold"
+              v-else
+            >
+              Hiện tại chưa có lỗi sai nào
+            </span>
+          </template>
         </div>
         <div class="text-center mt-8">
           <button

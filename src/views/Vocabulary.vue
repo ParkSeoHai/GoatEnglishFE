@@ -252,12 +252,12 @@ onMounted(() => {
   </div>
   <div
     v-if="showDetail"
-    class="modal-bg modal-old__mistake fixed flex justify-center items-center inset-0 h-[100vh] w-[100vw] z-[999]"
+    class="modal-bg modal-old__mistake fixed flex justify-center items-center inset-0 h-[100vh] w-[100vw] z-[9999]"
     style="background: rgba(41, 55, 73, 0.8)"
     @click="showDetail = false"
   >
     <div
-      class="modal-container w-[60%] min-h-[350px] py-8 px-10 bg-white rounded-3xl overflow-auto"
+      class="modal-container w-[95%] md:w-[70%] min-h-[350px] py-8 px-10 bg-white rounded-3xl overflow-auto"
       @click.stop=""
     >
       <!-- Chi tiết từ vựng -->
@@ -283,7 +283,7 @@ onMounted(() => {
               </svg>
             </span>
           </div>
-          <div class="grid grid-cols-2 gap-5">
+          <div class="sm:grid sm:grid-cols-2 gap-5">
             <div class="flex items-center gap-5 mt-5 text-[1.8rem]">
               <span class="font-bold text-nowrap">Từ vựng:</span>
               <span style="line-height: 22px">{{ vocabularyDetail?.word }}</span>
@@ -292,7 +292,7 @@ onMounted(() => {
               <span class="font-bold text-nowrap">Phiên âm:</span>
               <span style="line-height: 22px">{{ vocabularyDetail?.phonetic }}</span>
               <button
-                class="flex items-center justify-center rounded-2xl w-[34px] h-[34px] bg-[#f6f6f6] hover:scale-110"
+                class="flex items-center justify-center rounded-2xl w-[34px] h-[34px] bg-[#f6f6f6] hover:scale-110 ms-4"
                 @click.prevent="
                   playAudio(URL_API, vocabularyDetail?.audio?.uk, vocabularyDetail?.word)
                 "
@@ -322,7 +322,7 @@ onMounted(() => {
                 vocabularyDetail?.type?.join(", ")
               }}</span>
             </div>
-            <div class="flex items-center col-span-2 gap-5 mt-5 text-[1.8rem]">
+            <div class="flex col-span-2 flex-col sm:flex-row gap-5 mt-5 text-[1.8rem]">
               <span class="font-bold text-nowrap">Định nghĩa:</span>
               <span style="line-height: 22px">{{ vocabularyDetail?.meaning }}</span>
             </div>
@@ -334,7 +334,7 @@ onMounted(() => {
             </div>
             <div></div>
             <!-- ví dụ -->
-            <div class="flex col-span-2 gap-5 mt-5 text-[1.8rem]">
+            <div class="flex col-span-2 flex-col md:flex-row gap-5 mt-5 text-[1.8rem]">
               <span class="font-bold text-nowrap">Ví dụ sử dụng:</span>
               <div class="flex flex-col gap-3">
                 <span

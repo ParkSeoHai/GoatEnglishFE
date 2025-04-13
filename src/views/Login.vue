@@ -40,6 +40,9 @@ const handleLogin = async () => {
       localStorage.setItem("token", dataRes?.data?.token);
       // redirect sang trang chu
       location.href = "/dashboard";
+      if (dataRes?.data?.role === "admin") {
+        location.href = "/admin/dashboard";
+      }
     } else {
       toast.error(dataRes?.message);
     }

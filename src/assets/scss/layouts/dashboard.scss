@@ -14,12 +14,20 @@
   padding: 8px 32px 48px;
   margin-top: 65px;
   min-height: 100vh;
+  @include base.breakpoint(sm) {
+    padding-bottom: 20px;
+    margin-bottom: 150px;
+    padding: 8px 12px 48px;
+  }
 
   .header-content {
     .title {
       font-size: 3rem;
       font-weight: 700;
       gap: 1.2rem;
+      @include base.breakpoint(sm) {
+        font-size: 2rem;
+      }
     }
 
     .title-number {
@@ -49,16 +57,25 @@
       background-color: base.$color-primary;
       font-weight: 700;
       font-size: 2.4rem;
+      @include base.breakpoint(sm) {
+        font-size: 1.8rem;
+      }
     }
 
     .list-card {
       padding: 24px 16px 32px;
+      @include base.breakpoint(md) {
+        flex-direction: column;
+      }
     }
 
     .card-item {
       padding: 1.6rem 2.4rem;
       border-radius: 8px;
       cursor: pointer;
+      @include base.breakpoint(sm) {
+        padding: 1rem 1.2rem;
+      }
 
       .text-hide {
         display: none;
@@ -89,10 +106,16 @@
     bottom: 0;
     left: 255px;
     right: 0;
+    @include base.breakpoint(lg) {
+      left: 0;
+    }
 
     .content {
       width: 720px;
       margin: 0 auto;
+      @include base.breakpoint(md) {
+        width: 90%;
+      }
 
       .swiper-slide {
         position: relative;
@@ -150,6 +173,15 @@
         align-items: center;
         justify-content: space-between;
         text-align: center;
+        width: fit-content;
+        @include base.breakpoint(md) {
+          margin-left: auto;
+        }
+        @include base.breakpoint(sm) {
+          width: 100%;
+          justify-content: center;
+          min-height: 3.5rem;
+        }
 
         &:hover {
           opacity: 0.9;

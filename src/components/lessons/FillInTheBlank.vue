@@ -55,14 +55,16 @@ onMounted(() => {
 <template>
   <!-- Chọn câu trả phù hợp -->
   <div class="left w-[85%]">
-    <p class="text-[#001122] text-[3rem]">{{ props.exercise?.type?.ten_muc }}</p>
+    <p class="text-[#001122] text-[3rem] text-type">
+      {{ props.exercise?.type?.ten_muc }}
+    </p>
     <div class="mt-20">
-      <p class="text-center text-[3.6rem] font-bold px-10">
+      <p class="text-question text-center text-[3.6rem] font-bold px-10">
         {{ props.exercise?.question }}
       </p>
     </div>
     <div class="min-h-[64px]">
-      <div v-if="showResult" class="text-[20px] mt-8 leading-10">
+      <div v-if="showResult" class="text-[1.6rem] sm:text-[2rem] mt-8 leading-10">
         <p>
           <span class="font-semibold">Giải thích</span>:
           {{ props.exercise?.explain_answer }}
@@ -87,7 +89,7 @@ onMounted(() => {
           :class="{ active: dataResult?.ma_dap_an === option.ma_dap_an }"
           @click="dataResult = option"
         >
-          <p class="text">{{ option?.noi_dung }}</p>
+          <p class="text" style="margin-left: 0">{{ option?.noi_dung }}</p>
         </button>
       </template>
       <template v-else>
@@ -104,7 +106,7 @@ onMounted(() => {
                 : '',
           }"
         >
-          <p class="text">{{ option?.noi_dung }}</p>
+          <p class="text" style="margin-left: 0">{{ option?.noi_dung }}</p>
         </button>
       </template>
     </div>
@@ -114,7 +116,7 @@ onMounted(() => {
         v-if="showResult"
         type="text"
         v-model.trim="dataResult.noi_dung"
-        class="w-full h-[6rem] p-[1.6rem] border border-[#d9dee8] rounded-[4px] text-[2.4rem]"
+        class="w-full h-[6rem] p-[1.6rem] border border-[#d9dee8] rounded-[4px] text-[2.4rem] input-answer"
         placeholder="Nhập câu trả lời"
         :style="{
           backgroundColor:
@@ -129,13 +131,13 @@ onMounted(() => {
         v-else
         type="text"
         v-model.trim="dataResult.noi_dung"
-        class="w-full h-[6rem] p-[1.6rem] border border-[#d9dee8] rounded-[4px] text-[2.4rem]"
+        class="w-full h-[6rem] p-[1.6rem] border border-[#d9dee8] rounded-[4px] text-[2.4rem] input-answer"
         placeholder="Nhập câu trả lời"
       />
     </div>
   </div>
   <div class="right w-[15%]">
-    <div>
+    <div class="flex flex-col gap-8 h-full items-center justify-center sm:justify-start">
       <button
         class="btn btn-primary-custom w-full min-h-[4.4rem] text-[1.6rem]"
         style="color: #012"

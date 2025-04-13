@@ -6,7 +6,16 @@
   position: sticky;
   top: 0;
   border-right: 1px solid #ccc;
-  z-index: 100;
+  z-index: 1000;
+
+  @include base.breakpoint(lg) {
+    display: none;
+    position: fixed;
+  }
+
+  &.show {
+    display: block;
+  }
 
   .text-logo__collapsed {
     display: none;
@@ -109,6 +118,7 @@
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 50%;
+    z-index: 999;
 
     .icon svg {
       width: 18px;

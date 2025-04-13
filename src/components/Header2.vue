@@ -37,7 +37,7 @@ const { user } = defineProps(["user"]);
             ></path>
           </svg>
         </span>
-        <p>Quay lại trang chủ</p>
+        <p>Quay lại</p>
       </RouterLink>
     </div>
   </header>

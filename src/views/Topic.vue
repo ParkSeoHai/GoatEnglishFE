@@ -8,6 +8,7 @@ import _ from "lodash";
 
 const URL_API = inject("URL_API");
 const handleErrorAPI = inject("handleErrorAPI");
+const toggleClamp = inject("toggleClamp");
 
 const user = ref();
 const topics = ref([]);
@@ -85,10 +86,15 @@ onMounted(() => {
           <div class="list-topic">
             <div class="topic-item flex">
               <img class="topic-item__img object-cover" :src="user?.topic?.image" />
-              <div class="px-5 py-8 flex flex-col flex-1 justify-between">
+              <div class="px-5 py-8 flex flex-col flex-1 justify-between gap-2">
                 <p class="text-[20px] font-bold">{{ user?.topic?.name }}</p>
-                <p class="line-clamp-2 leading-8">{{ user?.topic?.description }}</p>
-                <div class="flex justify-between items-center">
+                <p
+                  class="line-clamp-2 leading-8"
+                  @click="toggleClamp($event, 'line-clamp-2')"
+                >
+                  {{ user?.topic?.description }}
+                </p>
+                <div class="flex justify-between items-center mt-5">
                   <span class="hidden icon cursor-pointer">
                     <svg
                       viewBox="0 0 24 25"
@@ -126,7 +132,12 @@ onMounted(() => {
                 <img class="topic-item__img object-cover" :src="topic.image" />
                 <div class="px-5 py-8 flex flex-col flex-1 gap-4">
                   <p class="text-[20px] font-bold">{{ topic.name }}</p>
-                  <p class="line-clamp-2 leading-8">{{ topic.description }}</p>
+                  <p
+                    class="line-clamp-2 leading-8"
+                    @click="toggleClamp($event, 'line-clamp-2')"
+                  >
+                    {{ topic.description }}
+                  </p>
                   <div
                     v-if="_.findIndex(topicsLearned, { topic_id: topic._id }) >= 0"
                     class="flex justify-between flex-1"

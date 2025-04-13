@@ -30,14 +30,41 @@ const handleLogout = () => {
   sessionStorage.clear();
   location.href = "/login";
 };
+
+const handleToggleSidebar = () => {
+  layout.showSidebar = !layout.showSidebar;
+};
 </script>
 
 <template>
-  <header class="header-v2" :class="{ 'sidebar-collapsed': layout.isCollapsed }">
+  <header
+    class="header-v2"
+    :class="[
+      layout.isCollapsed ? 'sidebar-collapsed' : '',
+      layout.showSidebar ? 'sidebar-open' : '',
+    ]"
+  >
     <div class="flex justify-between items-center">
-      <p v-if="user?.topic" class="topic-text">
-        <RouterLink to="/topic"> Chủ đề: {{ user?.topic?.name }} </RouterLink>
-      </p>
+      <div class="flex items-center gap-8">
+        <span class="btn-menu cursor-pointer" @click="handleToggleSidebar">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            class="bi bi-list"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+            />
+          </svg>
+        </span>
+        <p v-if="user?.topic" class="topic-text">
+          <RouterLink to="/topic"> Chủ đề: {{ user?.topic?.name }} </RouterLink>
+        </p>
+      </div>
       <div class="actions-right ms-auto">
         <div class="action-item hidden">
           <span>
@@ -126,7 +153,7 @@ const handleLogout = () => {
     @click="showStreakModal = false"
   >
     <div
-      class="modal-container w-[40%] py-8 px-10 bg-white rounded-3xl overflow-auto"
+      class="modal-container w-[95%] sm:w-[80%] lg:w-[40%] py-8 px-10 bg-white rounded-3xl overflow-auto"
       @click.stop=""
     >
       <div class="flex flex-col gap-8">
@@ -206,4 +233,11 @@ const handleLogout = () => {
       </div>
     </div>
   </div>
+
+  <div
+    v-if="layout.showSidebar"
+    class="modal-bg modal-old__mistake fixed flex justify-center items-center inset-0 h-[100vh] w-[100vw] z-[888]"
+    style="background: rgba(41, 55, 73, 0.8)"
+    @click="handleToggleSidebar"
+  ></div>
 </template>

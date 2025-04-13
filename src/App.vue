@@ -1,11 +1,29 @@
 <script setup>
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
 import { useLayoutStore } from "@/stores/layout";
-import { provide } from "vue";
+import { provide, watch } from "vue";
 import { toast } from "vue3-toastify";
 import api from "@/utils";
 
-const URL_API = "https://goat-english-api.vercel.app";
+// const URL_API = "https://goat-english-api.vercel.app";
+const URL_API = "http://localhost:3000";
+
+const route = useRoute();
+const layout = useLayoutStore();
+
+// watch url change.
+watch(
+  () => route.fullPath,
+  (newPath) => {
+    console.log("Đã thay đổi URL:", newPath);
+    layout.showSidebar = false;
+  },
+  { immediate: true }
+);
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const handleErrorAPI = (error) => {
   console.log(error);
@@ -41,9 +59,6 @@ const getInfoUser = async () => {
       score: res?.data?.data?.score,
     };
     localStorage.setItem("user", JSON.stringify(user));
-    if (user?.role === "admin") {
-      location.href = "/admin/dashboard";
-    }
     // nếu chưa học chủ đề nào
     if (!user?.topic) {
       toast.info("Vui lòng chọn một chủ đề để bắt đầu học");
@@ -57,10 +72,16 @@ const getInfoUser = async () => {
   }
 };
 
+const toggleClamp = (event, className) => {
+  const el = event.currentTarget;
+  el.classList.toggle(className);
+};
+
 provide("URL_API", URL_API);
 provide("handleErrorAPI", handleErrorAPI);
 provide("getInfoUser", getInfoUser);
-const layout = useLayoutStore();
+provide("toggleClamp", toggleClamp);
+provide("sleep", sleep);
 </script>
 
 <template>
@@ -71,7 +92,7 @@ const layout = useLayoutStore();
         <span class="text">GoatEnglish</span>
       </RouterLink>
       <div
-        class="language-page flex items-center text-[#afafaf] font-bold uppercase text-[15px] cursor-pointer"
+        class="language-page flex items-center text-[#afafaf] font-bold w-[40%] justify-end uppercase text-[15px] cursor-pointer"
       >
         <p class="text me-3">Ngôn ngữ hiển thị: Tiếng Việt</p>
         <span class="icon hidden"
@@ -152,7 +173,7 @@ const layout = useLayoutStore();
         </p> -->
         <ul class="flex items-center gap-6">
           <li>
-            <a href="#">
+            <a href="https://www.facebook.com/nguyen.van.hai.760247/">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -167,7 +188,7 @@ const layout = useLayoutStore();
             ></a>
           </li>
           <li>
-            <a href="#">
+            <a href="https://github.com/ParkSeoHai">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"

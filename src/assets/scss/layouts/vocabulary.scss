@@ -11,6 +11,13 @@
   padding: 8px 32px 48px;
   margin-top: 65px;
   min-height: 100vh;
+  @include base.breakpoint(md) {
+    width: 80%;
+    padding: 8px 8px 32px;
+  }
+  @include base.breakpoint(sm) {
+    width: 95%;
+  }
 }
 
 .vocabulary-content__body {

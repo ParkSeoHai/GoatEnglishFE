@@ -1,177 +1,175 @@
 <script setup>
-import { ref, reactive, onMounted, inject, watch } from "vue";
-import api from "@/utils";
-import { toast } from "vue3-toastify";
-import _ from "lodash";
+import { ref, reactive, onMounted, inject, watch } from 'vue'
+import api from '@/utils'
+import { toast } from 'vue3-toastify'
+import _ from 'lodash'
 
-const URL_API = inject("URL_API");
-const handleErrorAPI = inject("handleErrorAPI");
+const URL_API = inject('URL_API')
+const handleErrorAPI = inject('handleErrorAPI')
 
-const { exercises } = defineProps(["exercises"]);
-const emit = defineEmits(["addExercise", "deleteExercise"]);
+const { exercises } = defineProps(['exercises'])
+const emit = defineEmits(['addExercise', 'deleteExercise'])
 
-const modeEditorOption = ref(0); // 0: view, 1: add or update
-const showModelExercise = ref(false);
+const modeEditorOption = ref(0) // 0: view, 1: add or update
+const showModelExercise = ref(false)
 
-const types = ref([]);
-const levels = ref([]);
+const types = ref([])
+const levels = ref([])
 
 const exerciseObj = reactive({
-  _id: "",
-  question: "",
+  _id: '',
+  question: '',
   type: null,
   level: null,
   options: [],
-  audio: "",
-  correct_answer: "",
-  explain_answer: "",
-  explain_answer_vn: "",
-});
+  audio: '',
+  correct_answer: '',
+  explain_answer: '',
+  explain_answer_vn: '',
+})
 
 const optionObj = reactive({
-  _id: "",
-  ma_dap_an: "",
-  noi_dung: "",
-});
+  _id: '',
+  ma_dap_an: '',
+  noi_dung: '',
+})
 
-const typeActive = ref();
+const typeActive = ref()
 
 watch(
   () => exerciseObj.type,
   (value) => {
-    typeActive.value = getTypeById(value);
-  }
-);
+    typeActive.value = getTypeById(value)
+  },
+)
 
 const getTypes = async () => {
   try {
-    const res = await api.get(`${URL_API}/api/exercise-type`);
+    const res = await api.get(`${URL_API}/api/exercise-type`)
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message);
-      return;
+      toast.error(res?.data?.message)
+      return
     }
-    return res?.data?.data;
+    return res?.data?.data
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   }
-};
+}
 
 const getLevels = async () => {
   try {
-    const res = await api.get(`${URL_API}/api/exercise-level`);
+    const res = await api.get(`${URL_API}/api/exercise-level`)
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message);
-      return;
+      toast.error(res?.data?.message)
+      return
     }
-    return res?.data?.data;
+    return res?.data?.data
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   }
-};
+}
 
 const handleInsertOption = () => {
   // update
   if (optionObj._id) {
-    const indexItem = _.findIndex(exerciseObj.options, { _id: optionObj._id });
-    console.log(exerciseObj.options[indexItem]);
+    const indexItem = _.findIndex(exerciseObj.options, { _id: optionObj._id })
+    console.log(exerciseObj.options[indexItem])
     exerciseObj.options[indexItem] = {
       ...exerciseObj.options[indexItem],
       ma_dap_an: optionObj.ma_dap_an,
       noi_dung: optionObj.noi_dung,
-    };
+    }
   } else {
     exerciseObj.options.push({
       _id: exerciseObj.options?.length?.toString(),
       ma_dap_an: optionObj.ma_dap_an,
       noi_dung: optionObj.noi_dung,
-    });
+    })
   }
-  optionObj._id = "";
-  optionObj.ma_dap_an = "";
-  optionObj.noi_dung = "";
-  modeEditorOption.value = 0;
-};
+  optionObj._id = ''
+  optionObj.ma_dap_an = ''
+  optionObj.noi_dung = ''
+  modeEditorOption.value = 0
+}
 
 const handleUpdateOption = (option) => {
-  optionObj._id = option._id;
-  optionObj.ma_dap_an = option.ma_dap_an;
-  optionObj.noi_dung = option.noi_dung;
-  modeEditorOption.value = 1;
-};
+  optionObj._id = option._id
+  optionObj.ma_dap_an = option.ma_dap_an
+  optionObj.noi_dung = option.noi_dung
+  modeEditorOption.value = 1
+}
 
 const handleDeleteOption = (option) => {
-  const result = confirm("Xác nhận xóa lựa chọn");
+  const result = confirm('Xác nhận xóa lựa chọn')
   if (result) {
-    exerciseObj.options = exerciseObj.options.filter(
-      (item) => item.ma_dap_an !== option.ma_dap_an
-    );
+    exerciseObj.options = exerciseObj.options.filter((item) => item.ma_dap_an !== option.ma_dap_an)
   }
-};
+}
 
 const handleCloseModeEditor = () => {
-  optionObj._id = "";
-  optionObj.ma_dap_an = "";
-  optionObj.noi_dung = "";
-  modeEditorOption.value = 0;
-};
+  optionObj._id = ''
+  optionObj.ma_dap_an = ''
+  optionObj.noi_dung = ''
+  modeEditorOption.value = 0
+}
 
 const getTypeById = (id) => {
-  const type = _.find(types.value, { _id: id });
-  return type;
-};
+  const type = _.find(types.value, { _id: id })
+  return type
+}
 
 const getLevelById = (id) => {
-  const level = _.find(levels.value, { _id: id });
-  return level;
-};
+  const level = _.find(levels.value, { _id: id })
+  return level
+}
 
 const handleAddExerciseToList = () => {
-  exerciseObj.type = getTypeById(exerciseObj.type);
-  exerciseObj.level = getLevelById(exerciseObj.level);
-  emit("addExercise", exerciseObj);
-  showModelExercise.value = false;
-};
+  exerciseObj.type = getTypeById(exerciseObj.type)
+  exerciseObj.level = getLevelById(exerciseObj.level)
+  emit('addExercise', exerciseObj)
+  showModelExercise.value = false
+}
 
 const handleUpdateExercise = (exercise) => {
-  showModelExercise.value = true;
-  exerciseObj._id = exercise?._id;
-  exerciseObj.question = exercise?.question;
-  exerciseObj.type = exercise?.type?._id;
-  exerciseObj.level = exercise?.level?._id;
-  exerciseObj.options = exercise?.options;
-  exerciseObj.audio = exercise?.audio;
-  exerciseObj.correct_answer = exercise?.correct_answer;
-  exerciseObj.explain_answer = exercise?.explain_answer;
-  exerciseObj.explain_answer_vn = exercise?.explain_answer_vn;
-};
+  showModelExercise.value = true
+  exerciseObj._id = exercise?._id
+  exerciseObj.question = exercise?.question
+  exerciseObj.type = exercise?.type?._id
+  exerciseObj.level = exercise?.level?._id
+  exerciseObj.options = exercise?.options
+  exerciseObj.audio = exercise?.audio
+  exerciseObj.correct_answer = exercise?.correct_answer
+  exerciseObj.explain_answer = exercise?.explain_answer
+  exerciseObj.explain_answer_vn = exercise?.explain_answer_vn
+}
 
 const handleClickAddExercise = () => {
-  showModelExercise.value = true;
-  exerciseObj._id = "";
-  exerciseObj.question = "";
-  exerciseObj.type = null;
-  exerciseObj.level = null;
-  exerciseObj.options = [];
-  exerciseObj.audio = "";
-  exerciseObj.correct_answer = "";
-  exerciseObj.explain_answer = "";
-  exerciseObj.explain_answer_vn = "";
-};
+  showModelExercise.value = true
+  exerciseObj._id = ''
+  exerciseObj.question = ''
+  exerciseObj.type = null
+  exerciseObj.level = null
+  exerciseObj.options = []
+  exerciseObj.audio = ''
+  exerciseObj.correct_answer = ''
+  exerciseObj.explain_answer = ''
+  exerciseObj.explain_answer_vn = ''
+}
 
 const handleDeleteExercise = (exercise_id) => {
-  const result = confirm("Xác nhận xóa bài tập");
+  const result = confirm('Xác nhận xóa bài tập')
   if (result) {
-    emit("deleteExercise", exercise_id);
+    emit('deleteExercise', exercise_id)
   }
-};
+}
 
 onMounted(async () => {
-  types.value = await getTypes();
-  levels.value = await getLevels();
-  console.log("exercises", exercises);
-});
+  types.value = await getTypes()
+  levels.value = await getLevels()
+  console.log('exercises', exercises)
+})
 </script>
 
 <template>
@@ -218,12 +216,7 @@ onMounted(async () => {
             <td>{{ exercise?.level?.ten_muc }}</td>
             <td class="flex justify-center">
               <span class="cursor-pointer" @click="handleUpdateExercise(exercise, index)">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
                     d="M3 6v2h11V6zm0 4v2h11v-2zm17 .1c-.1 0-.3.1-.4.2l-1 1l2.1 2.1l1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8l-6.1 6V20h2.1l6.1-6.1zM3 14v2h7v-2z"
@@ -310,9 +303,7 @@ onMounted(async () => {
           </template>
           <template
             v-if="
-              typeActive?.ma_muc == '03' ||
-              typeActive?.ma_muc == '05' ||
-              typeActive?.ma_muc == '06'
+              typeActive?.ma_muc == '03' || typeActive?.ma_muc == '05' || typeActive?.ma_muc == '06'
             "
           >
             <div class="form-group col-span-12">
@@ -334,13 +325,7 @@ onMounted(async () => {
               />
             </div>
           </template>
-          <template
-            v-else-if="
-              typeActive?.ma_muc === '01' ||
-              typeActive?.ma_muc === '04' ||
-              typeActive?.ma_muc === '07'
-            "
-          >
+          <template v-else-if="typeActive?.ma_muc === '04' || typeActive?.ma_muc === '07'">
             <div class="form-group col-span-12">
               <label class="form-label">Đáp án đúng</label>
               <input
@@ -352,6 +337,17 @@ onMounted(async () => {
             </div>
           </template>
           <template v-else>
+            <template v-if="typeActive?.ma_muc === '01' || typeActive?.ma_muc === '08'">
+              <div class="form-group col-span-12">
+                <label class="form-label">Đáp án đúng</label>
+                <input
+                  v-model.trim="exerciseObj.correct_answer"
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập đáp án đúng"
+                />
+              </div>
+            </template>
             <div class="col-span-12 form-group">
               <label class="form-label flex justify-between items-center">
                 <span>Danh sách đáp án</span>

@@ -1,81 +1,81 @@
 <script setup>
-import ListenAndSentences from "@/components/lessons/ListenAndSentences.vue";
-import Vocabulary from "@/components/lessons/Vocabulary.vue";
-import ChooseAnswer from "@/components/lessons/ChooseAnswer.vue";
-import FillInTheBlank from "@/components/lessons/FillInTheBlank.vue";
-import CompleteSentences from "@/components/lessons/CompleteSentences.vue";
-import ListenAndChoose from "@/components/lessons/ListenAndChoose.vue";
-import { computed, inject, onMounted, ref } from "vue";
-import _ from "lodash";
-import api from "@/utils";
-import { toast } from "vue3-toastify";
+import ListenAndSentences from '@/components/lessons/ListenAndSentences.vue'
+import Vocabulary from '@/components/lessons/Vocabulary.vue'
+import ChooseAnswer from '@/components/lessons/ChooseAnswer.vue'
+import FillInTheBlank from '@/components/lessons/FillInTheBlank.vue'
+import CompleteSentences from '@/components/lessons/CompleteSentences.vue'
+import ListenAndChoose from '@/components/lessons/ListenAndChoose.vue'
+import { computed, inject, onMounted, ref } from 'vue'
+import _ from 'lodash'
+import api from '@/utils'
+import { toast } from 'vue3-toastify'
 
-const URL_API = inject("URL_API");
-const handleErrorAPI = inject("handleErrorAPI");
-const getInfoUser = inject("getInfoUser");
+const URL_API = inject('URL_API')
+const handleErrorAPI = inject('handleErrorAPI')
+const getInfoUser = inject('getInfoUser')
 
-const { lesson_id } = defineProps(["lesson_id"]);
+const { lesson_id } = defineProps(['lesson_id'])
 
-const loadingUI = ref(false);
-const fireworksContainer = ref(null);
+const loadingUI = ref(false)
+const fireworksContainer = ref(null)
 
-const user = ref();
-const lesson = ref();
-const exercises = ref([]);
-const vocabularies = ref([]);
-const lessonsLength = ref(0);
-const indexExercise = ref(0);
-const userAnswer = ref([]);
+const user = ref()
+const lesson = ref()
+const exercises = ref([])
+const vocabularies = ref([])
+const lessonsLength = ref(0)
+const indexExercise = ref(0)
+const userAnswer = ref([])
 const progressLesson = computed(() => {
-  return (indexExercise.value / lessonsLength.value) * 100;
-});
+  return (indexExercise.value / lessonsLength.value) * 100
+})
 
 const init = async () => {
   try {
-    loadingUI.value = true;
-    user.value = await getInfoUser();
+    loadingUI.value = true
+    user.value = await getInfoUser()
     // get data lesson
-    await getDataLesson(lesson_id);
+    await getDataLesson(lesson_id)
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   } finally {
-    loadingUI.value = false;
+    loadingUI.value = false
   }
-};
+}
 
 const getDataLesson = async (lesson_id) => {
   try {
-    const res = await api.get(`${URL_API}/api/lesson/${lesson_id}`);
+    const res = await api.get(`${URL_API}/api/lesson/${lesson_id}`)
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message);
-      return;
+      toast.error(res?.data?.message)
+      return
     }
-    lesson.value = res?.data?.data;
-    vocabularies.value = lesson.value?.vocabularies;
+    lesson.value = res?.data?.data
+    vocabularies.value = lesson.value?.vocabularies
     // exercises.value = _.shuffle(lesson.value?.exercises);
-    exercises.value = lesson.value?.exercises;
-    exercises.value = vocabularies.value.concat(exercises.value);
-    lessonsLength.value = exercises.value ? exercises.value?.length : 0;
+    exercises.value = lesson.value?.exercises
+    exercises.value = vocabularies.value.concat(exercises.value)
+    lessonsLength.value = exercises.value ? exercises.value?.length : 0
     if (lessonsLength.value === 0) {
-      toast.error("Không có bài tập nào trong bài học này");
-      return;
+      toast.error('Không có bài tập nào trong bài học này')
+      return
     }
-    console.log("lesson.value", lesson.value);
+    console.log('lesson.value', lesson.value)
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   }
-};
+}
 
-const doneSubmit = ref(false);
+const doneSubmit = ref(false)
 const nextExercise = async (result) => {
-  userAnswer.value.push(result);
-  indexExercise.value += 1;
+  userAnswer.value.push(result)
+  indexExercise.value += 1
   if (indexExercise.value >= lessonsLength.value) {
     // submit lesson
-    const toastId = toast.loading("Đang nộp bài...");
+    const toastId = toast.loading('Đang nộp bài...')
     try {
-      doneSubmit.value = false;
+      doneSubmit.value = false
       const data = {
         user_id: user.value?._id,
         lesson_id: lesson.value?._id,
@@ -83,87 +83,85 @@ const nextExercise = async (result) => {
         progress_id: lesson.value?.progress_id,
         score: 50,
         detail: userAnswer.value,
-      };
+      }
       const res = await api.post(`${URL_API}/api/user/submit-lesson`, {
         data,
-      });
+      })
       if (res?.status !== 200) {
         toast.update(toastId, {
-          render: res?.data?.message || "Có lỗi xảy ra",
-          type: "error",
+          render: res?.data?.message || 'Có lỗi xảy ra',
+          type: 'error',
           isLoading: false,
           autoClose: 2000,
-        });
-        return;
+        })
+        return
       }
       toast.update(toastId, {
-        render: "Nộp bài thành công",
-        type: "success",
+        render: 'Nộp bài thành công',
+        type: 'success',
         isLoading: false,
         autoClose: 2000,
-      });
-      doneSubmit.value = true;
-      autoFireworks();
+      })
+      doneSubmit.value = true
+      autoFireworks()
       setTimeout(() => {
-        location.href = "/dashboard";
-      }, 3000);
+        location.href = '/dashboard'
+      }, 3000)
     } catch (error) {
-      handleErrorAPI(error, toastId);
+      handleErrorAPI(error, toastId)
     }
-    return;
+    return
   }
-};
+}
 
 const handleCloseLesson = () => {
-  location.href = "/dashboard";
-};
+  location.href = '/dashboard'
+}
 
 function createFirework(x, y) {
-  const container = fireworksContainer.value;
-  const colors = ["#ff4d4d", "#ffd700", "#00ccff", "#66ff66", "#ff66ff"];
+  const container = fireworksContainer.value
+  const colors = ['#ff4d4d', '#ffd700', '#00ccff', '#66ff66', '#ff66ff']
 
   for (let i = 0; i < 30; i++) {
-    const particle = document.createElement("div");
-    particle.classList.add("particle");
-    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    const particle = document.createElement('div')
+    particle.classList.add('particle')
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)]
 
-    const angle = Math.random() * 2 * Math.PI;
-    const distance = Math.random() * 100 + 50;
-    const dx = Math.cos(angle) * distance + "px";
-    const dy = Math.sin(angle) * distance + "px";
+    const angle = Math.random() * 2 * Math.PI
+    const distance = Math.random() * 100 + 50
+    const dx = Math.cos(angle) * distance + 'px'
+    const dy = Math.sin(angle) * distance + 'px'
 
-    particle.style.setProperty("--x", dx);
-    particle.style.setProperty("--y", dy);
-    particle.style.left = `${x}px`;
-    particle.style.top = `${y}px`;
+    particle.style.setProperty('--x', dx)
+    particle.style.setProperty('--y', dy)
+    particle.style.left = `${x}px`
+    particle.style.top = `${y}px`
 
-    container.appendChild(particle);
+    container.appendChild(particle)
 
     setTimeout(() => {
-      particle.remove();
-    }, 1000);
+      particle.remove()
+    }, 1000)
   }
 }
 
 function autoFireworks() {
   setInterval(() => {
-    const x = Math.random() * window.innerWidth;
-    const y = (Math.random() * window.innerHeight) / 2;
-    createFirework(x, y);
-  }, 500);
+    const x = Math.random() * window.innerWidth
+    const y = (Math.random() * window.innerHeight) / 2
+    createFirework(x, y)
+  }, 500)
 }
 
 onMounted(() => {
-  init();
-});
+  init()
+})
 </script>
 
 <template>
   <div id="lesson-v2">
     <header class="p-5 bg-[#5de7c0]">
-      <div
-        class="flex items-center justify-between gap-3 sm:h-[72px] max-w-[100rem] mx-auto"
-      >
+      <div class="flex items-center justify-between gap-3 sm:h-[72px] max-w-[100rem] mx-auto">
         <div class="flex items-center gap-3">
           <span class="hidden sm:block">
             <svg
@@ -216,10 +214,7 @@ onMounted(() => {
       </div>
       <!-- loading -->
       <div v-if="loadingUI" class="flex justify-center">
-        <span
-          class="loading loading-dots loading-sm"
-          style="animation: none; width: 80px"
-        ></span>
+        <span class="loading loading-dots loading-sm" style="animation: none; width: 80px"></span>
       </div>
       <template v-else>
         <!-- Body -->

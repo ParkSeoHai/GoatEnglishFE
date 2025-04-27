@@ -104,44 +104,48 @@ onMounted(fetchStats);
 </script>
 
 <template>
-  <div class="dashboard grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 p-2">
+  <div class="dashboard p-2">
     <template v-if="loading">
       <p class="text-center text-lg font-semibold">Đang tải dữ liệu...</p>
     </template>
 
     <template v-else>
-      <!-- Tổng số học viên -->
-      <div class="card">
-        <h3 class="text-lg font-semibold">Tổng số học viên</h3>
-        <p class="text-3xl font-bold">{{ report?.totalUsers || 0 }}</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        <!-- Tổng số học viên -->
+        <div class="card">
+          <h3 class="text-lg font-semibold">Tổng số học viên</h3>
+          <p class="text-3xl font-bold">{{ report?.totalUsers || 0 }}</p>
+        </div>
+
+        <!-- Tổng số bài học -->
+        <div class="card">
+          <h3 class="text-lg font-semibold">Tổng số bài học</h3>
+          <p class="text-3xl font-bold">{{ report?.totalLessons || 0 }}</p>
+        </div>
       </div>
 
-      <!-- Tổng số bài học -->
-      <div class="card">
-        <h3 class="text-lg font-semibold">Tổng số bài học</h3>
-        <p class="text-3xl font-bold">{{ report?.totalLessons || 0 }}</p>
-      </div>
+      <div class="grid grid-cols-4 md:grid-cols-6 gap-4">
+        <!-- Tỷ lệ hoàn thành bài học -->
+        <div class="card col-span-4 md:col-span-2">
+          <h3 class="text-lg font-semibold">Tỷ lệ hoàn thành bài học</h3>
+          <Pie v-if="chartData?.labels?.length" :data="chartData" />
+        </div>
 
-      <!-- Tỷ lệ hoàn thành bài học -->
-      <div class="card col-span-2 md:col-span-1">
-        <h3 class="text-lg font-semibold">Tỷ lệ hoàn thành bài học</h3>
-        <Pie v-if="chartData?.labels?.length" :data="chartData" />
-      </div>
-
-      <!-- Điểm trung bình -->
-      <!-- <div class="card">
+        <!-- Điểm trung bình -->
+        <!-- <div class="card">
         <h3 class="text-lg font-semibold">Điểm trung bình</h3>
         <p class="text-3xl font-bold">{{ report?.avgScore?.toFixed(2) || "0.00" }}</p>
       </div> -->
 
-      <!-- Bài học phổ biến nhất -->
-      <div class="card col-span-2">
-        <h3 class="text-lg font-semibold">Bài học phổ biến</h3>
-        <Bar
-          v-if="barChartData?.labels?.length"
-          :data="barChartData"
-          :options="barChartOptions"
-        />
+        <!-- Bài học phổ biến nhất -->
+        <div class="card col-span-4">
+          <h3 class="text-lg font-semibold">Bài học phổ biến</h3>
+          <Bar
+            v-if="barChartData?.labels?.length"
+            :data="barChartData"
+            :options="barChartOptions"
+          />
+        </div>
       </div>
     </template>
   </div>

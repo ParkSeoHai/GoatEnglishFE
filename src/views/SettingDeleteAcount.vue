@@ -68,7 +68,7 @@ onMounted(() => {
 
 <template>
   <div class="setting-infor setting-container">
-    <div class="mt-5 w-[60%] bg-white mx-auto p-5">
+    <div class="mt-5 w-[95%] md:w-[60%] bg-white mx-auto p-5">
       <h3
         class="text-[1.8rem] text-[#3e3e3e] text-center font-bold pb-[10px] mb-[15px]"
         style="border-bottom: 1px dashed #e4e4e4"
@@ -76,7 +76,10 @@ onMounted(() => {
         Thay đổi mật khẩu
       </h3>
       <div class="flex flex-col gap-4">
-        <p class="text-[#3e3e3e] pb-[10px]" style="border-bottom: 1px dashed #e4e4e4">
+        <p
+          class="text-[#3e3e3e] pb-[10px] leading-10"
+          style="border-bottom: 1px dashed #e4e4e4"
+        >
           Để đảm bảo mức độ bảo vệ dữ liệu cao nhất, việc xóa tài khoản của bạn sẽ xóa tất
           cả thông tin nhận dạng cá nhân được liên kết với tài khoản. Nó có một hành động
           không thể đảo ngược mà không thể hoàn tác.
@@ -91,7 +94,7 @@ onMounted(() => {
           />
           <label
             for="checkbox-delete-account"
-            class="text-[#3e3e3e] font-bold cursor-pointer"
+            class="text-[#3e3e3e] font-bold cursor-pointer leading-8"
           >
             Tôi chắc rằng tôi muốn xóa tài khoản của mình
           </label>
@@ -122,7 +125,7 @@ onMounted(() => {
           style: 'font-size: 1.8rem; color: #2c3445; background-color: #ff756b',
         }"
         :loading="loading"
-        class="btn-next btn-primary-custom text-white w-full py-8 mt-20 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
+        class="btn-next btn-primary-custom text-white w-full py-6 sm:py-8 mt-20 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
         @click="handleActionClick"
       >
         <template #icon>

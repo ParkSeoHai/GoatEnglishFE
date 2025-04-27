@@ -8,6 +8,10 @@
   border-right: 1px solid #ccc;
   z-index: 1000;
 
+  &.fixed {
+    position: fixed;
+  }
+
   @include base.breakpoint(lg) {
     display: none;
     position: fixed;
@@ -27,7 +31,8 @@
 
   &.collapsed {
     width: 90px;
-    padding: 0px 0px 0px 8px;
+    // padding: 0px 0px 0px 8px;
+    padding: 4px;
     border-right: none;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -55,7 +60,8 @@
   .logo {
     width: 100%;
     display: flex;
-    padding: 16px 0px 24px 24px;
+    justify-content: center;
+    padding: 16px 24px;
     margin-bottom: 20px;
     svg {
       width: 70px;
@@ -99,12 +105,19 @@
       text-align: left;
       font-weight: 700;
       text-decoration: none;
+      @include base.breakpoint(md) {
+        font-size: 1.6rem;
+      }
     }
 
     &__icon {
       svg {
         width: 32px;
         height: 32px;
+        @include base.breakpoint(md) {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
   }

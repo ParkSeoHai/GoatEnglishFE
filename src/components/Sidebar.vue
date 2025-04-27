@@ -4,6 +4,8 @@ import { RouterLink } from "vue-router";
 import { useRoute } from "vue-router";
 import { useLayoutStore } from "@/stores/layout";
 
+const { className } = defineProps(["className"]);
+
 const route = useRoute();
 const layout = useLayoutStore();
 
@@ -35,7 +37,11 @@ onMounted(() => {
 <template>
   <div
     class="sidebar bg-white"
-    :class="[isSidebarCollapsed ? 'collapsed' : '', layout.showSidebar ? 'show' : '']"
+    :class="[
+      className,
+      isSidebarCollapsed ? 'collapsed' : '',
+      layout.showSidebar ? 'show' : '',
+    ]"
   >
     <div class="relative h-full">
       <router-link to="/dashboard" class="logo">

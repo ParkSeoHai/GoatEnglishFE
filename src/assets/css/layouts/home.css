@@ -139,6 +139,54 @@ body {
   }
 }
 
+.fireworks-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+}
+
+.fireworks-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 2rem;
+  text-align: center;
+  animation: glow 2s ease-in-out infinite alternate;
+  z-index: 10;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #000;
+  }
+  to {
+    text-shadow: 0 0 30px #ff0, 0 0 60px #f0f;
+  }
+}
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), var(--y));
+    opacity: 0;
+  }
+}
 html {
   font-size: 62.5%;
 }
@@ -198,6 +246,12 @@ body {
   margin-bottom: 24px;
   line-height: 32px;
 }
+@media (max-width: 767.98px) {
+  .home-body .block-text .title {
+    font-size: 2rem;
+    line-height: 28px;
+  }
+}
 .home-body .block-text .btn-default-custom,
 .home-body .block-text .btn-primary-custom {
   display: flex;
@@ -206,6 +260,13 @@ body {
   border-radius: 8px;
   margin: 12px auto;
   font-weight: 600;
+}
+@media (max-width: 767.98px) {
+  .home-body .block-text .btn-default-custom,
+  .home-body .block-text .btn-primary-custom {
+    padding: 16px 8px;
+    font-size: 1.4rem;
+  }
 }
 .home-body .block-text .btn-default-custom {
   color: #1cb0f6;

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch, toRefs, inject } from "vue";
+import { ref, onMounted, toRefs, inject } from "vue";
 import Button from "@/components/Button.vue";
 import api from "@/utils";
 import { toast } from "vue3-toastify";
@@ -79,7 +79,7 @@ onMounted(() => {
 
 <template>
   <div class="setting-infor setting-container">
-    <div class="mt-5 w-[60%] bg-white mx-auto p-5">
+    <div class="mt-5 w-[95%] md:w-[60%] bg-white mx-auto p-5">
       <h3
         class="text-[1.8rem] text-[#3e3e3e] text-center font-bold pb-[10px] mb-[15px]"
         style="border-bottom: 1px dashed #e4e4e4"
@@ -154,10 +154,9 @@ onMounted(() => {
       <Button
         :item="{
           text: 'Lưu thay đổi',
-          style: 'font-size: 1.8rem; color: #fff',
         }"
         :loading="loading"
-        class="btn-next btn-primary-custom text-white w-full py-8 mt-20 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
+        class="btn-next btn-primary-custom text-white w-full py-6 sm:py-8 mt-20 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
         @click="handleActionClick"
       >
         <template #icon>

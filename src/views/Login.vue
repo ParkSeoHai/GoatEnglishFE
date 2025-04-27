@@ -26,6 +26,7 @@ const init = async () => {
 };
 
 const handleLogin = async () => {
+  const toastId = toast.loading("Đang xử lý...");
   try {
     loading.value = true;
     const res = await axios.post(`${URL_API}/api/auth/login`, {
@@ -35,19 +36,33 @@ const handleLogin = async () => {
     const dataRes = res.data;
     // send success
     if (dataRes?.status === 200) {
-      toast.success(dataRes?.message);
+      toast.update(toastId, {
+        render: dataRes?.message || "Đăng nhập thành công",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
       // luu token
       localStorage.setItem("token", dataRes?.data?.token);
-      // redirect sang trang chu
-      location.href = "/dashboard";
+      let urlTarget = "/dashboard";
       if (dataRes?.data?.role === "admin") {
-        location.href = "/admin/dashboard";
+        urlTarget = "/admin/dashboard";
       }
+      // redirect
+      setTimeout(() => {
+        location.href = urlTarget;
+      }, 1000);
     } else {
-      toast.error(dataRes?.message);
+      // toast.error(dataRes?.message);
+      toast.update(toastId, {
+        render: dataRes?.message,
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
     }
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error, toastId);
     // console.error(error);
     // error?.response?.data?.errors?.forEach((error) => {
     //   toast.error(error?.message);

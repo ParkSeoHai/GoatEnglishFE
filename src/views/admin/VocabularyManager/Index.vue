@@ -1,147 +1,147 @@
 <script setup>
-import { inject, onMounted, reactive, ref, watch } from "vue";
-import CreateOrUpdate from "./CreateOrUpdate.vue";
-import { useRoute } from "vue-router";
-import api, { updateQueryParams } from "@/utils";
-import { toast } from "vue3-toastify";
-const route = useRoute();
+import { inject, onMounted, reactive, ref, watch } from 'vue'
+import CreateOrUpdate from './CreateOrUpdate.vue'
+import { useRoute } from 'vue-router'
+import api, { updateQueryParams } from '@/utils'
+import { toast } from 'vue3-toastify'
+const route = useRoute()
 
-const URL_API = inject("URL_API");
-const handleErrorAPI = inject("handleErrorAPI");
+const URL_API = inject('URL_API')
+const handleErrorAPI = inject('handleErrorAPI')
 
-const vocabularies = ref([]);
-const topics = ref();
-const page = ref(Number(route.query?.page) || 1);
-const pagination = ref();
-const search = ref(route.query?.search || "");
-const limit = 10;
+const vocabularies = ref([])
+const topics = ref()
+const page = ref(Number(route.query?.page) || 1)
+const pagination = ref()
+const search = ref(route.query?.search || '')
+const limit = 10
 const filter = reactive({
-  topic_id: route.query?.topic_id || "",
-});
+  topic_id: route.query?.topic_id || '',
+})
 
 const init = async () => {
   // get topics
-  topics.value = await getTopics();
+  topics.value = await getTopics()
   if (!route.query?._id) {
     if (filter.topic_id) {
-      await getAllByTopic(filter.topic_id);
+      await getAllByTopic(filter.topic_id)
     } else {
-      await getVocabularies(page.value, search.value);
+      await getVocabularies(page.value, search.value)
     }
   }
-};
+}
 
 const getTopics = async () => {
   try {
-    const res = await api.get(`${URL_API}/api/topic`);
+    const res = await api.get(`${URL_API}/api/topic`)
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message);
-      return;
+      toast.error(res?.data?.message)
+      return
     }
-    return res?.data?.data;
+    return res?.data?.data?.topics || []
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   }
-};
+}
 
 watch(
   () => route.params._id,
   async () => {
-    await init();
+    await init()
   },
-  { deep: true }
-);
+  { deep: true },
+)
 
 watch(
   () => filter.topic_id,
   async () => {
-    page.value = 1;
-    updateQueryParams({ topic_id: filter.topic_id });
+    page.value = 1
+    updateQueryParams({ topic_id: filter.topic_id })
     if (filter.topic_id) {
-      await getAllByTopic(filter.topic_id);
+      await getAllByTopic(filter.topic_id)
     } else {
-      await getVocabularies(page.value, search.value);
+      await getVocabularies(page.value, search.value)
     }
   },
-  { deep: true }
-);
+  { deep: true },
+)
 
 watch(page, async (value) => {
-  updateQueryParams({ page: value });
+  updateQueryParams({ page: value })
   if (filter.topic_id) {
-    await getAllByTopic(filter.topic_id);
+    await getAllByTopic(filter.topic_id)
   } else {
-    await getVocabularies(value, search.value);
+    await getVocabularies(value, search.value)
   }
   // updateQueryParams({ page: value });
   // await getVocabularies(page.value);
-});
+})
 
-const getVocabularies = async (page, search = "") => {
+const getVocabularies = async (page, search = '') => {
   try {
     const res = await api.get(
-      `${URL_API}/api/vocabulary?page=${page}&search=${search}&limit=${limit}`
-    );
+      `${URL_API}/api/vocabulary?page=${page}&search=${search}&limit=${limit}`,
+    )
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message);
-      return;
+      toast.error(res?.data?.message)
+      return
     }
-    const data = res?.data?.data;
-    pagination.value = data?.pagination;
-    vocabularies.value = data?.vocabularies;
-    return res?.data?.data;
+    const data = res?.data?.data
+    pagination.value = data?.pagination
+    vocabularies.value = data?.vocabularies
+    return res?.data?.data
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   }
-};
+}
 
 const getAllByTopic = async (topic_id) => {
   try {
     const res = await api.get(
-      `${URL_API}/api/vocabulary/topic/${topic_id}?page=${page.value}&limit=${limit}&search=${search.value}`
-    );
+      `${URL_API}/api/vocabulary/topic/${topic_id}?page=${page.value}&limit=${limit}&search=${search.value}`,
+    )
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message);
-      return;
+      toast.error(res?.data?.message)
+      return
     }
-    vocabularies.value = res?.data?.data?.vocabularies;
-    pagination.value = res?.data?.data?.pagination;
-    return res?.data?.data;
+    vocabularies.value = res?.data?.data?.vocabularies
+    pagination.value = res?.data?.data?.pagination
+    return res?.data?.data
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   }
-};
+}
 
 const handleDelete = async (vocabulary_id) => {
-  const result = confirm("Xác nhận xóa từ vựng");
+  const result = confirm('Xác nhận xóa từ vựng')
   if (result) {
     try {
-      const res = await api.delete(`${URL_API}/api/vocabulary/${vocabulary_id}`);
+      const res = await api.delete(`${URL_API}/api/vocabulary/${vocabulary_id}`)
       // send success
       if (res?.status !== 200 || (res?.data?.status && !res?.data?.status !== 200)) {
-        toast.error(res?.data?.message);
-        return;
+        toast.error(res?.data?.message)
+        return
       }
-      toast.success(res?.data?.message || "Thành công!");
-      await init();
+      toast.success(res?.data?.message || 'Thành công!')
+      await init()
     } catch (error) {
-      handleErrorAPI(error);
+      handleErrorAPI(error)
     }
   }
-};
+}
 
 const searchData = async () => {
-  page.value = 1;
-  updateQueryParams({ search: search.value });
-  await getVocabularies(page.value, search.value);
-};
+  page.value = 1
+  updateQueryParams({ search: search.value })
+  await getVocabularies(page.value, search.value)
+}
 
 onMounted(() => {
-  init();
-});
+  init()
+})
 </script>
 
 <template>
@@ -202,10 +202,7 @@ onMounted(() => {
           </td>
           <td>{{ vocabulary?.vietnamese }}</td>
           <td>
-            <span
-              v-for="type in vocabulary?.type"
-              :key="type"
-              class="badge bg-primary me-1"
+            <span v-for="type in vocabulary?.type" :key="type" class="badge bg-primary me-1"
               >{{ type }}
             </span>
           </td>
@@ -222,11 +219,7 @@ onMounted(() => {
             </span>
           </td>
           <td class="flex flex-col gap-2">
-            <RouterLink
-              :to="`?_id=${vocabulary?._id}`"
-              class="btn btn-outline-primary"
-              title="Sửa"
-            >
+            <RouterLink :to="`?_id=${vocabulary?._id}`" class="btn btn-outline-primary" title="Sửa">
               <i class="bi bi-gear"></i>
             </RouterLink>
             <button
@@ -245,11 +238,7 @@ onMounted(() => {
       <div class="join">
         <button @click="page -= 1" :disabled="page == 1" class="join-item btn">«</button>
         <button class="join-item btn">Trang {{ page }}</button>
-        <button
-          @click="page += 1"
-          :disabled="page == pagination?.totalPages"
-          class="join-item btn"
-        >
+        <button @click="page += 1" :disabled="page == pagination?.totalPages" class="join-item btn">
           »
         </button>
       </div>

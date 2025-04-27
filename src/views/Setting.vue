@@ -4,6 +4,7 @@ import Header from "@/components/Header.vue";
 import { inject, onMounted, ref } from "vue";
 import SettingPassword from "./SettingPassword.vue";
 import SettingDeleteAcount from "./SettingDeleteAcount.vue";
+import Sidebar from "@/components/Sidebar.vue";
 
 const URL_API = inject("URL_API");
 const handleErrorAPI = inject("handleErrorAPI");
@@ -25,13 +26,18 @@ onMounted(() => {
 </script>
 
 <template>
+  <Sidebar :className="'fixed hidden'" />
   <div id="setting" class="setting">
-    <Header :user="user" />
+    <Header :user="user" :className="'btn-menu-open'" />
     <div class="setting-content">
       <div class="bg-white" style="border-bottom: solid 1px #e6e6e6">
-        <div class="flex items-center py-5 setting-container">
-          <h2 class="title text-[2.5rem] text-[#3e3e3e] font-bold">Cài đặt</h2>
-          <div class="tabs flex items-center gap-3 ms-20">
+        <div
+          class="flex items-center p-5 lg:px-0 justify-center md:justify-start setting-container"
+        >
+          <h2 class="title hidden md:block text-[2.5rem] text-[#3e3e3e] font-bold">
+            Cài đặt
+          </h2>
+          <div class="tabs flex items-center justify-center gap-3 ms-0 md:ms-20">
             <button
               @click="tabIndex = 1"
               type="button"

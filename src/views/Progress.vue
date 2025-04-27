@@ -14,6 +14,7 @@ const progresses = ref([]);
 
 const dataModal = ref();
 const showModal = ref(false);
+const loadingUI = ref(false);
 
 const lessonsBeforeCurrentLevel = computed(() => (currentOrder) => {
   return progresses.value
@@ -42,9 +43,16 @@ const openModal = (data) => {
 };
 
 const init = async () => {
-  user.value = await getInfoUser();
-  // get data progress
-  await getAllProgressByTopic(user.value?.topic?._id);
+  try {
+    loadingUI.value = true;
+    user.value = await getInfoUser();
+    // get data progress
+    await getAllProgressByTopic(user.value?.topic?._id);
+  } catch (error) {
+    handleErrorAPI(error);
+  } finally {
+    loadingUI.value = false;
+  }
 };
 
 onMounted(() => {
@@ -69,67 +77,76 @@ onMounted(() => {
           >Chủ đề: {{ user?.topic?.name }}</RouterLink
         >
       </div>
-      <div class="mt-10 list-progress">
-        <div v-for="progress in progresses" :key="progress._id" class="progress-item">
-          <div class="flex items-center gap-4">
-            <span class="icon">
-              <svg
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4.516 21a.583.583 0 0 0 .44-.186.583.583 0 0 0 .187-.442v-5.258c.138-.045.419-.127.844-.245.425-.124.984-.186 1.677-.186.857 0 1.645.085 2.364.255.72.163 1.416.356 2.09.579.673.215 1.36.408 2.06.578.7.17 1.455.255 2.266.255.712 0 1.249-.039 1.608-.117.367-.079.72-.193 1.06-.344.307-.143.552-.336.735-.578.19-.242.285-.56.285-.952V5.021a.644.644 0 0 0-.265-.55.999.999 0 0 0-.628-.196c-.229 0-.572.066-1.03.196-.451.131-1.075.197-1.873.197-.811 0-1.57-.082-2.276-.246-.7-.17-1.386-.363-2.06-.578a25.03 25.03 0 0 0-2.09-.589C9.192 3.085 8.404 3 7.548 3c-.707 0-1.24.04-1.6.118-.359.078-.712.193-1.059.343a2.01 2.01 0 0 0-.745.579c-.183.235-.275.55-.275.941v15.391c0 .17.062.317.186.442.131.124.285.186.462.186Z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </span>
-            <p class="font-bold text-[18px]">{{ progress.name }}</p>
-          </div>
-          <div class="progress-number-list">
-            <template v-for="(lesson, index) in progress.lessons" :key="lesson._id">
-              <div class="flex items-center justify-between">
-                <button
-                  class="progress-btn"
-                  :class="{ active: lesson.min_score <= user.score }"
-                  @click="
-                    openModal({
-                      name: progress.name,
-                      stt: lessonsBeforeCurrentLevel(progress.order) + (index + 1),
-                      ...lesson,
-                    })
-                  "
-                >
-                  {{ lessonsBeforeCurrentLevel(progress.order) + (index + 1) }}
-                </button>
-                <span
-                  v-if="index < progress.lessons.length - 1"
-                  class="dot-icon"
-                  :class="{ active: lesson.min_score <= user.score }"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="16"
-                    height="16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="12" cy="12" r="9" fill="currentColor"></circle>
-                  </svg>
-                </span>
-              </div>
-            </template>
-          </div>
-          <p
-            class="mt-2 progress-desc line-clamp-3"
-            @click="toggleClamp($event, 'line-clamp-3')"
-          >
-            {{ progress.description }}
-          </p>
-        </div>
+      <!-- loading -->
+      <div v-if="loadingUI" class="flex justify-center">
+        <span
+          class="loading loading-dots loading-sm"
+          style="animation: none; width: 80px"
+        ></span>
       </div>
+      <template v-else>
+        <div class="mt-10 list-progress">
+          <div v-for="progress in progresses" :key="progress._id" class="progress-item">
+            <div class="flex items-center gap-4">
+              <span class="icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4.516 21a.583.583 0 0 0 .44-.186.583.583 0 0 0 .187-.442v-5.258c.138-.045.419-.127.844-.245.425-.124.984-.186 1.677-.186.857 0 1.645.085 2.364.255.72.163 1.416.356 2.09.579.673.215 1.36.408 2.06.578.7.17 1.455.255 2.266.255.712 0 1.249-.039 1.608-.117.367-.079.72-.193 1.06-.344.307-.143.552-.336.735-.578.19-.242.285-.56.285-.952V5.021a.644.644 0 0 0-.265-.55.999.999 0 0 0-.628-.196c-.229 0-.572.066-1.03.196-.451.131-1.075.197-1.873.197-.811 0-1.57-.082-2.276-.246-.7-.17-1.386-.363-2.06-.578a25.03 25.03 0 0 0-2.09-.589C9.192 3.085 8.404 3 7.548 3c-.707 0-1.24.04-1.6.118-.359.078-.712.193-1.059.343a2.01 2.01 0 0 0-.745.579c-.183.235-.275.55-.275.941v15.391c0 .17.062.317.186.442.131.124.285.186.462.186Z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </span>
+              <p class="font-bold text-[18px]">{{ progress.name }}</p>
+            </div>
+            <div class="progress-number-list">
+              <template v-for="(lesson, index) in progress.lessons" :key="lesson._id">
+                <div class="flex items-center justify-between">
+                  <button
+                    class="progress-btn"
+                    :class="{ active: lesson.min_score <= user.score }"
+                    @click="
+                      openModal({
+                        name: progress.name,
+                        stt: lessonsBeforeCurrentLevel(progress.order) + (index + 1),
+                        ...lesson,
+                      })
+                    "
+                  >
+                    {{ lessonsBeforeCurrentLevel(progress.order) + (index + 1) }}
+                  </button>
+                  <span
+                    v-if="index < progress.lessons.length - 1"
+                    class="dot-icon"
+                    :class="{ active: lesson.min_score <= user.score }"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle cx="12" cy="12" r="9" fill="currentColor"></circle>
+                    </svg>
+                  </span>
+                </div>
+              </template>
+            </div>
+            <p
+              class="mt-2 progress-desc line-clamp-3"
+              @click="toggleClamp($event, 'line-clamp-3')"
+            >
+              {{ progress.description }}
+            </p>
+          </div>
+        </div>
+      </template>
     </div>
     <div
       v-if="showModal"

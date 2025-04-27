@@ -54,7 +54,7 @@ const getTopics = async () => {
       toast.error(res?.data?.message)
       return
     }
-    return res?.data?.data
+    return res?.data?.data?.topics || []
   } catch (error) {
     handleErrorAPI(error)
   }

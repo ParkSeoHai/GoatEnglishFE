@@ -4,7 +4,7 @@ import { useLayoutStore } from "@/stores/layout";
 
 const layout = useLayoutStore();
 
-const { user } = defineProps(["user"]);
+const { user, className } = defineProps(["user", "className"]);
 
 const userDropdown = ref(false);
 const backgroundPopup = ref(false);
@@ -40,6 +40,7 @@ const handleToggleSidebar = () => {
   <header
     class="header-v2"
     :class="[
+      className,
       layout.isCollapsed ? 'sidebar-collapsed' : '',
       layout.showSidebar ? 'sidebar-open' : '',
     ]"

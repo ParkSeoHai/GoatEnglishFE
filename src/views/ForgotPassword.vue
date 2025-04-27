@@ -29,6 +29,7 @@ const init = async () => {
 };
 
 const handleSendOTP = async () => {
+  const toastId = toast.loading("Đang xử lý...");
   try {
     loading.value = true;
     const res = await axios.post(`${URL_API}/api/auth/send-otp-forgot-password`, {
@@ -37,22 +38,38 @@ const handleSendOTP = async () => {
     const dataRes = res.data;
     // send success
     if (dataRes?.status === 200) {
-      toast.success(dataRes?.message);
+      toast.update(toastId, {
+        render: dataRes?.message || "Gửi mã OTP thành công",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
       step.value = 2;
     } else {
-      toast.error(dataRes?.message);
+      toast.update(toastId, {
+        render: dataRes?.message || "Có lỗi xảy ra",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
     }
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error, toastId);
   } finally {
     loading.value = false;
   }
 };
 
 const handleVerifyOTP = async () => {
+  const toastId = toast.loading("Đang xử lý...");
   try {
     if (!data.otp) {
-      toast.error("Vui lòng nhập mã OTP");
+      toast.update(toastId, {
+        render: "Vui lòng nhập mã OTP",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
       return;
     }
     loading.value = true;
@@ -64,26 +81,47 @@ const handleVerifyOTP = async () => {
     console.log(dataRes);
     // verify success
     if (dataRes?.status === 200) {
-      toast.success(dataRes?.message);
+      toast.update(toastId, {
+        render: dataRes?.message || "Xác thực mã OTP thành công",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
       step.value = 3;
     } else {
-      toast.error(dataRes?.message);
+      toast.update(toastId, {
+        render: dataRes?.message || "Có lỗi xảy ra",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
     }
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error, toastId);
   } finally {
     loading.value = false;
   }
 };
 
 const handleResetPassword = async () => {
+  const toastId = toast.loading("Đang xử lý...");
   try {
     if (!data.password || !data.confirmPassword) {
-      toast.error("Vui lòng nhập mật khẩu mới và xác nhận mật khẩu mới");
+      toast.update(toastId, {
+        render: "Vui lòng nhập mật khẩu mới và xác nhận mật khẩu mới",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
       return;
     }
     if (data.password !== data.confirmPassword) {
-      toast.error("Mật khẩu không khớp");
+      toast.update(toastId, {
+        render: "Xác nhận mật khẩu không khớp",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
       return;
     }
     loading.value = true;
@@ -94,13 +132,25 @@ const handleResetPassword = async () => {
     const dataRes = res.data;
     // reset success
     if (dataRes?.status === 200) {
-      toast.success(dataRes?.message);
-      location.href = "/login";
+      toast.update(toastId, {
+        render: dataRes?.message || "Đặt lại mật khẩu thành công",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      setTimeout(() => {
+        location.href = "/login";
+      }, 1000);
     } else {
-      toast.error(dataRes?.message);
+      toast.update(toastId, {
+        render: dataRes?.message || "Có lỗi xảy ra",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
     }
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error, toastId);
   } finally {
     loading.value = false;
   }

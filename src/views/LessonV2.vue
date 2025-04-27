@@ -16,21 +16,31 @@ const getInfoUser = inject("getInfoUser");
 
 const { lesson_id } = defineProps(["lesson_id"]);
 
+const loadingUI = ref(false);
+const fireworksContainer = ref(null);
+
 const user = ref();
 const lesson = ref();
 const exercises = ref([]);
 const vocabularies = ref([]);
 const lessonsLength = ref(0);
-const indexExercise = ref(8);
+const indexExercise = ref(0);
 const userAnswer = ref([]);
 const progressLesson = computed(() => {
   return (indexExercise.value / lessonsLength.value) * 100;
 });
 
 const init = async () => {
-  user.value = await getInfoUser();
-  // get data lesson
-  await getDataLesson(lesson_id);
+  try {
+    loadingUI.value = true;
+    user.value = await getInfoUser();
+    // get data lesson
+    await getDataLesson(lesson_id);
+  } catch (error) {
+    handleErrorAPI(error);
+  } finally {
+    loadingUI.value = false;
+  }
 };
 
 const getDataLesson = async (lesson_id) => {
@@ -47,18 +57,25 @@ const getDataLesson = async (lesson_id) => {
     exercises.value = lesson.value?.exercises;
     exercises.value = vocabularies.value.concat(exercises.value);
     lessonsLength.value = exercises.value ? exercises.value?.length : 0;
+    if (lessonsLength.value === 0) {
+      toast.error("Không có bài tập nào trong bài học này");
+      return;
+    }
     console.log("lesson.value", lesson.value);
   } catch (error) {
     handleErrorAPI(error);
   }
 };
 
+const doneSubmit = ref(false);
 const nextExercise = async (result) => {
   userAnswer.value.push(result);
   indexExercise.value += 1;
   if (indexExercise.value >= lessonsLength.value) {
     // submit lesson
+    const toastId = toast.loading("Đang nộp bài...");
     try {
+      doneSubmit.value = false;
       const data = {
         user_id: user.value?._id,
         lesson_id: lesson.value?._id,
@@ -71,26 +88,70 @@ const nextExercise = async (result) => {
         data,
       });
       if (res?.status !== 200) {
-        toast.error(res?.data?.message);
+        toast.update(toastId, {
+          render: res?.data?.message || "Có lỗi xảy ra",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
         return;
       }
-      toast.success("Nộp bài thành công");
+      toast.update(toastId, {
+        render: "Nộp bài thành công",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      doneSubmit.value = true;
+      autoFireworks();
       setTimeout(() => {
         location.href = "/dashboard";
-      }, 2000);
+      }, 3000);
     } catch (error) {
-      handleErrorAPI(error);
+      handleErrorAPI(error, toastId);
     }
     return;
   }
 };
 
 const handleCloseLesson = () => {
-  const confirmClose = confirm("Bạn có chắc chắn muốn thoát bài học không?");
-  if (confirmClose) {
-    location.href = "/dashboard";
-  }
+  location.href = "/dashboard";
 };
+
+function createFirework(x, y) {
+  const container = fireworksContainer.value;
+  const colors = ["#ff4d4d", "#ffd700", "#00ccff", "#66ff66", "#ff66ff"];
+
+  for (let i = 0; i < 30; i++) {
+    const particle = document.createElement("div");
+    particle.classList.add("particle");
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * 100 + 50;
+    const dx = Math.cos(angle) * distance + "px";
+    const dy = Math.sin(angle) * distance + "px";
+
+    particle.style.setProperty("--x", dx);
+    particle.style.setProperty("--y", dy);
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+
+    container.appendChild(particle);
+
+    setTimeout(() => {
+      particle.remove();
+    }, 1000);
+  }
+}
+
+function autoFireworks() {
+  setInterval(() => {
+    const x = Math.random() * window.innerWidth;
+    const y = (Math.random() * window.innerHeight) / 2;
+    createFirework(x, y);
+  }, 500);
+}
 
 onMounted(() => {
   init();
@@ -126,7 +187,7 @@ onMounted(() => {
           </p>
         </div>
         <div>
-          <span class="cursor-pointer" @click.prevent="handleCloseLesson">
+          <span class="cursor-pointer" onclick="my_modal_5.showModal()">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -153,41 +214,80 @@ onMounted(() => {
           max="100"
         ></progress>
       </div>
-      <!-- Body -->
-      <div class="flex justify-between gap-6">
-        <!-- Chọn câu trả phù hợp -->
-        <template v-if="exercises?.length > 0 && exercises?.[indexExercise]">
-          <Vocabulary
-            v-if="!exercises?.[indexExercise].type?.ma_muc"
-            :vocabulary="exercises?.[indexExercise]"
-            @next-exercise="nextExercise"
-          />
-          <FillInTheBlank
-            v-else-if="exercises?.[indexExercise].type?.ma_muc == '01'"
-            :exercise="exercises?.[indexExercise]"
-            @next-exercise="nextExercise"
-          />
-          <ChooseAnswer
-            v-else-if="exercises?.[indexExercise].type?.ma_muc == '02'"
-            :exercise="exercises?.[indexExercise]"
-            @next-exercise="nextExercise"
-          />
-          <ListenAndSentences
-            v-else-if="exercises?.[indexExercise].type?.ma_muc == '03'"
-            :exercise="exercises?.[indexExercise]"
-            @next-exercise="nextExercise"
-          />
-          <CompleteSentences
-            v-else-if="exercises?.[indexExercise].type?.ma_muc == '07'"
-            :exercise="exercises?.[indexExercise]"
-            @next-exercise="nextExercise"
-          />
-          <ListenAndChoose
-            v-else-if="exercises?.[indexExercise].type?.ma_muc == '08'"
-            :exercise="exercises?.[indexExercise]"
-            @next-exercise="nextExercise"
-          />
-        </template>
+      <!-- loading -->
+      <div v-if="loadingUI" class="flex justify-center">
+        <span
+          class="loading loading-dots loading-sm"
+          style="animation: none; width: 80px"
+        ></span>
+      </div>
+      <template v-else>
+        <!-- Body -->
+        <div class="flex justify-between gap-6">
+          <!-- Chọn câu trả phù hợp -->
+          <template v-if="exercises?.length > 0 && exercises?.[indexExercise]">
+            <Vocabulary
+              v-if="!exercises?.[indexExercise].type?.ma_muc"
+              :vocabulary="exercises?.[indexExercise]"
+              @next-exercise="nextExercise"
+            />
+            <FillInTheBlank
+              v-else-if="exercises?.[indexExercise].type?.ma_muc == '01'"
+              :exercise="exercises?.[indexExercise]"
+              @next-exercise="nextExercise"
+            />
+            <ChooseAnswer
+              v-else-if="exercises?.[indexExercise].type?.ma_muc == '02'"
+              :exercise="exercises?.[indexExercise]"
+              @next-exercise="nextExercise"
+            />
+            <ListenAndSentences
+              v-else-if="exercises?.[indexExercise].type?.ma_muc == '03'"
+              :exercise="exercises?.[indexExercise]"
+              @next-exercise="nextExercise"
+            />
+            <CompleteSentences
+              v-else-if="exercises?.[indexExercise].type?.ma_muc == '07'"
+              :exercise="exercises?.[indexExercise]"
+              @next-exercise="nextExercise"
+            />
+            <ListenAndChoose
+              v-else-if="exercises?.[indexExercise].type?.ma_muc == '08'"
+              :exercise="exercises?.[indexExercise]"
+              @next-exercise="nextExercise"
+            />
+          </template>
+        </div>
+      </template>
+    </div>
+    <!-- modal exit -->
+    <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle text-[15px]">
+      <div class="modal-box">
+        <h3 class="font-bold">Xác nhận thoát bài học!</h3>
+        <p class="mt-4 leading-8">
+          Nếu bạn thoát, tất cả tiến trình của bạn sẽ không được lưu lại.
+        </p>
+        <div class="modal-action">
+          <form method="dialog">
+            <button class="btn btn-ghost" style="font-size: 14px">Đóng</button>
+            <button
+              class="btn btn-soft btn-success ms-5"
+              style="font-size: 14px"
+              @click="handleCloseLesson"
+            >
+              Đồng ý
+            </button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <div
+      v-show="doneSubmit"
+      class="modal-bg modal-old__mistake fixed flex justify-center items-center inset-0 h-[100vh] w-[100vw] z-[9999]"
+    >
+      <div>
+        <div class="fireworks-container" ref="fireworksContainer"></div>
       </div>
     </div>
   </div>

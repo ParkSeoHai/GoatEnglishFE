@@ -8,10 +8,13 @@
   background-color: base.$color-white;
   z-index: 999;
   border-bottom: 1px solid #e5e5e5;
-  height: 70px;
+  // height: 70px;
 
   .nav {
     height: 70px;
+    @include base.breakpoint(sm) {
+      height: 50px;
+    }
   }
 
   .logo .img {
@@ -46,6 +49,10 @@
     @include base.breakpoint(lg) {
       display: block;
     }
+  }
+
+  &.btn-menu-open .btn-menu {
+    display: block;
   }
 
   &.sidebar-collapsed {

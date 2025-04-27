@@ -46,6 +46,7 @@ const handleActionClick = async () => {
     loading.value = false;
     return;
   }
+  const toastId = toast.loading("Đang xử lý...");
   try {
     const res = await api.post(`${URL_API}/api/user/update-infor`, {
       username: username.value,
@@ -54,26 +55,46 @@ const handleActionClick = async () => {
     });
     console.log(res);
     if (res.status !== 200) {
-      toast.error(res?.data?.message);
+      toast.update(toastId, {
+        render: res?.data?.message || "Có lỗi xảy ra",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
       loading.value = false;
       return;
     }
     if (res.data?.otpCode) {
       otpCode.value = "";
       showOtpInput.value = true;
-      toast.success(res.data?.message);
+      toast.update(toastId, {
+        render: res.data?.message,
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
     } else {
       if (res.data?.status !== 200) {
-        toast.error(res.data?.message);
+        toast.update(toastId, {
+          render: res?.data?.message || "Có lỗi xảy ra",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
       } else {
-        toast.success(res.data?.message);
+        toast.update(toastId, {
+          render: res?.data?.message || "Cập nhật thành công",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
         setTimeout(() => {
           window.location.reload();
         }, 3000);
       }
     }
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error, toastId);
   } finally {
     loading.value = false;
   }
@@ -86,9 +107,11 @@ onMounted(() => {
 
 <template>
   <div class="setting-infor setting-container">
-    <div class="mt-5 w-[60%] bg-white mx-auto p-5">
-      <div class="flex gap-8">
-        <p class="mt-[8px] font-semibold text-[#808080] w-[20%] text-right">Username</p>
+    <div class="mt-5 w-[95%] md:w-[60%] bg-white mx-auto p-5">
+      <div class="flex flex-col sm:flex-row gap-5">
+        <p class="mt-[8px] font-semibold text-[#808080] w-full sm:w-[20%] sm:text-right">
+          Username
+        </p>
         <div class="w-full">
           <label class="input validator">
             <svg
@@ -124,8 +147,10 @@ onMounted(() => {
           </p>
         </div>
       </div>
-      <div class="flex gap-8 mt-6">
-        <p class="mt-[8px] font-semibold text-[#808080] w-[20%] text-right">Email</p>
+      <div class="flex flex-col sm:flex-row gap-5 mt-6">
+        <p class="mt-[8px] font-semibold text-[#808080] w-full sm:w-[20%] sm:text-right">
+          Email
+        </p>
         <div class="w-full">
           <label class="input validator">
             <svg
@@ -157,8 +182,8 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div v-if="showOtpInput" class="flex gap-8 mt-6">
-        <p class="mt-[8px] font-semibold text-[#808080] w-[20%] text-right">
+      <div v-if="showOtpInput" class="flex flex-col sm:flex-row gap-5 mt-6">
+        <p class="mt-[8px] font-semibold text-[#808080] w-full sm:w-[20%] sm:text-right">
           Nhập mã OTP
         </p>
         <div class="w-full">
@@ -178,10 +203,9 @@ onMounted(() => {
       <Button
         :item="{
           text: showOtpInput ? 'Xác nhận' : 'Lưu',
-          style: 'font-size: 1.8rem; color: #fff',
         }"
         :loading="loading"
-        class="btn-next btn-primary-custom text-white w-full py-8 mt-20 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
+        class="btn-next btn-primary-custom text-white w-full py-6 sm:py-8 mt-20 rounded-lg font-bold sm:btn-sm md:btn-md lg:btn-lg"
         @click="handleActionClick"
       >
         <template #icon>

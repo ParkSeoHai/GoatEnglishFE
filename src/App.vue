@@ -25,14 +25,51 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-const handleErrorAPI = (error) => {
+// const handleErrorAPI = (error) => {
+//   console.log(error);
+//   if (error?.response?.data?.errors) {
+//     error.response.data.errors?.forEach((error) => {
+//       toast.error(error?.message);
+//     });
+//   } else {
+//     toast.error(error?.response?.data?.message || error?.message);
+//   }
+//   if (error?.status === 401 || error?.status === 403) {
+//     setTimeout(() => {
+//       // delete token
+//       localStorage.clear();
+//       location.href = "/login";
+//     }, 2000);
+//   }
+//   return null;
+// };
+
+const handleErrorAPI = (error, toastId) => {
   console.log(error);
   if (error?.response?.data?.errors) {
     error.response.data.errors?.forEach((error) => {
-      toast.error(error?.message);
+      if (toastId) {
+        toast.update(toastId, {
+          render: error?.message || "Có lỗi xảy ra",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      } else {
+        toast.error(error?.message || "Có lỗi xảy ra");
+      }
     });
   } else {
-    toast.error(error?.response?.data?.message || error?.message);
+    if (toastId) {
+      toast.update(toastId, {
+        render: error?.response?.data?.message || error?.message || "Có lỗi xảy ra",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
+    } else {
+      toast.error(error?.response?.data?.message || error?.message || "Có lỗi xảy ra");
+    }
   }
   if (error?.status === 401 || error?.status === 403) {
     setTimeout(() => {
@@ -88,11 +125,12 @@ provide("sleep", sleep);
   <header id="header" v-if="layout.showHeader">
     <nav class="nav page-container flex items-center justify-between">
       <RouterLink to="/" class="logo flex items-center">
-        <img src="./components/icons/logo.svg" class="img" />
-        <span class="text">GoatEnglish</span>
+        <!-- <img src="./components/icons/logo.svg" class="img" />
+        <span class="text">GoatEnglish</span> -->
+        <h2 class="text-logo">GOAT</h2>
       </RouterLink>
       <div
-        class="language-page flex items-center text-[#afafaf] font-bold w-[40%] justify-end uppercase text-[15px] cursor-pointer"
+        class="language-page flex items-center text-[#afafaf] font-bold w-[40%] justify-end uppercase text-[13px] cursor-pointer leading-8"
       >
         <p class="text me-3">Ngôn ngữ hiển thị: Tiếng Việt</p>
         <span class="icon hidden"
@@ -113,8 +151,8 @@ provide("sleep", sleep);
     </nav>
   </header>
   <div id="main"><RouterView /></div>
-  <footer id="footer" v-if="layout.showFooter">
-    <div class="page-container flex justify-between">
+  <footer id="footer" v-if="layout.showFooter" class="w-full">
+    <div class="page-container flex justify-between gap-4 flex-col sm:flex-row">
       <div class="footer-col flex flex-col gap-6">
         <p class="footer-col-item">
           <span
@@ -130,7 +168,7 @@ provide("sleep", sleep);
                 d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"
               /></svg
           ></span>
-          <span>TRƯỜNG ĐẠI HỌC CÔNG NGHỆ ĐÔNG Á</span>
+          <span class="block leading-8">TRƯỜNG ĐẠI HỌC CÔNG NGHỆ ĐÔNG Á</span>
         </p>
         <p class="footer-col-item">
           <span

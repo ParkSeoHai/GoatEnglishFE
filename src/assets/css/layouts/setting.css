@@ -139,6 +139,54 @@ body {
   }
 }
 
+.fireworks-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+}
+
+.fireworks-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 2rem;
+  text-align: center;
+  animation: glow 2s ease-in-out infinite alternate;
+  z-index: 10;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #000;
+  }
+  to {
+    text-shadow: 0 0 30px #ff0, 0 0 60px #f0f;
+  }
+}
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), var(--y));
+    opacity: 0;
+  }
+}
 html {
   font-size: 62.5%;
 }
@@ -182,6 +230,21 @@ body {
 #setting .header-v2 .dropdown-header {
   color: #333;
 }
+#setting .header-v2.sidebar-collapsed {
+  left: 0;
+}
+#setting .header-v2.sidebar-open {
+  left: 255px;
+}
+#setting .header-v2.sidebar-open .actions-right {
+  display: none;
+}
+#setting .header-v2.sidebar-open.sidebar-collapsed {
+  left: 90px;
+}
+#setting .header-v2.sidebar-open.sidebar-collapsed .actions-right {
+  display: flex;
+}
 #setting .header-v2 > div {
   max-width: 100rem;
   margin: 0 auto;
@@ -217,11 +280,26 @@ body {
   width: 100%;
   border-radius: 8px;
 }
+@media (max-width: 575.98px) {
+  #setting .body-content .input {
+    font-size: 1.6rem;
+    height: 30px;
+  }
+}
 #setting .body-content .validator ~ .validator-hint {
   display: none;
 }
 #setting .body-content .validator:has(:user-invalid) ~ .validator-hint {
   display: block;
+}
+#setting .body-content .btn-next {
+  font-size: 1.8rem;
+  color: #fff;
+}
+@media (max-width: 575.98px) {
+  #setting .body-content .btn-next {
+    font-size: 1.6rem;
+  }
 }
 
 /*# sourceMappingURL=setting.css.map */

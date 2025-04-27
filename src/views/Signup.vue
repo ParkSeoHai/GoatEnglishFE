@@ -1,127 +1,149 @@
 <script setup>
-import Button from "@/components/Button.vue";
-import axios from "axios";
-import { onMounted, ref, watch, inject } from "vue";
-import { useLayoutStore } from "@/stores/layout";
-import { toast } from "vue3-toastify";
+import Button from '@/components/Button.vue'
+import axios from 'axios'
+import { onMounted, ref, watch, inject } from 'vue'
+import { useLayoutStore } from '@/stores/layout'
+import { toast } from 'vue3-toastify'
 
-const layout = useLayoutStore();
-const loading = ref(false);
+const layout = useLayoutStore()
+const loading = ref(false)
 
-const URL_API = inject("URL_API");
-const handleErrorAPI = inject("handleErrorAPI");
+const URL_API = inject('URL_API')
+const handleErrorAPI = inject('handleErrorAPI')
+const loadingUI = ref(false)
 
-const stepCurr = ref(1);
-const stepNumb = 3;
-const isNext = ref(false);
+const stepCurr = ref(1)
+const stepNumb = 3
+const isNext = ref(false)
 const dataStep = ref({
-  topic: "",
-  level: "",
-  age: "",
-  goal: "",
-  knowFrom: "",
-  email: "",
-  otp_code: "",
-  username: "",
-  password: "",
-  confirm_password: "",
-});
+  topic: '',
+  level: '',
+  age: '',
+  goal: '',
+  knowFrom: '',
+  email: '',
+  otp_code: '',
+  username: '',
+  password: '',
+  confirm_password: '',
+})
 
-const topics = ref([]);
-const levels = ref([]);
-const ages = ref([]);
-const goals = ref([]);
-const knowFroms = ref([]);
+const topics = ref([])
+const levels = ref([])
+const ages = ref([])
+const goals = ref([])
+const knowFroms = ref([])
 
 watch(stepCurr, async (value) => {
   if (value !== 2) {
-    isNext.value = false;
+    isNext.value = false
   }
-});
+})
 
 watch(
   () => dataStep.value.email,
   (value) => {
-    if (value !== "") {
-      isNext.value = true;
+    if (value !== '') {
+      isNext.value = true
     } else {
-      isNext.value = false;
+      isNext.value = false
     }
-  }
-);
+  },
+)
 
 const doGetAxios = async (url) => {
   try {
-    const res = await axios.get(url);
-    return res.data;
+    const res = await axios.get(url)
+    return res.data
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-};
+}
 
 const handleSelectAction = (value, key) => {
-  dataStep.value[key] = value;
-  isNext.value = true;
-};
+  dataStep.value[key] = value
+  isNext.value = true
+}
 
 const init = async () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token')
   if (token) {
-    location.href = "/dashboard";
+    location.href = '/dashboard'
   }
-
-  levels.value = await doGetAxios("../src/data/levels.json");
-  ages.value = await doGetAxios("../src/data/ages.json");
-  goals.value = await doGetAxios("../src/data/goals.json");
-  knowFroms.value = await doGetAxios("../src/data/knowFroms.json");
-
-  await getTopics();
-};
+  loadingUI.value = true
+  levels.value = await doGetAxios('../src/data/levels.json')
+  ages.value = await doGetAxios('../src/data/ages.json')
+  goals.value = await doGetAxios('../src/data/goals.json')
+  knowFroms.value = await doGetAxios('../src/data/knowFroms.json')
+  await getTopics()
+  loadingUI.value = false
+}
 
 const handleNext = async () => {
-  loading.value = true;
+  loading.value = true
   // Gửi OTP email
   if (stepCurr.value === 2) {
-    await sendOTP(dataStep.value.email);
+    await sendOTP(dataStep.value.email)
   } else {
-    stepCurr.value++;
+    stepCurr.value++
   }
-  loading.value = false;
-};
+  loading.value = false
+}
 
 const getTopics = async () => {
-  const data = await doGetAxios(`${URL_API}/api/topic`);
-  topics.value = data?.data;
-};
+  const data = await doGetAxios(`${URL_API}/api/topic`)
+  topics.value = data?.data?.topics || []
+}
 
 const sendOTP = async (email) => {
+  const toastId = toast.loading('Đang xử lý...')
   try {
     const res = await axios.post(`${URL_API}/api/auth/send-otp`, {
       email,
-    });
-    const data = res.data;
-    console.log(data);
+    })
+    const data = res.data
+    console.log(data)
     // send success
     if (data?.status === 200) {
-      stepCurr.value++;
-      toast.success(data?.message);
+      stepCurr.value++
+      toast.update(toastId, {
+        render: data?.message || 'Gửi mã OTP thành công',
+        type: 'success',
+        isLoading: false,
+        autoClose: 2000,
+      })
     } else {
-      toast.error(data?.message);
+      toast.update(toastId, {
+        render: data?.message || 'Gửi mã OTP thất bại',
+        type: 'error',
+        isLoading: false,
+        autoClose: 2000,
+      })
     }
   } catch (error) {
-    handleErrorAPI(error);
-    // console.error(error);
-    // error?.response?.data?.errors?.forEach((error) => {
-    //   toast.error(error?.message);
-    // });
+    handleErrorAPI(error, toastId)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 
 const handleRegister = async () => {
+  const toastId = toast.loading('Đang xử lý...')
   try {
-    loading.value = true;
+    loading.value = true
+    // check username chỉ chứa chữ thường
+    const username = String(dataStep.value.username || '').trim()
+    if (/^[a-z0-9_]+$/.test(username) === false) {
+      setTimeout(() => {
+        toast.update(toastId, {
+          render: 'Tên đăng nhập chỉ chứa chữ thường và số',
+          type: 'error',
+          isLoading: false,
+          autoClose: 2000,
+        })
+      }, 1000)
+      return
+    }
     const res = await axios.post(`${URL_API}/api/auth/register`, {
       otp_code: dataStep.value.otp_code.toString(),
       username: dataStep.value.username,
@@ -129,32 +151,45 @@ const handleRegister = async () => {
       password: dataStep.value.password,
       confirm_password: dataStep.value.confirm_password,
       topic: dataStep.value.topic,
-    });
-    const data = res.data;
-    console.log(data);
+    })
+    const data = res.data
+    console.log(data)
     // send success
     if (data?.status === 201) {
-      stepCurr.value++;
-      toast.success(data?.message);
+      stepCurr.value++
+      toast.update(toastId, {
+        render: data?.message || 'Đăng ký thành công',
+        type: 'success',
+        isLoading: false,
+        autoClose: 2000,
+      })
       // redirect sang trang đăng nhập
-      location.href = "/login";
+      setTimeout(() => {
+        location.href = '/login'
+      }, 1000)
     } else {
-      toast.error(data?.message);
+      toast.update(toastId, {
+        render: data?.message || 'Đăng ký thất bại',
+        type: 'error',
+        isLoading: false,
+        autoClose: 2000,
+      })
     }
   } catch (error) {
-    console.error(error);
-    error?.response?.data?.errors?.forEach((error) => {
-      toast.error(error?.message);
-    });
+    handleErrorAPI(error, toastId)
+    // console.error(error);
+    // error?.response?.data?.errors?.forEach((error) => {
+    //   toast.error(error?.message);
+    // });
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 
 onMounted(() => {
-  init();
-  layout.show();
-});
+  init()
+  layout.show()
+})
 </script>
 
 <template>
@@ -171,21 +206,30 @@ onMounted(() => {
       <div v-if="stepCurr === 1" class="step-content">
         <h1 class="title-lv1 text-center font-bold">Chọn chủ đề bạn muốn học...</h1>
         <div class="list-card">
-          <div
-            class="card-item"
-            v-for="topic in topics"
-            :key="topic._id"
-            :class="{ active: topic._id === dataStep.topic }"
-            @click="handleSelectAction(topic._id, 'topic')"
-          >
-            <div class="flex justify-center w-[150px] h-[150px]">
-              <img class="w-full h-full rounded-xl object-cover" :src="topic.image" />
-            </div>
-            <h2 class="title-lv2">{{ topic.name }}</h2>
-            <p class="mt-4 font-bold text-[#777] line-clamp-3">
-              {{ topic.description }}
-            </p>
+          <!-- loading -->
+          <div v-if="loadingUI" class="flex justify-center">
+            <span
+              class="loading loading-dots loading-sm"
+              style="animation: none; width: 80px"
+            ></span>
           </div>
+          <template v-else>
+            <div
+              class="card-item"
+              v-for="topic in topics"
+              :key="topic._id"
+              :class="{ active: topic._id === dataStep.topic }"
+              @click="handleSelectAction(topic._id, 'topic')"
+            >
+              <div class="flex justify-center w-[150px] h-[150px]">
+                <img class="w-full h-full rounded-xl object-cover" :src="topic.image" />
+              </div>
+              <h2 class="title-lv2">{{ topic.name }}</h2>
+              <p class="mt-4 font-bold text-[#777] line-clamp-3">
+                {{ topic.description }}
+              </p>
+            </div>
+          </template>
         </div>
       </div>
       <!-- <div v-else-if="stepCurr === 2" class="step-content">

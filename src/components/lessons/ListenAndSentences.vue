@@ -1,22 +1,37 @@
 <script setup>
-import { inject, onMounted, ref } from "vue";
-import _ from "lodash";
-import { playAudio } from "../../utils/index";
+import { inject, onMounted, ref, watch } from 'vue'
+import _ from 'lodash'
+import { playAudio } from '../../utils/index'
 
-const props = defineProps(["exercise"]);
+const props = defineProps(['exercise'])
 
-const URL_API = inject("URL_API");
+const URL_API = inject('URL_API')
 
-const emit = defineEmits(["nextExercise"]);
-const options = ref([]);
-const userAnswer = ref([]);
-const showResult = ref(false);
-const result = ref(false);
+const emit = defineEmits(['nextExercise'])
+const options = ref([])
+const userAnswer = ref([])
+const showResult = ref(false)
+const result = ref(false)
+
+watch(
+  () => props.exercise,
+  () => {
+    resetDataResult()
+    options.value = _.shuffle(props.exercise?.correct_answer.split(' '))
+  },
+)
+
+const resetDataResult = () => {
+  userAnswer.value = []
+  showResult.value = false
+  result.value = false
+  options.value = []
+}
 
 const handleNextExercise = () => {
-  const userAnswerString = userAnswer.value.map((item) => item.answer).join(" ");
-  const correctAnswer = props.exercise?.correct_answer;
-  result.value = userAnswerString === correctAnswer;
+  const userAnswerString = userAnswer.value.map((item) => item.answer).join(' ')
+  const correctAnswer = props.exercise?.correct_answer
+  result.value = userAnswerString === correctAnswer
   if (showResult.value) {
     const userAnswerData = {
       exercise_id: props.exercise._id,
@@ -24,40 +39,40 @@ const handleNextExercise = () => {
       correct_answer: correctAnswer,
       user_answer: userAnswerString,
       correct: result.value,
-    };
-    emit("nextExercise", userAnswerData);
-    return;
+    }
+    emit('nextExercise', userAnswerData)
+    return
   }
-  showResult.value = true;
-};
+  showResult.value = true
+}
 
 const handleInsertAnswer = (answer, index) => {
-  const item = userAnswer.value.find((item) => item.index === index);
+  const item = userAnswer.value.find((item) => item.index === index)
   if (item) {
-    userAnswer.value = userAnswer.value.filter((item) => item.index !== index);
-    return;
+    userAnswer.value = userAnswer.value.filter((item) => item.index !== index)
+    return
   }
   userAnswer.value.push({
     answer,
     index,
-  });
-};
+  })
+}
 
 const checkSelected = (option, index) => {
-  const item = userAnswer.value.find((item) => item.index === index);
-  return item ? true : false;
-};
+  const item = userAnswer.value.find((item) => item.index === index)
+  return item ? true : false
+}
 
 const handlePlayAudio = ({ audio, correct_answer }) => {
-  playAudio(URL_API, audio, correct_answer);
-};
+  playAudio(URL_API, audio, correct_answer)
+}
 
 onMounted(() => {
   // shuffle options from correct answer
-  options.value = _.shuffle(props.exercise?.correct_answer.split(" "));
+  options.value = _.shuffle(props.exercise?.correct_answer.split(' '))
   // console.log("options.value", options.value);
   // console.log("props.exercise", props.exercise);
-});
+})
 </script>
 
 <template>

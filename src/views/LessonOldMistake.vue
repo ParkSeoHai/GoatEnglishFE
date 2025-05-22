@@ -1,59 +1,58 @@
 <script setup>
-import ListenAndChoose from "@/components/lessons/ListenAndSentences.vue";
-import Vocabulary from "@/components/lessons/Vocabulary.vue";
-import ChooseAnswer from "@/components/lessons/ChooseAnswer.vue";
-import FillInTheBlank from "@/components/lessons/FillInTheBlank.vue";
-import CompleteSentences from "@/components/lessons/CompleteSentences.vue";
-import { computed, inject, onMounted, ref } from "vue";
-import _ from "lodash";
-import api from "@/utils";
-import { toast } from "vue3-toastify";
-import { toRefs } from "vue";
+import ListenAndSentences from '@/components/lessons/ListenAndSentences.vue'
+import Vocabulary from '@/components/lessons/Vocabulary.vue'
+import ChooseAnswer from '@/components/lessons/ChooseAnswer.vue'
+import FillInTheBlank from '@/components/lessons/FillInTheBlank.vue'
+import CompleteSentences from '@/components/lessons/CompleteSentences.vue'
+import ListenAndChoose from '@/components/lessons/ListenAndChoose.vue'
+import { computed, inject, onMounted, ref } from 'vue'
+import _ from 'lodash'
+import api from '@/utils'
+import { toast } from 'vue3-toastify'
+import { toRefs } from 'vue'
 
-const URL_API = inject("URL_API");
-const handleErrorAPI = inject("handleErrorAPI");
-const getInfoUser = inject("getInfoUser");
+const URL_API = inject('URL_API')
+const handleErrorAPI = inject('handleErrorAPI')
+const getInfoUser = inject('getInfoUser')
 
-const props = defineProps(["exercises"]);
-const emit = defineEmits(["close"]);
+const props = defineProps(['exercises'])
+const emit = defineEmits(['close'])
 
-const { exercises } = toRefs(props);
-const indexExercise = ref(0);
-const userAnswer = ref([]);
+const { exercises } = toRefs(props)
+const indexExercise = ref(0)
+const userAnswer = ref([])
 
-const user = ref();
+const user = ref()
 const progressLesson = computed(() => {
-  return (indexExercise.value / exercises.value?.length) * 100;
-});
+  return (indexExercise.value / exercises.value?.length) * 100
+})
 
 const init = async () => {
-  user.value = await getInfoUser();
-  exercises.value = _.shuffle(exercises.value);
-};
+  user.value = await getInfoUser()
+  exercises.value = _.shuffle(exercises.value)
+}
 
 const nextExercise = async (result) => {
-  userAnswer.value.push(result);
-  indexExercise.value += 1;
+  userAnswer.value.push(result)
+  indexExercise.value += 1
   if (indexExercise.value >= exercises.value?.length) {
-    emit("close", userAnswer.value);
+    emit('close', userAnswer.value)
   }
-};
+}
 
 const close = () => {
-  emit("close", userAnswer.value);
-};
+  emit('close', userAnswer.value)
+}
 
 onMounted(() => {
-  init();
-});
+  init()
+})
 </script>
 
 <template>
   <div id="lesson-v2">
     <header class="p-5 bg-[#5de7c0]">
-      <div
-        class="flex items-center justify-between gap-3 sm:h-[72px] max-w-[100rem] mx-auto"
-      >
+      <div class="flex items-center justify-between gap-3 sm:h-[72px] max-w-[100rem] mx-auto">
         <div class="flex items-center gap-3">
           <span>
             <svg
@@ -107,27 +106,32 @@ onMounted(() => {
         <!-- Chọn câu trả phù hợp -->
         <template v-if="exercises?.length > 0 && exercises?.[indexExercise]">
           <Vocabulary
-            v-if="!exercises?.[indexExercise]?.exercise.type?.ma_muc"
+            v-if="!exercises?.[indexExercise]?.exercise?.type?.ma_muc"
             :vocabulary="exercises?.[indexExercise]?.exercise"
             @next-exercise="nextExercise"
           />
           <FillInTheBlank
-            v-else-if="exercises?.[indexExercise]?.exercise.type?.ma_muc == '01'"
+            v-else-if="exercises?.[indexExercise]?.exercise?.type?.ma_muc == '01'"
             :exercise="exercises?.[indexExercise]?.exercise"
             @next-exercise="nextExercise"
           />
           <ChooseAnswer
-            v-else-if="exercises?.[indexExercise]?.exercise.type?.ma_muc == '02'"
+            v-else-if="exercises?.[indexExercise]?.exercise?.type?.ma_muc == '02'"
             :exercise="exercises?.[indexExercise]?.exercise"
             @next-exercise="nextExercise"
           />
-          <ListenAndChoose
-            v-else-if="exercises?.[indexExercise]?.exercise.type?.ma_muc == '03'"
+          <ListenAndSentences
+            v-else-if="exercises?.[indexExercise]?.exercise?.type?.ma_muc == '03'"
             :exercise="exercises?.[indexExercise]?.exercise"
             @next-exercise="nextExercise"
           />
           <CompleteSentences
-            v-else-if="exercises?.[indexExercise]?.exercise.type?.ma_muc == '07'"
+            v-else-if="exercises?.[indexExercise]?.exercise?.type?.ma_muc == '07'"
+            :exercise="exercises?.[indexExercise]?.exercise"
+            @next-exercise="nextExercise"
+          />
+          <ListenAndChoose
+            v-else-if="exercises?.[indexExercise]?.exercise?.type?.ma_muc == '08'"
             :exercise="exercises?.[indexExercise]?.exercise"
             @next-exercise="nextExercise"
           />

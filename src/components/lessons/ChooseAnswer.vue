@@ -1,27 +1,27 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
-import { playAudio } from "../../utils/index";
+import { onMounted, ref, watch } from 'vue'
+import { playAudio } from '../../utils/index'
 
 const props = defineProps({
   exercise: { type: Object, required: true },
-});
+})
 
-const dataResult = ref();
-const showResult = ref(false);
+const dataResult = ref()
+const showResult = ref(false)
 
-const emit = defineEmits(["nextExercise"]);
+const emit = defineEmits(['nextExercise'])
 
 watch(
   () => props.exercise,
   () => {
-    resetDataResult();
-  }
-);
+    resetDataResult()
+  },
+)
 
 const resetDataResult = () => {
-  dataResult.value = null;
-  showResult.value = false;
-};
+  dataResult.value = null
+  showResult.value = false
+}
 
 const handleNextExercise = () => {
   if (showResult.value) {
@@ -31,18 +31,18 @@ const handleNextExercise = () => {
       correct_answer: props.exercise.correct_answer,
       user_answer: dataResult.value?.noi_dung,
       correct: dataResult.value?.noi_dung === props.exercise.correct_answer,
-    };
-    emit("nextExercise", userAnswer);
-    return;
+    }
+    emit('nextExercise', userAnswer)
+    return
   }
-  showResult.value = true;
-};
+  showResult.value = true
+}
 
 onMounted(() => {
   // console.log('dataResult.value', dataResult.value)
   // console.log('showResult.value', showResult.value)
-  console.log("props.exercise", props.exercise);
-});
+  console.log('props.exercise', props.exercise)
+})
 </script>
 
 <template>
@@ -125,8 +125,8 @@ onMounted(() => {
               option?.noi_dung === props.exercise?.correct_answer
                 ? '#84e41a'
                 : dataResult?.ma_dap_an === option.ma_dap_an
-                ? '#b13039'
-                : '',
+                  ? '#b13039'
+                  : '',
           }"
         >
           <span>{{ option?.ma_dap_an }}</span>

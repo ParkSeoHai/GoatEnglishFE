@@ -57,6 +57,12 @@ const router = createRouter({
       component: () => import("@/views/Setting.vue")
     },
     {
+      path: '/chatbot',
+      name: 'Chatbot',
+      props: true,
+      component: () => import("@/views/Chatbot.vue")
+    },
+    {
       path: '/admin',
       name: 'Admin',
       component: () => import("@/views/admin/Index.vue"),

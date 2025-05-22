@@ -1,63 +1,63 @@
 <script setup>
-import Header2 from "@/components/Header2.vue";
-import api from "@/utils";
-import { inject, onMounted, ref, computed } from "vue";
-import { toast } from "vue3-toastify";
+import Header2 from '@/components/Header2.vue'
+import api from '@/utils'
+import { inject, onMounted, ref, computed } from 'vue'
+import { toast } from 'vue3-toastify'
 
-const URL_API = inject("URL_API");
-const handleErrorAPI = inject("handleErrorAPI");
-const getInfoUser = inject("getInfoUser");
-const toggleClamp = inject("toggleClamp");
+const URL_API = inject('URL_API')
+const handleErrorAPI = inject('handleErrorAPI')
+const getInfoUser = inject('getInfoUser')
+const toggleClamp = inject('toggleClamp')
 
-const user = ref();
-const progresses = ref([]);
+const user = ref()
+const progresses = ref([])
 
-const dataModal = ref();
-const showModal = ref(false);
-const loadingUI = ref(false);
+const dataModal = ref()
+const showModal = ref(false)
+const loadingUI = ref(false)
 
 const lessonsBeforeCurrentLevel = computed(() => (currentOrder) => {
   return progresses.value
     .slice(0, currentOrder - 1) // Lấy các cấp trước đó
-    .reduce((total, p) => total + p.lessons.length, 0); // Tính tổng số bài
-});
+    .reduce((total, p) => total + p.lessons.length, 0) // Tính tổng số bài
+})
 
 const getAllProgressByTopic = async (topic_id) => {
   try {
-    const res = await api.get(`${URL_API}/api/progress/topic/${topic_id}`);
+    const res = await api.get(`${URL_API}/api/progress/topic/${topic_id}`)
     // send success
     if (!res || res?.status !== 200) {
-      toast.error(res?.data?.message);
-      return;
+      toast.error(res?.data?.message)
+      return
     }
-    progresses.value = res.data?.data;
-    console.log(progresses.value);
+    progresses.value = res.data?.data
+    console.log(progresses.value)
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   }
-};
+}
 
 const openModal = (data) => {
-  dataModal.value = data;
-  showModal.value = true;
-};
+  dataModal.value = data
+  showModal.value = true
+}
 
 const init = async () => {
   try {
-    loadingUI.value = true;
-    user.value = await getInfoUser();
+    loadingUI.value = true
+    user.value = await getInfoUser()
     // get data progress
-    await getAllProgressByTopic(user.value?.topic?._id);
+    await getAllProgressByTopic(user.value?.topic?._id)
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   } finally {
-    loadingUI.value = false;
+    loadingUI.value = false
   }
-};
+}
 
 onMounted(() => {
-  init();
-});
+  init()
+})
 </script>
 
 <template>
@@ -69,8 +69,8 @@ onMounted(() => {
           <p class="text-[2rem] md:text-[2.4rem] font-bold">Hành trình học của tôi</p>
           <!-- <p class="font-bold">Đã bắt đầu học 3 thg 2, 2025</p> -->
           <p class="mt-2 progress-desc">
-            Theo dõi tiến độ của bạn theo cấp độ và giai đoạn - giành điểm cho mỗi từ bạn
-            học, mỗi video bạn xem và mỗi cuộc trò chuyện cùng MemBot để tiếp tục lên cấp!
+            Theo dõi tiến độ của bạn theo cấp độ và giai đoạn - giành điểm cho mỗi từ bạn học để
+            tiếp tục lên cấp!
           </p>
         </div>
         <RouterLink to="/topic" class="text-center font-bold underline md:no-underline"
@@ -79,10 +79,7 @@ onMounted(() => {
       </div>
       <!-- loading -->
       <div v-if="loadingUI" class="flex justify-center">
-        <span
-          class="loading loading-dots loading-sm"
-          style="animation: none; width: 80px"
-        ></span>
+        <span class="loading loading-dots loading-sm" style="animation: none; width: 80px"></span>
       </div>
       <template v-else>
         <div class="mt-10 list-progress">
@@ -138,10 +135,7 @@ onMounted(() => {
                 </div>
               </template>
             </div>
-            <p
-              class="mt-2 progress-desc line-clamp-3"
-              @click="toggleClamp($event, 'line-clamp-3')"
-            >
+            <p class="mt-2 progress-desc line-clamp-3" @click="toggleClamp($event, 'line-clamp-3')">
               {{ progress.description }}
             </p>
           </div>
@@ -210,8 +204,8 @@ onMounted(() => {
               Đạt cấp độ {{ dataModal?.stt }} tại {{ dataModal?.min_score }}đ
             </h3>
             <p class="text-[1.6rem] md:text-[1.4rem] text-[#293749] leading-8 px-5">
-              Mỗi từ bạn học, mỗi video đã xem và mỗi đối thoại đã luyện tập với Membots
-              sẽ mang điểm tới cho bạn
+              Mỗi từ bạn học, mỗi video đã xem và mỗi đối thoại đã luyện tập sẽ mang điểm tới cho
+              bạn
             </p>
           </div>
           <div class="text-center mt-8">

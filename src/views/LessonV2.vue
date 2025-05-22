@@ -53,8 +53,8 @@ const getDataLesson = async (lesson_id) => {
     }
     lesson.value = res?.data?.data
     vocabularies.value = lesson.value?.vocabularies
-    // exercises.value = _.shuffle(lesson.value?.exercises);
-    exercises.value = lesson.value?.exercises
+    exercises.value = _.shuffle(lesson.value?.exercises)
+    // exercises.value = lesson.value?.exercises
     exercises.value = vocabularies.value.concat(exercises.value)
     lessonsLength.value = exercises.value ? exercises.value?.length : 0
     if (lessonsLength.value === 0) {

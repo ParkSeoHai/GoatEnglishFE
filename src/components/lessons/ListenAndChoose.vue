@@ -1,17 +1,29 @@
 <script setup>
-import { inject, onMounted, ref } from "vue";
-import _ from "lodash";
-import { playAudio } from "../../utils/index";
+import { inject, onMounted, ref, watch } from 'vue'
+import _ from 'lodash'
+import { playAudio } from '../../utils/index'
 
-const props = defineProps(["exercise"]);
+const props = defineProps(['exercise'])
 
-const URL_API = inject("URL_API");
+const URL_API = inject('URL_API')
 
-const emit = defineEmits(["nextExercise"]);
-const options = ref([]);
-const showResult = ref(false);
-const result = ref(false);
-const dataResult = ref(null);
+const emit = defineEmits(['nextExercise'])
+const options = ref([])
+const showResult = ref(false)
+// const result = ref(false)
+const dataResult = ref(null)
+
+watch(
+  () => props.exercise,
+  () => {
+    resetDataResult()
+  },
+)
+
+const resetDataResult = () => {
+  dataResult.value = null
+  showResult.value = false
+}
 
 const handleNextExercise = () => {
   if (showResult.value) {
@@ -21,23 +33,23 @@ const handleNextExercise = () => {
       correct_answer: props.exercise.correct_answer,
       user_answer: dataResult.value?.noi_dung,
       correct: dataResult.value?.noi_dung === props.exercise.correct_answer,
-    };
-    emit("nextExercise", userAnswer);
-    return;
+    }
+    emit('nextExercise', userAnswer)
+    return
   }
-  showResult.value = true;
-};
+  showResult.value = true
+}
 
 const handlePlayAudio = ({ audio, correct_answer }) => {
-  playAudio(URL_API, audio, correct_answer);
-};
+  playAudio(URL_API, audio, correct_answer)
+}
 
 onMounted(() => {
   // shuffle options from correct answer
-  options.value = _.shuffle(props.exercise?.correct_answer.split(" "));
+  options.value = _.shuffle(props.exercise?.correct_answer.split(' '))
   // console.log("options.value", options.value);
   // console.log("props.exercise", props.exercise);
-});
+})
 </script>
 
 <template>
@@ -112,8 +124,8 @@ onMounted(() => {
                   option?.noi_dung === props.exercise?.correct_answer
                     ? '#84e41a'
                     : dataResult?.ma_dap_an === option.ma_dap_an
-                    ? '#b13039'
-                    : '',
+                      ? '#b13039'
+                      : '',
               }"
             >
               <span>{{ option?.ma_dap_an }}</span>

@@ -74,8 +74,16 @@ async function sendMessage() {
 
   eventSource.onerror = (err) => {
     console.error("EventSource lỗi:", err);
-    addMessage("bot", "Lỗi kết nối đến chatbot");
-    streamingReply.value = "";
+
+    if (streamingReply.value) {
+      // Thêm nội dung đã stream được vào messages
+      addMessage("bot", streamingReply.value + "...");
+      streamingReply.value = "";
+    }
+
+    // Hiển thị thông báo lỗi mới
+    addMessage("bot", "❌ Lỗi kết nối đến chatbot. Vui lòng thử lại sau.");
+
     isStreaming.value = false;
     if (eventSource) {
       eventSource.close();

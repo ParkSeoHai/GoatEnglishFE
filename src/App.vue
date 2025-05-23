@@ -1,28 +1,28 @@
 <script setup>
-import { RouterView, useRoute } from "vue-router";
-import { useLayoutStore } from "@/stores/layout";
-import { provide, watch } from "vue";
-import { toast } from "vue3-toastify";
-import api from "@/utils";
+import { RouterView, useRoute } from 'vue-router'
+import { useLayoutStore } from '@/stores/layout'
+import { provide, watch } from 'vue'
+import { toast } from 'vue3-toastify'
+import api from '@/utils'
 
-const URL_API = "https://goat-english-api.vercel.app";
+const URL_API = 'https://goat-english-api.vercel.app'
 // const URL_API = 'http://localhost:3000'
 
-const route = useRoute();
-const layout = useLayoutStore();
+const route = useRoute()
+const layout = useLayoutStore()
 
 // watch url change.
 watch(
   () => route.fullPath,
   (newPath) => {
-    console.log("Đã thay đổi URL:", newPath);
-    layout.showSidebar = false;
+    console.log('Đã thay đổi URL:', newPath)
+    layout.showSidebar = false
   },
-  { immediate: true }
-);
+  { immediate: true },
+)
 
 function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 // const handleErrorAPI = (error) => {
@@ -45,80 +45,80 @@ function sleep(ms) {
 // };
 
 const handleErrorAPI = (error, toastId) => {
-  console.log(error);
+  console.log(error)
   if (error?.response?.data?.errors) {
     error.response.data.errors?.forEach((error) => {
       if (toastId) {
         toast.update(toastId, {
-          render: error?.message || "Có lỗi xảy ra",
-          type: "error",
+          render: error?.message || 'Có lỗi xảy ra',
+          type: 'error',
           isLoading: false,
           autoClose: 2000,
-        });
+        })
       } else {
-        toast.error(error?.message || "Có lỗi xảy ra");
+        toast.error(error?.message || 'Có lỗi xảy ra')
       }
-    });
+    })
   } else {
     if (toastId) {
       toast.update(toastId, {
-        render: error?.response?.data?.message || error?.message || "Có lỗi xảy ra",
-        type: "error",
+        render: error?.response?.data?.message || error?.message || 'Có lỗi xảy ra',
+        type: 'error',
         isLoading: false,
         autoClose: 2000,
-      });
+      })
     } else {
-      toast.error(error?.response?.data?.message || error?.message || "Có lỗi xảy ra");
+      toast.error(error?.response?.data?.message || error?.message || 'Có lỗi xảy ra')
     }
   }
   if (error?.status === 401 || error?.status === 403) {
     setTimeout(() => {
       // delete token
-      localStorage.clear();
-      location.href = "/login";
-    }, 2000);
+      localStorage.clear()
+      location.href = '/login'
+    }, 2000)
   }
-  return null;
-};
+  return null
+}
 
 // get infor user
 const getInfoUser = async () => {
   try {
-    const res = await api.get(`${URL_API}/api/user/get-info`);
+    const res = await api.get(`${URL_API}/api/user/get-info`)
     // send success
     if (res?.status !== 200) {
-      toast.error(res?.data?.message);
-      return;
+      toast.error(res?.data?.message)
+      return
     }
     const user = {
       ...res?.data?.data?.user,
       topic: res?.data?.data?.topic,
       score: res?.data?.data?.score,
-    };
-    localStorage.setItem("user", JSON.stringify(user));
+    }
+    localStorage.setItem('user', JSON.stringify(user))
     // nếu chưa học chủ đề nào
     if (!user?.topic) {
-      toast.info("Vui lòng chọn một chủ đề để bắt đầu học");
+      toast.info('Vui lòng chọn một chủ đề để bắt đầu học')
       setTimeout(() => {
-        location.href = "/topic";
-      }, 2000);
+        location.href = '/topic'
+      }, 2000)
     }
-    return user;
+    return user
   } catch (error) {
-    handleErrorAPI(error);
+    handleErrorAPI(error)
   }
-};
+}
 
 const toggleClamp = (event, className) => {
-  const el = event.currentTarget;
-  el.classList.toggle(className);
-};
+  const el = event.currentTarget
+  el.classList.toggle(className)
+}
 
-provide("URL_API", URL_API);
-provide("handleErrorAPI", handleErrorAPI);
-provide("getInfoUser", getInfoUser);
-provide("toggleClamp", toggleClamp);
-provide("sleep", sleep);
+provide('URL_API', URL_API)
+provide('handleErrorAPI', handleErrorAPI)
+provide('getInfoUser', getInfoUser)
+provide('toggleClamp', toggleClamp)
+provide('sleep', sleep)
 </script>
 
 <template>
